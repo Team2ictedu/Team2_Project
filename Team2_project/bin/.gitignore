@@ -24,7 +24,7 @@ local.properties
 # Eclipse Core
 .project
 
-# JDT-specific (Eclipes Java Development Tools)
+# JDT-specific (Eclipse Java Development Tools)
 .classpath
 
 # PyDev specific (Python IDE for Eclipse)
@@ -127,3 +127,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
+/fonts/
+/images/
