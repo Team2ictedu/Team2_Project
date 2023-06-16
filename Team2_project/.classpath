@@ -6,22 +6,22 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/KYJ/util/ojdbc8.jar">
+	<classpathentry kind="lib" path="D:/shl/util/ojdbc8.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/KYJ/util/JTattoo-1.6.13.jar">
+	<classpathentry kind="lib" path="D:/shl/util/JTattoo-1.6.13.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/KYJ/util/json-simple-1.1.1.jar">
+	<classpathentry kind="lib" path="D:/shl/util/json-simple-1.1.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/KYJ/util/mybatis-3.5.13/mybatis-3.5.13/mybatis-3.5.13.jar">
+	<classpathentry kind="lib" path="D:/shl/util/mybatis-3.5.13/mybatis-3.5.13.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
