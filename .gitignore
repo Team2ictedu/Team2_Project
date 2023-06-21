@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+/.metadata/
+Team2_project/.classpath
+Team2_project/.modulepath
+=======
 /project1/
 # Created by https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,eclipse,java
@@ -128,3 +133,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
 /fonts/
 /images/
+>>>>>>> master
