@@ -1,6 +1,6 @@
 # Personal Planner
 
-권연준, 김민지, 김신실, 김지수, 이소연, 이수환
+여행 계획을 적는 어플리케이션
 
 ## Description
 
