@@ -101,7 +101,7 @@ public class AdminPlaces extends JPanel{
 //		jp_centerLeft.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		JPanel jp_centerLeftContainer = new JPanel();
 		JPanel jp_centerLeft1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		jp_centerLeft1.add(new JLabel("TEXT 1"));
+		jp_centerLeft1.add(new JLabel("Place Number"));
 		jp_centerLeft1.add(new JTextField(20));
 		jp_centerLeftContainer.add(jp_centerLeft1);
 		JPanel jp_centerLeft2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
