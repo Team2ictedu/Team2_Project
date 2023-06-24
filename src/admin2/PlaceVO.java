@@ -1,4 +1,4 @@
-package admin;
+package admin2;
 
 public class PlaceVO {
 	private String placenumber, placename, placelocation, placedescription, placeprice, placereview;

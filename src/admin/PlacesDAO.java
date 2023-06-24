@@ -61,6 +61,10 @@ public class PlacesDAO {
 		return null;
 	}
 	
+	public void deleteRow() {
+		
+	}
+	
 }
 
 
