@@ -1,4 +1,4 @@
-package team.login;
+package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,8 +30,8 @@ public class PwChange_login extends JFrame{
 		//글꼴
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Jalnan.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Doodly.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts//Doodly.ttf")));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

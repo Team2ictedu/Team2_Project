@@ -1,4 +1,4 @@
-package project1;
+package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,22 +26,21 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Template extends JFrame {
+public class Planner_Create extends JFrame {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
 	JLabel jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel_new;
-	
 	JTextField jtf_name, jtf_date, jtf_days;
 	JButton jb_create, jb_back ;
-	String[] items = { "Country" }; // 예시
-	JComboBox<String> jcom = new JComboBox<>(items);
-	String[] items2 = { "City" }; // 예시
-	JComboBox<String> jcom2 = new JComboBox<>(items2);
+	String[] city = { "City" }; // 시
+	JComboBox<String> jcom = new JComboBox<>(city);
+	String[] town = { "Town" }; // 동읍리
+	JComboBox<String> jcom2 = new JComboBox<>(town);
 	JPanel jp_main, jp_checkbox;
 
-	public Template() {
-		super("PERPL");
+	public Planner_Create() {
+		super("새 일정 만들기");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -88,7 +87,7 @@ public class Template extends JFrame {
 //		font 입력
 		jLabel1 = new JLabel(" PERSONAL PLANNER");
 		jLabel2 = new JLabel("Trip Name");
-		jLabel3 = new JLabel("Country / City");
+		jLabel3 = new JLabel("City / Town");
 		jLabel4 = new JLabel("Start Date");
 		jLabel5 = new JLabel("Days");
 		jLabel1.setFont(new Font("Doodly", Font.BOLD, 40));
@@ -147,7 +146,7 @@ public class Template extends JFrame {
 		}
 
 //		add image 
-		ImageIcon imageIcon = new ImageIcon("src/images/logo2.png");
+		ImageIcon imageIcon = new ImageIcon("src/images/only_logo.png");
 		Image image = imageIcon.getImage(); // transform it
 		Image newimg = image.getScaledInstance(70, 70, java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg); // transform it back
@@ -185,7 +184,7 @@ public class Template extends JFrame {
 			jp_checkbox = new JPanel();
 			jp_checkbox.add(jcom);
 			jp_checkbox.add(jcom2);
-			jp_main.setBackground(Color.decode("#eee3f6"));
+			jp_main.setBackground(Color.WHITE);
 			jp_main.setLayout(new GridLayout(0, 1));
 			jp_checkbox.setLayout(new GridLayout(0, 2));
 			jp_main.add(jLabel2);
@@ -274,7 +273,7 @@ public class Template extends JFrame {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new Template();
+					new Planner_Create();
 				}
 			});
 

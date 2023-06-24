@@ -1,4 +1,4 @@
-package project1;
+package project_java;
 
 import java.awt.*;
 import java.awt.event.*;

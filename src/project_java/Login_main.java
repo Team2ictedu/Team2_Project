@@ -1,4 +1,4 @@
-package team.login;
+package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,8 +26,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 public class Login_main extends JFrame{
-	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
-	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
+	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_buttons, jp_east, jp_west, jp_south;
+	JButton jb1, jb2, jb3 ,jb4;
 	Font customFont;
 	JLabel jLabel1, lb;
 	TextPrompt tp1, tp2;
@@ -42,8 +42,8 @@ public class Login_main extends JFrame{
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Jalnan.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Doodly.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts//Doodly.ttf")));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -56,7 +56,6 @@ public class Login_main extends JFrame{
 		jp_headerMain = new JPanel();
 		jp_headerSub = new JPanel();
 		jp_headerSubLeft = new JPanel();
-		jp_headerSubRight = new JPanel();
 		//jp_buttons = new JPanel();
 		jp_east = new JPanel();
 		jp_west = new JPanel();
@@ -70,9 +69,6 @@ public class Login_main extends JFrame{
 		//jb4 = new JButton("마이페이지");
 		//jb4.setPreferredSize(new Dimension(120,30));
 //		jb4.setPreferredSize(new Dimension(80, 40));
-		jbName = new JButton("이름");
-		jbMyInfo = new JButton("내 정보");
-		jbLogOut = new JButton("로그아웃");
 		newBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
 		}
 		
@@ -80,32 +76,6 @@ public class Login_main extends JFrame{
 //		font 입력
 		jLabel1 = new JLabel(" PERSONAL PLANNER");
 		jLabel1.setFont(new Font("Doodly",Font.BOLD,40));
-		jbName.setFont(new Font("Jalnan",Font.PLAIN,12));
-		jbMyInfo.setFont(new Font("Jalnan",Font.PLAIN,12));
-		jbLogOut.setFont(new Font("Jalnan",Font.PLAIN,12));
-		//jb1.setFont(new Font("Jalnan",Font.PLAIN,12));
-		//jb2.setFont(new Font("Jalnan",Font.PLAIN,12));
-		//jb3.setFont(new Font("Jalnan",Font.PLAIN,12));
-		//jb4.setFont(new Font("Jalnan",Font.PLAIN,12));
-
-		
-//		jbName,jbMyInfo,jbLogout 투명하게 하기
-		{
-		jbName.setOpaque(false);
-		jbName.setContentAreaFilled(false);
-		jbName.setBorderPainted(false);
-		jbMyInfo.setOpaque(false);
-		jbMyInfo.setContentAreaFilled(false);
-		jbMyInfo.setBorderPainted(false);
-		jbLogOut.setOpaque(false);
-		jbLogOut.setContentAreaFilled(false);
-		jbLogOut.setBorderPainted(false);
-		
-		}
-		
-		
-
-		
 		
 //		색 바꾸기
 		//jb1.setBackground(Color.decode("#98b4d4"));
@@ -113,7 +83,6 @@ public class Login_main extends JFrame{
 		jp_headerMain.setBackground(Color.decode("#D4B8E8"));
 		jp_headerSub.setBackground(Color.decode("#D4B8E8"));
 		jp_headerSubLeft.setBackground(Color.decode("#D4B8E8"));
-		jp_headerSubRight.setBackground(Color.decode("#D4B8E8"));
 		//jp_buttons.setBackground(Color.decode("#D4B8E8"));
 		jp_west.setBackground(Color.decode("#D4B8E8"));
 		jp_east.setBackground(Color.decode("#D4B8E8"));
@@ -129,15 +98,14 @@ public class Login_main extends JFrame{
 		//jp_buttons.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jp_headerSub.setLayout(new GridLayout(0,2));
 		jp_headerSubLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
-		jp_headerSubRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		jp_headerMain.setLayout(new BoxLayout(jp_headerMain, BoxLayout.Y_AXIS));
 //		jp_headerMain.setLayout(new GridLayout(2,0));
 		//jp_headerSub.setLayout(new FlowLayout(FlowLayout.LEFT));
 		}
 		
 //		add image 
-		ImageIcon imageIcon = new ImageIcon("src/team/login/logo_e/logo3.png");
-		ImageIcon imagelogo = new ImageIcon("src/team/login/logo_e/Logo2.png");
+		ImageIcon imageIcon = new ImageIcon("src/images/only_logo.png");
+		ImageIcon imagelogo = new ImageIcon("src/images/text_logo.png");
 		Image image = imageIcon.getImage(); // transform it 
 		Image image2 = imagelogo.getImage();
 		Image newimg = image.getScaledInstance(70, 70,  java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
@@ -262,17 +230,11 @@ public class Login_main extends JFrame{
 		{
 		jp_headerSubLeft.add(new JLabel(imageIcon));
 		jp_headerSubLeft.add(jLabel1);
-		jp_headerSubRight.add(jbName);
-		jp_headerSubRight.add(new JLabel(" | "));
-		jp_headerSubRight.add(jbMyInfo);
-		jp_headerSubRight.add(new JLabel(" | "));
-		jp_headerSubRight.add(jbLogOut);
 		//jp_buttons.add(jb1);6
 		//jp_buttons.add(jb2);
 		//jp_buttons.add(jb3);
 		//jp_buttons.add(jb4);
 		jp_headerSub.add(jp_headerSubLeft);
-		jp_headerSub.add(jp_headerSubRight);
 		jp_headerMain.add(jp_headerSub);
 		//jp_headerMain.add(jp_buttons);
 		

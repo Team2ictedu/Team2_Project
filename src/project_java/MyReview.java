@@ -1,4 +1,4 @@
-package team.login;
+package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -54,8 +54,8 @@ public class MyReview extends JFrame{
 //	Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Jalnan.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Doodly.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts//Doodly.ttf")));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -168,7 +168,7 @@ public class MyReview extends JFrame{
 		
 
 //	add image 
-		ImageIcon imageIcon = new ImageIcon("src/team/login/logo_e/logo3.png");
+		ImageIcon imageIcon = new ImageIcon("src/images/only_logo.png");
 		Image image = imageIcon.getImage(); // transform it
 		Image newimg = image.getScaledInstance(70, 70, java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg); // transform it back
@@ -216,7 +216,7 @@ public class MyReview extends JFrame{
 			review_jta.setLineWrap(true);
 			review_jta.setEditable(false);
 			re1_bt = new JButton("전체 후기");
-			re2_bt = new JButton("후기 작성");
+			re2_bt = new JButton("내 후기");
 			re3_bt = new JButton("작성");
 			re4_bt = new JButton("삭제");
 			combo_jp = new JPanel();
@@ -234,10 +234,14 @@ public class MyReview extends JFrame{
 			re_lb.setFont(new Font("Jalnan",Font.PLAIN,20));
 			wr_lb.setFont(new Font("Jalnan",Font.PLAIN,20));
 			view_lb.setFont(new Font("Jalnan",Font.PLAIN,20));
-			re1_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
-			re2_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
-			re3_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
-			re4_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
+			re1_bt.setFont(new Font("Jalnan",Font.PLAIN,10));
+			re2_bt.setFont(new Font("Jalnan",Font.PLAIN,10));
+			re3_bt.setFont(new Font("Jalnan",Font.PLAIN,15));
+			re4_bt.setFont(new Font("Jalnan",Font.PLAIN,15));
+			re3_bt.setForeground(Color.WHITE);
+			re4_bt.setForeground(Color.WHITE);
+			re3_bt.setPreferredSize(new Dimension(100,30));
+			re4_bt.setPreferredSize(new Dimension(100,30));
 			re1_bt.setOpaque(false);
 			re1_bt.setContentAreaFilled(false);
 			re2_bt.setOpaque(false);
@@ -346,6 +350,7 @@ public class MyReview extends JFrame{
 		try {
 			// Select the Look and Feel
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 
 			SwingUtilities.invokeLater(new Runnable() {
 
