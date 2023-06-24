@@ -31,9 +31,9 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class login_join extends JFrame {
-	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_buttons, jp_east, jp_west, jp_south;
-	JButton join_bt;
+public class login_register extends JFrame {
+	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
+	JButton jbName, jbMyInfo, jbLogOut, join_bt, cancel_bt;
 	JLabel jLabel1;
 	Font customFont;
 	JTextField tf_id, tf_pw, tf_pw2, tf_mail, tf_name, tf_birth, tf_phone;
@@ -42,10 +42,10 @@ public class login_join extends JFrame {
 	JScrollPane jsp;
 	Border newBorder;
 	
-	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, join_jp;
+	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp, terms_jp ;
 	JLabel lb;
 	
-	public login_join() {
+	public login_register() {
 		super("회원 가입");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
@@ -67,18 +67,37 @@ public class login_join extends JFrame {
 			jp_headerMain = new JPanel();
 			jp_headerSub = new JPanel();
 			jp_headerSubLeft = new JPanel();
+			jp_headerSubRight = new JPanel();
 			jp_center = new JPanel();
+			jbName = new JButton("이름");
+			jbMyInfo = new JButton("내 정보");
+			jbLogOut = new JButton("로그아웃");
 			newBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
 
 //		font 입력
 			jLabel1 = new JLabel(" PERSONAL PLANNER");
 			jLabel1.setFont(new Font("Doodly", Font.BOLD, 40));
+			jbName.setFont(new Font("Jalnan", Font.PLAIN, 12));
+			jbMyInfo.setFont(new Font("Jalnan", Font.PLAIN, 12));
+			jbLogOut.setFont(new Font("Jalnan", Font.PLAIN, 12));
+
+//		jbName, jbMyInfo, jbLogout 투명하게 하기
+			jbName.setOpaque(false);
+			jbName.setContentAreaFilled(false);
+			jbName.setBorderPainted(false);
+			jbMyInfo.setOpaque(false);
+			jbMyInfo.setContentAreaFilled(false);
+			jbMyInfo.setBorderPainted(false);
+			jbLogOut.setOpaque(false);
+			jbLogOut.setContentAreaFilled(false);
+			jbLogOut.setBorderPainted(false);
 
 //		색 바꾸기
 			// jb1.setBackground(Color.decode("#98b4d4"));
 			jp_headerMain.setBackground(Color.decode("#D4B8E8"));
 			jp_headerSub.setBackground(Color.decode("#D4B8E8"));
 			jp_headerSubLeft.setBackground(Color.decode("#D4B8E8"));
+			jp_headerSubRight.setBackground(Color.decode("#D4B8E8"));
 			jp_center.setBackground(Color.WHITE);
 
 //		Logo 
@@ -90,6 +109,7 @@ public class login_join extends JFrame {
 //		레이아웃
 			jp_headerSub.setLayout(new GridLayout(0, 2));
 			jp_headerSubLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
+			jp_headerSubRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			jp_headerMain.setLayout(new BoxLayout(jp_headerMain, BoxLayout.Y_AXIS));
 			jp_center.setBorder(new EmptyBorder(0, 0, 0, 0)); // 상, 좌, 하, 우 여백
 			jp.setLayout(new BorderLayout());
@@ -115,8 +135,8 @@ public class login_join extends JFrame {
 			phone_jp.setOpaque(false);
 			Termsofuse_jp = new JPanel();
 			Termsofuse_jp.setOpaque(false);
-			join_jp = new JPanel();
-			join_jp.setOpaque(false);
+			under_bt_jp = new JPanel();
+			under_bt_jp.setOpaque(false);
 			
 			// 붙일 패널
 			jp_center.setLayout(new BoxLayout(jp_center, BoxLayout.Y_AXIS));
@@ -139,10 +159,10 @@ public class login_join extends JFrame {
 			tp_user.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_user.setForeground(Color.gray);
 			tp_user.changeAlpha(0.5f); // <<여기까지 JTF + 꾸미기>>
-			tp_user.setIcon(userIcon);
-			tp_user.changeStyle(Font.BOLD + Font.ITALIC);           
+			tp_user.changeStyle(Font.BOLD + Font.ITALIC);   
 			tf_id.setBorder(newBorder);          
 			tf_id.setOpaque(false); 
+			id_jp.add(new JLabel(userIcon));
 			id_jp.add(tf_id);
 			
 			
@@ -158,10 +178,10 @@ public class login_join extends JFrame {
 			tp_pw.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_pw.setForeground(Color.gray);
 			tp_pw.changeAlpha(0.5f);
-			tp_pw.setIcon(pwIcon);
 			tp_pw.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_pw.setBorder(newBorder);          
 			tf_pw.setOpaque(false); 
+			pw_jp.add(new JLabel(pwIcon));
 			pw_jp.add(tf_pw);
 			
 			// 비밀번호확인(NN) / 아이콘 + 텍스트필드
@@ -171,10 +191,10 @@ public class login_join extends JFrame {
 			tp_pw2.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_pw2.setForeground(Color.gray);
 			tp_pw2.changeAlpha(0.5f);
-			tp_pw2.setIcon(pwIcon);
 			tp_pw2.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_pw2.setBorder(newBorder);          
 			tf_pw2.setOpaque(false); 
+			pwcheck_jp.add(new JLabel(pwIcon));
 			pwcheck_jp.add(tf_pw2);
 			 
 			// 메일주소 / 아이콘 + 텍스트필드
@@ -188,10 +208,10 @@ public class login_join extends JFrame {
 			tp_mail.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_mail.setForeground(Color.gray);
 			tp_mail.changeAlpha(0.5f);
-			tp_mail.setIcon(mailIcon);
 			tp_mail.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_mail.setBorder(newBorder);          
 			tf_mail.setOpaque(false); 
+			mail_jp.add(new JLabel(mailIcon));
 			mail_jp.add(tf_mail);
 			
 // 		센터 하단 텍스트필드
@@ -203,10 +223,10 @@ public class login_join extends JFrame {
 			tp_name.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_name.setForeground(Color.gray);
 			tp_name.changeAlpha(0.5f);
-			tp_name.setIcon(userIcon);
 			tp_name.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_name.setBorder(newBorder);          
 			tf_name.setOpaque(false); 
+			name_jp.add(new JLabel(pwIcon));
 			name_jp.add(tf_name); 
 			
 			// 생년월일 8자리(NN) / 아이콘 + 텍스트필드
@@ -220,10 +240,10 @@ public class login_join extends JFrame {
 			tp_birth.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_birth.setForeground(Color.gray);
 			tp_birth.changeAlpha(0.5f);
-			tp_birth.setIcon(calendarIcon);
 			tp_birth.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_birth.setBorder(newBorder);          
-			tf_birth.setOpaque(false); 
+			tf_birth.setOpaque(false);
+			birth_jp.add(new JLabel(calendarIcon));
 			birth_jp.add(tf_birth);
 			
 			// 휴대전화번호(NN) / 아이콘 + 텍스트필드
@@ -237,10 +257,10 @@ public class login_join extends JFrame {
 			tp_phone.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_phone.setForeground(Color.gray);
 			tp_phone.changeAlpha(0.5f);
-			tp_phone.setIcon(phoneIcon);
 			tp_phone.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_phone.setBorder(newBorder);          
 			tf_phone.setOpaque(false); 
+			phone_jp.add(new JLabel(phoneIcon));
 			phone_jp.add(tf_phone); 
 			
 //			 약관
@@ -258,11 +278,14 @@ public class login_join extends JFrame {
 //			약관 체크박스(NN)
 			cb_TermsofUse = new JCheckBox("개인정보조회 및 수집, 이용, 제공 동의");
 			cb_TermsofUse.setBackground(new Color(255, 255, 255));
+			terms_jp = new JPanel(new FlowLayout());
+			terms_jp.setBackground(Color.WHITE);
+			terms_jp.add(cb_TermsofUse);
 //			cb_TermsofUse.setBounds(0, 0, 0, 0);
-			Termsofuse_jp.setLayout(new BoxLayout(Termsofuse_jp, BoxLayout.Y_AXIS));
+			Termsofuse_jp.setLayout(new BorderLayout());
 			Termsofuse_jp.setBackground(Color.WHITE);
-			Termsofuse_jp.add(jsp);
-			Termsofuse_jp.add(cb_TermsofUse);
+			Termsofuse_jp.add(jsp, BorderLayout.CENTER);
+			Termsofuse_jp.add(terms_jp, BorderLayout.SOUTH);
 			
 			
 //     		가입하기버튼
@@ -271,8 +294,18 @@ public class login_join extends JFrame {
 			join_bt.setBackground(Color.decode("#D4B8E8"));
 			join_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
 			join_bt.setForeground(Color.WHITE);
-			join_jp.add(join_bt);
-			join_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
+			under_bt_jp.add(join_bt);
+			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
+			
+//			취소하기 버튼
+			cancel_bt = new JButton("취소");
+			cancel_bt.setPreferredSize(new Dimension(150, 40));
+			cancel_bt.setBackground(Color.decode("#D4B8E8"));
+			cancel_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
+			cancel_bt.setForeground(Color.WHITE);
+			under_bt_jp.add(cancel_bt);
+			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
+			
 			
 //			jp_center에 ADD
 			jp_center.add(lb_jp);
@@ -284,12 +317,18 @@ public class login_join extends JFrame {
 			jp_center.add(birth_jp);
 			jp_center.add(phone_jp);
 			jp_center.add(Termsofuse_jp);
-			jp_center.add(join_jp);
+			jp_center.add(under_bt_jp);
 			
 //			ADD 
 			jp_headerSubLeft.add(new JLabel(imageIcon));
 			jp_headerSubLeft.add(jLabel1);
+			jp_headerSubRight.add(jbName);
+			jp_headerSubRight.add(new JLabel(" | "));
+			jp_headerSubRight.add(jbMyInfo);
+			jp_headerSubRight.add(new JLabel(" | "));
+			jp_headerSubRight.add(jbLogOut);
 			jp_headerSub.add(jp_headerSubLeft);
+			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp.add(jp_center);
 			
@@ -317,7 +356,7 @@ public class login_join extends JFrame {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new login_join();
+					new login_register();
 				}
 			});
 		} catch (Exception ex) {
