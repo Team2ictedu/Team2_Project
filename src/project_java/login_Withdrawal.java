@@ -30,15 +30,15 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class login_Withdrawal extends JFrame {
-	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_center;
+	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_center, jp_east, jp_west;
 	JButton jbName, jbMyInfo, jbLogOut;
 	Font customFont;
 	JLabel jLabel1;
 	JTextField tf_pw, tf_withdraw;
 	Border newBorder;
 	
-	JPanel lb_jp, pw_jp, reason_jp, withdraw_jp;
-	JButton withdraw_bt;
+	JPanel lb_jp, pw_jp, reason_jp, under_bt_jp;
+	JButton withdraw_bt, cancel_bt;
 	JLabel lb;
 
 	public login_Withdrawal() {
@@ -56,6 +56,8 @@ public class login_Withdrawal extends JFrame {
 				e.printStackTrace();
 			}
 //		변수 생성
+			jp_east = new JPanel();
+			jp_west = new JPanel();
 			jp = new JPanel();
 			jp_headerMain = new JPanel();
 			jp_headerSub = new JPanel();
@@ -92,6 +94,8 @@ public class login_Withdrawal extends JFrame {
 			jp_headerSub.setBackground(Color.decode("#D4B8E8"));
 			jp_headerSubLeft.setBackground(Color.decode("#D4B8E8"));
 			jp_headerSubRight.setBackground(Color.decode("#D4B8E8"));
+			jp_west.setBackground(Color.decode("#D4B8E8"));
+			jp_east.setBackground(Color.decode("#D4B8E8"));
 			jp_center.setBackground(Color.WHITE);
 
 //		Logo 
@@ -116,8 +120,8 @@ public class login_Withdrawal extends JFrame {
 			pw_jp.setOpaque(false);
 			reason_jp = new JPanel();
 			reason_jp.setOpaque(false);
-			withdraw_jp = new JPanel();
-			withdraw_jp.setOpaque(false);
+			under_bt_jp = new JPanel();
+			under_bt_jp.setOpaque(false);
 			
 			// 붙일 패널 
 			jp_center.setLayout(new BoxLayout(jp_center, BoxLayout.Y_AXIS));
@@ -142,10 +146,10 @@ public class login_Withdrawal extends JFrame {
 			tp_pw.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_pw.setForeground(Color.gray);
 			tp_pw.changeAlpha(0.5f);
-			tp_pw.setIcon(pwIcon);
 			tp_pw.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_pw.setBorder(newBorder);          
 			tf_pw.setOpaque(false); 
+			pw_jp.add(new JLabel(pwIcon));
 			pw_jp.add(tf_pw);
 			pw_jp.setBorder(BorderFactory.createEmptyBorder(40,0,0,0));
 			
@@ -162,10 +166,10 @@ public class login_Withdrawal extends JFrame {
 			tp_withdraw.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_withdraw.setForeground(Color.gray);
 			tp_withdraw.changeAlpha(0.5f);
-			tp_withdraw.setIcon(withdrawIcon);
 			tp_withdraw.changeStyle(Font.BOLD + Font.ITALIC);           
 			tf_withdraw.setBorder(newBorder);          
 			tf_withdraw.setOpaque(false); 
+			reason_jp.add(new JLabel(withdrawIcon));
 			reason_jp.add(tf_withdraw);
 			reason_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
 			
@@ -175,15 +179,23 @@ public class login_Withdrawal extends JFrame {
 			withdraw_bt.setBackground(Color.decode("#D4B8E8"));
 			withdraw_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
 			withdraw_bt.setForeground(Color.WHITE);
-			withdraw_jp.add(withdraw_bt);
-			withdraw_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
+			under_bt_jp.add(withdraw_bt);
+			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
 			
+//			취소하기 버튼
+			cancel_bt = new JButton("취소");
+			cancel_bt.setPreferredSize(new Dimension(150, 40));
+			cancel_bt.setBackground(Color.decode("#D4B8E8"));
+			cancel_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
+			cancel_bt.setForeground(Color.WHITE);
+			under_bt_jp.add(cancel_bt);
+			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
 			
 //			jp_center에 ADD
 			jp_center.add(lb_jp);
 			jp_center.add(pw_jp);
 			jp_center.add(reason_jp);
-			jp_center.add(withdraw_jp);
+			jp_center.add(under_bt_jp);
 			
 //			ADD(상단)
 			jp_headerSubLeft.add(new JLabel(imageIcon));
@@ -197,10 +209,11 @@ public class login_Withdrawal extends JFrame {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp.add(jp_center);
-			
+
+			add(jp_east,BorderLayout.EAST);
 			add(jp, BorderLayout.CENTER);
+			add(jp_west,BorderLayout.WEST);
 		
-			getContentPane().add(jp);
 			getContentPane().add(jp_headerMain, BorderLayout.NORTH);
 			getContentPane().add(jp, BorderLayout.CENTER);
 
@@ -214,7 +227,6 @@ public class login_Withdrawal extends JFrame {
 	public static void main(String[] args) {
 		try {
 			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 
 			SwingUtilities.invokeLater(new Runnable() {
