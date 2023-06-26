@@ -6,47 +6,46 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.table.TableRowSorter;
 
 
 
-public class AdminTemplate1 extends JFrame{
+public class AdminHome extends JFrame{
 	JPanel jpWest, jpEast;
 	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut;
 	/*jpWest Buttons */ JButton adminHomeBtn,placeEditBtn , userEditBtn, reviewEditBtn, logOutBtn ;
 	/*jpEast Panels*/ JPanel jpEastHeadMain, jpEastHeadNorth, jpEastHeadSouth, jpEastFootMain, jpEastFootNorth, jpEastFootCenter;
-	/*jpEastHead Buttons*/ JButton searchBtn, searchClearBtn;
-	/*jpEastHead ArrayList*/ List<String> selectionList;
-	/*jpEastHead ComboBox & TextField*/ JComboBox<String> eastHeadComboBox; JTextField eastHeadTextField;
 	/*jpEastJTA*/ JTextArea jta;
-	/*jpEastFootTable*/ JTable placeTable; 
- 	/*jpEastFoot Buttons*/ 
+	/*jpEastJSP*/ JScrollPane jsp;
+	/*jpEastJLABEL*/ JLabel welcomeLabel;
+	
+	
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
+	LocalDateTime now = LocalDateTime.now();  
+	String todayDate = dtf.format(now);
+	String adminName = "양동근";
+	String welcome = String.format("어서오세요, %s님!      %s", adminName, todayDate);
 	
 	
 	
-	public AdminTemplate1() {
+	public AdminHome() {
 		super("Admin");
 
 		//font 
@@ -161,90 +160,40 @@ public class AdminTemplate1 extends JFrame{
 		jpEastHeadMain.setBackground(Color.decode("#393646"));
 		jpEastHeadNorth.setBackground(Color.decode("#393646"));
 		jpEastHeadSouth.setBackground(Color.decode("#393646"));
-		jpEastFootMain = new JPanel();
-		jpEastFootNorth = new JPanel();
-		jpEastFootCenter = new JPanel();
 		
-		//jpEastHead comboBox & textField
-		selectionList = new ArrayList<String>();
-		selectionList.add("전체보기");
-		selectionList.add("World");
-		eastHeadComboBox = new JComboBox<String>(selectionList.toArray(new String[0]));
-		eastHeadTextField = new JTextField(20);
+		//jpEast jta
+		jta = new JTextArea();
+		jta.setText(String.format(""));
+		jta.setRows(18);
+		jta.setLineWrap(true);
+		jta.setEditable(false);
+		jta.setFont(new Font("굴림", Font.PLAIN, 15));
+		jsp = new JScrollPane(jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jta.setBounds(50, 50, 600,200);
 		
+		//jpEastWelcome
+		welcomeLabel = new JLabel(welcome);
+		welcomeLabel.setFont(new Font("Jalnan",Font.PLAIN,18));
+		jpEastHeadNorth.add(welcomeLabel);
 		
-		//jpEastHeadNorth.add(Checkbox + jtf)          
-		jpEastHeadNorth.add(eastHeadComboBox);
-		jpEastHeadNorth.add(eastHeadTextField);
-		
-		//jpEastHeadSouth buttons
-		searchBtn = new JButton("검색");
-		searchClearBtn = new JButton("검색 초기화");
-
-		//jpEastHeadSouth.add(jpEastButton)
-		jpEastHeadSouth.add(searchBtn);
-		jpEastHeadSouth.add(searchClearBtn);
-		
-		//jpEastHeadMain.add(panels)
+		//jpEastHeadMain.add(North + South)
+		jpEastHeadSouth.add(jsp);
 		jpEastHeadMain.add(jpEastHeadNorth);
 		jpEastHeadMain.add(jpEastHeadSouth);
+		
+		//jpEastHeadMain layout
 		jpEastHeadMain.setLayout(new BoxLayout(jpEastHeadMain, BoxLayout.Y_AXIS));
-		
-		//jpEastFoot panels + colors
-		jpEastFootMain = new JPanel();
-		jpEastFootNorth = new JPanel();
-		jpEastFootCenter = new JPanel();
-		jpEastFootMain.setBackground(Color.decode("#393646"));
-		
-		//jpEastFootNorth createBtn
-		
-		//jpEastFootCenter table
-		ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll(); 
-		PlaceTableModel model = new PlaceTableModel(list);
-		
-		placeTable = new JTable(model);
-		placeTable.setShowGrid(false);
-		placeTable.setShowHorizontalLines(false);
-		placeTable.setShowVerticalLines(false);
-		placeTable.setRowMargin(0);
-		placeTable.setIntercellSpacing(new Dimension(0, 0));
-		placeTable.setFillsViewportHeight(true);
-		TableRowSorter<PlaceTableModel> sorter = new TableRowSorter<>(model);
-		placeTable.setRowSorter(sorter);
-		
-		
-		
-		
-		Action delet2e = new AbstractAction() 
-				{
-					public void actionPerformed(ActionEvent e) {
-						System.out.println("s");
-					}
-			
-				};
-		ButtonColumn buttonColumn = new ButtonColumn(placeTable, delet2e, 4);
-		
-
-		
-		
-		JScrollPane placeTableSP = new JScrollPane(placeTable);
-		placeTableSP.setPreferredSize(new Dimension(600,400));
-		jpEastFootCenter.add(placeTable);
-		
-		
-		//jpEastFootSouth btns
-		
-		
-		//jpEastFootMain.add()
-		jpEastFootMain.setPreferredSize(new Dimension(700,500));
-		jpEastFootMain.add(jpEastFootCenter);
+		jpEastHeadNorth.setLocation(200	, 200);
 		
 		//jpEast.add(panels)
+		jpEast.setLayout(new BoxLayout(jpEast,BoxLayout.Y_AXIS));
+		jpEast.add(Box.createVerticalGlue());
 		jpEast.add(jpEastHeadMain);
-		jpEastHeadMain.setBorder(titledBorderEastHead);
-		jpEast.add(jpEastFootMain);
-		jpEastFootMain.setBorder(titledBorderEastFoot);
-		jpPlaceEdit.setBackground(Color.decode("#424050"));
+		jpEast.add(Box.createVerticalGlue());
+//		jpEastHeadSouth.setBorder(titledBorderEastHead);
+		
+		jpAdminHome.setBackground(Color.decode("#424050"));
 		
 		
 		
@@ -259,13 +208,7 @@ public class AdminTemplate1 extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 
-		searchBtn.addActionListener(new ActionListener() {
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("S");
-			}
-		});
 	}
 	
 	 public static void main(String[] args) {
@@ -276,7 +219,7 @@ public class AdminTemplate1 extends JFrame{
 
 					@Override
 					public void run() {
-						new AdminTemplate1();
+						new AdminHome();
 					}
 				});
 			} catch (Exception ex) {
