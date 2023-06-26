@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Pw_Search extends JFrame{
+public class Pw_Search extends JPanel{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
 	Font customFont;
@@ -36,9 +36,10 @@ public class Pw_Search extends JFrame{
 	JPanel im_jp, log_im, lb_jp, idCg_jp, name_jp, em_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField idCg_jtf, name_jtf, em_jtf;
 	JButton logMv_bt, join_bt, pwFin_bt, pwCk_bt;
+	Main main;
 	
-	public Pw_Search() {
-		super("비밀번호 찾기");
+	public Pw_Search(Main main) {
+		this.main = main;
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -239,17 +240,13 @@ public class Pw_Search extends JFrame{
 		jp_headerSub.add(jp_headerSubRight);
 		jp_headerMain.add(jp_headerSub);
 		
-		add(jp_east,BorderLayout.EAST);
+		setLayout(new BorderLayout());
 		add(jp_headerMain, BorderLayout.NORTH);
 		add(jp,BorderLayout.CENTER);
-		add(jp_west,BorderLayout.WEST);
-		add(jp_south,BorderLayout.SOUTH);
 		}
-		
-		setSize(1000,700);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+	}
+	public Pw_Search() {
+		// TODO Auto-generated constructor stub
 	}
 	public static void main(String[] args) {
 		  try {

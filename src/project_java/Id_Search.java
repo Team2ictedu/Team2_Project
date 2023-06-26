@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Id_Search extends JFrame{
+public class Id_Search extends JPanel{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
 	Font customFont;
@@ -36,15 +36,16 @@ public class Id_Search extends JFrame{
 	JPanel im_jp,log_im, lb_jp, name_jp, pw_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField jtf_name, jtf_em;
 	JButton logMv_bt, join_bt, pwFin_bt,idCk_bt;
+	Main main;
 	
-	public Id_Search() {
-		super("아이디 찾기");
+	public Id_Search(Main main) {
+		this.main = main;
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts//Doodly.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Doodly.ttf")));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -273,18 +274,13 @@ public class Id_Search extends JFrame{
 		jp_headerMain.add(jp_headerSub);
 		//jp_headerMain.add(jp_buttons);
 		
-		
-		add(jp_east,BorderLayout.EAST);
+		setLayout(new BorderLayout());
 		add(jp_headerMain, BorderLayout.NORTH);
 		add(jp,BorderLayout.CENTER);
-		add(jp_west,BorderLayout.WEST);
-		add(jp_south,BorderLayout.SOUTH);
 		}
-		
-		setSize(1000,700);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+	}
+	public Id_Search() {
+		// TODO Auto-generated constructor stub
 	}
 	public static void main(String[] args) {
 		  try {
@@ -309,3 +305,4 @@ public class Id_Search extends JFrame{
 	        }
 	}
 }
+

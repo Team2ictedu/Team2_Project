@@ -30,7 +30,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class MyReview extends JFrame{
+public class MyReview extends JPanel{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south, 
 			jp_south2,jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
@@ -46,10 +46,11 @@ public class MyReview extends JFrame{
 	JComboBox<String> serch1, serch2;
 	
 	Border newBorder;
+	Main main;
 	
-	public MyReview() {
+	public MyReview(Main main) {
 
-		super("여행 후기");
+		this.main = main;
 //	FONT
 //	Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -332,18 +333,14 @@ public class MyReview extends JFrame{
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			add(jp_east, BorderLayout.EAST);
+			
+			setLayout(new BorderLayout());
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
-			add(jp_west, BorderLayout.WEST);
-			add(jp_south, BorderLayout.SOUTH);
-			
-
-		setSize(1000, 800);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
 	  }
+	}
+	public MyReview() {
+		// TODO Auto-generated constructor stub
 	}
 	public static void main(String[] args) {
 
