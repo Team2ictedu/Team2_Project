@@ -26,7 +26,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Planner_Create extends JFrame {
+public class Planner_Create extends JPanel {
+	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
@@ -39,8 +40,8 @@ public class Planner_Create extends JFrame {
 	JComboBox<String> jcom2 = new JComboBox<>(town);
 	JPanel jp_main, jp_checkbox;
 
-	public Planner_Create() {
-		super("새 일정 만들기");
+	public Planner_Create(Main main) {
+		this.main = main;
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -243,20 +244,17 @@ public class Planner_Create extends JFrame {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-
-			add(jp_east, BorderLayout.EAST);
+			
+			setLayout(new BorderLayout());
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp,BorderLayout.CENTER);
-			add(jp_west, BorderLayout.WEST);
-	
-			
-			
+			setBackground(Color.decode("#D4B8E8"));
 		}
 
-		setSize(1000, 700);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+	}
+
+	public Planner_Create() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {

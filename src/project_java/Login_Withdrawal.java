@@ -29,7 +29,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class login_Withdrawal extends JFrame {
+public class Login_Withdrawal extends JFrame {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_center, jp_east, jp_west;
 	JButton jbName, jbMyInfo, jbLogOut;
 	Font customFont;
@@ -41,7 +41,7 @@ public class login_Withdrawal extends JFrame {
 	JButton withdraw_bt, cancel_bt;
 	JLabel lb;
 
-	public login_Withdrawal() {
+	public Login_Withdrawal() {
 		super("회원 탈퇴");
 
 //		민지
@@ -238,7 +238,7 @@ public class login_Withdrawal extends JFrame {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new login_Withdrawal();
+					new Login_Withdrawal();
 				}
 			});
 		} catch (Exception ex) {

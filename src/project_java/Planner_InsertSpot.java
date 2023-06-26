@@ -39,7 +39,8 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Planner_InsertSpot extends JFrame {
+public class Planner_InsertSpot extends JPanel {
+	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
@@ -53,8 +54,8 @@ public class Planner_InsertSpot extends JFrame {
 	JTextArea add_jta, select_jta;
 	JScrollPane add_jsp, select_jsp;
 
-	public Planner_InsertSpot() {
-		super("일정 만들기");
+	public Planner_InsertSpot(Main main) {
+		this.main = main;
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -438,17 +439,23 @@ public class Planner_InsertSpot extends JFrame {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			add(jp_east, BorderLayout.EAST);
+			setLayout(new BorderLayout());
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
-			add(jp_west, BorderLayout.WEST);
-			add(jp_south, BorderLayout.SOUTH);
+			setBackground(Color.decode("#D4B8E8"));
 		}
+		
+		jb1.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				main.cardLayout.show(main.cardJPanel, "planner_Create");
+			}
+		});
+	}
 
-		setSize(1000, 800);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+
+	public Planner_InsertSpot() {
 	}
 
 

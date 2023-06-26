@@ -1,4 +1,4 @@
-package project_java;
+package project1;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -41,8 +41,7 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Planner_Select extends JPanel {
-	Main main;
+public class Template extends JFrame {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
@@ -57,8 +56,8 @@ public class Planner_Select extends JPanel {
 	JScrollPane add_jsp, select_jsp;
 	CardLayout cardlayout;
 	
-	public Planner_Select(Main main) {
-		this.main = main;
+	public Template() {
+		super("PERPL");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -151,7 +150,7 @@ public class Planner_Select extends JPanel {
 		}
 
 //		add image 
-		ImageIcon imageIcon = new ImageIcon("src/images/only_logo.png");
+		ImageIcon imageIcon = new ImageIcon("src/images/logo2.png");
 		Image image = imageIcon.getImage(); // transform it
 		Image newimg = image.getScaledInstance(70, 70, java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg); // transform it back
@@ -496,16 +495,17 @@ public class Planner_Select extends JPanel {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			
-			setLayout(new BorderLayout());
+			add(jp_east, BorderLayout.EAST);
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
+			add(jp_west, BorderLayout.WEST);
+			add(jp_south, BorderLayout.SOUTH);
 		}
-	}
 
-	
-	public Planner_Select() {
-		// TODO Auto-generated constructor stub
+		setSize(1000, 800);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 
@@ -524,7 +524,7 @@ public class Planner_Select extends JPanel {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new Planner_Select();
+					new Template();
 				}
 			});
 

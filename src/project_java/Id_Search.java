@@ -25,19 +25,20 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Login_main extends JFrame{
-	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_buttons, jp_east, jp_west, jp_south;
-	JButton jb1, jb2, jb3 ,jb4;
+public class Id_Search extends JFrame{
+	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
+	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
 	Font customFont;
 	JLabel jLabel1, lb;
 	TextPrompt tp1, tp2;
 	Border newBorder;
 	
-	JPanel im_jp,log_im, lb_jp, id_jp, pw_jp, logBt_jp, btBt_jp, add_jp;
-	JTextField jtf_id, jtf_pw;
-	JButton log_bt, join_bt, idFin_bt, pwFin_bt;
-	public Login_main() {
-		super("로그인");
+	JPanel im_jp,log_im, lb_jp, name_jp, pw_jp, logMv_jp, btBt_jp, add_jp;
+	JTextField jtf_name, jtf_em;
+	JButton logMv_bt, join_bt, pwFin_bt,idCk_bt;
+	
+	public Id_Search() {
+		super("아이디 찾기");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -56,6 +57,7 @@ public class Login_main extends JFrame{
 		jp_headerMain = new JPanel();
 		jp_headerSub = new JPanel();
 		jp_headerSubLeft = new JPanel();
+		jp_headerSubRight = new JPanel();
 		//jp_buttons = new JPanel();
 		jp_east = new JPanel();
 		jp_west = new JPanel();
@@ -69,6 +71,9 @@ public class Login_main extends JFrame{
 		//jb4 = new JButton("마이페이지");
 		//jb4.setPreferredSize(new Dimension(120,30));
 //		jb4.setPreferredSize(new Dimension(80, 40));
+		//jbName = new JButton("이름");
+		//jbMyInfo = new JButton("내 정보");
+		//jbLogOut = new JButton("로그아웃");
 		newBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
 		}
 		
@@ -76,6 +81,29 @@ public class Login_main extends JFrame{
 //		font 입력
 		jLabel1 = new JLabel(" PERSONAL PLANNER");
 		jLabel1.setFont(new Font("Doodly",Font.BOLD,40));
+		//jbName.setFont(new Font("Jalnan",Font.PLAIN,12));
+		//jbMyInfo.setFont(new Font("Jalnan",Font.PLAIN,12));
+		//jbLogOut.setFont(new Font("Jalnan",Font.PLAIN,12));
+		//jb1.setFont(new Font("Jalnan",Font.PLAIN,12));
+		//jb2.setFont(new Font("Jalnan",Font.PLAIN,12));
+		//jb3.setFont(new Font("Jalnan",Font.PLAIN,12));
+		//jb4.setFont(new Font("Jalnan",Font.PLAIN,12));
+
+		
+//		jbName,jbMyInfo,jbLogout 투명하게 하기
+		/*
+		 * { jbName.setOpaque(false); jbName.setContentAreaFilled(false);
+		 * jbName.setBorderPainted(false); jbMyInfo.setOpaque(false);
+		 * jbMyInfo.setContentAreaFilled(false); jbMyInfo.setBorderPainted(false);
+		 * jbLogOut.setOpaque(false); jbLogOut.setContentAreaFilled(false);
+		 * jbLogOut.setBorderPainted(false);
+		 * 
+		 * }
+		 */
+		
+		
+
+		
 		
 //		색 바꾸기
 		//jb1.setBackground(Color.decode("#98b4d4"));
@@ -83,6 +111,7 @@ public class Login_main extends JFrame{
 		jp_headerMain.setBackground(Color.decode("#D4B8E8"));
 		jp_headerSub.setBackground(Color.decode("#D4B8E8"));
 		jp_headerSubLeft.setBackground(Color.decode("#D4B8E8"));
+		jp_headerSubRight.setBackground(Color.decode("#D4B8E8"));
 		//jp_buttons.setBackground(Color.decode("#D4B8E8"));
 		jp_west.setBackground(Color.decode("#D4B8E8"));
 		jp_east.setBackground(Color.decode("#D4B8E8"));
@@ -98,6 +127,7 @@ public class Login_main extends JFrame{
 		//jp_buttons.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jp_headerSub.setLayout(new GridLayout(0,2));
 		jp_headerSubLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
+		jp_headerSubRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		jp_headerMain.setLayout(new BoxLayout(jp_headerMain, BoxLayout.Y_AXIS));
 //		jp_headerMain.setLayout(new GridLayout(2,0));
 		//jp_headerSub.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -119,47 +149,42 @@ public class Login_main extends JFrame{
 				im_jp.setOpaque(false);
 				lb_jp = new JPanel();
 				lb_jp.setOpaque(false);
-				id_jp = new JPanel();
-				id_jp.setOpaque(false);
+				name_jp = new JPanel();
+				name_jp.setOpaque(false);
 				pw_jp = new JPanel();
 				pw_jp.setOpaque(false);
-				logBt_jp = new JPanel();
-				logBt_jp.setOpaque(false);
+				logMv_jp = new JPanel();
+				logMv_jp.setOpaque(false);
 				add_jp = new JPanel();
 				add_jp.setOpaque(false);
 				btBt_jp = new JPanel();
 				btBt_jp.setOpaque(false);
-				log_bt = new JButton(" 로그인 ");
+				logMv_bt = new JButton(" 로그인 페이지로 ");
 				join_bt = new JButton("회원가입");
-				idFin_bt = new JButton("아이디 찾기");
 				pwFin_bt = new JButton("비밀번호 찾기");
+				idCk_bt = new JButton("계정확인");
 				
 				//버튼 투명도
 				join_bt.setOpaque(false);
 				join_bt.setContentAreaFilled(false);
 				join_bt.setBorderPainted(false);
-				idFin_bt.setOpaque(false);
-				idFin_bt.setContentAreaFilled(false);
-				idFin_bt.setBorderPainted(false);
 				pwFin_bt.setOpaque(false);
 				pwFin_bt.setContentAreaFilled(false);
 				pwFin_bt.setBorderPainted(false);
 				
-				// 로그인버튼 크기지정
-				log_bt.setPreferredSize(new Dimension(120,40));
 				
 				//색상
-				log_bt.setBackground(Color.decode("#D4B8E8"));
+				logMv_bt.setBackground(Color.decode("#D4B8E8"));
 				
 				//font 
-				log_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
+				logMv_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
 				join_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
-				idFin_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
 				pwFin_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
+				idCk_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
 				join_bt.setForeground(Color.GRAY);
-				idFin_bt.setForeground(Color.GRAY);
 				pwFin_bt.setForeground(Color.GRAY);
-				log_bt.setForeground(Color.white);
+				logMv_bt.setForeground(Color.white);
+				idCk_bt.setForeground(Color.WHITE);
 			
 				
 				//모든 panel들 합칠 panel의 레이아웃 box로 설정
@@ -172,52 +197,56 @@ public class Login_main extends JFrame{
 				im_jp.add(log_im);
 				
 				// jp2 / 로그인label
-				lb = new JLabel("로 그 인");
-				lb.setFont(new Font("Jalnan",Font.PLAIN,30));
+				lb = new JLabel("아이디 찾기");
+				lb.setFont(new Font("Jalnan",Font.PLAIN,26));
 				lb_jp.add(lb);
 				
 				// jp3, jp4 / textfield+textprompt
-				jtf_id = new JTextField(30);
-				jtf_pw = new JTextField(30);
+				jtf_name = new JTextField(30);
+				jtf_em = new JTextField(25);
 		
-				TextPrompt textprompt = new TextPrompt("아이디", jtf_id);
+				TextPrompt textprompt = new TextPrompt("이름", jtf_name);
 				textprompt.setForeground(Color.gray);
 				textprompt.changeAlpha(0.5f);
 				textprompt.changeStyle(Font.BOLD + Font.ITALIC);           
-				jtf_id.setBorder(newBorder);          
-				jtf_id.setOpaque(false);  
-				id_jp.add(jtf_id);
+				jtf_name.setBorder(newBorder);          
+				jtf_name.setOpaque(false);  
+				name_jp.add(jtf_name);
 				// 위치조정
-				id_jp.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+				name_jp.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
 				
-				textprompt = new TextPrompt("비밀번호", jtf_pw);
+				textprompt = new TextPrompt("이메일", jtf_em);
 				textprompt.setForeground(Color.gray);
 				textprompt.changeAlpha(0.5f);
 				textprompt.changeStyle(Font.BOLD + Font.ITALIC);   
-				jtf_pw.setBorder(newBorder);          
-				jtf_pw.setOpaque(false);  
-				pw_jp.add(jtf_pw);
+				jtf_em.setBorder(newBorder);          
+				jtf_em.setOpaque(false);
+				idCk_bt.setPreferredSize(new Dimension(75,25));
+				pw_jp.add(jtf_em);
+				pw_jp.add(idCk_bt);
 				// 위치조정
 				pw_jp.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
 				
-				// jp5 로그인 버튼
-				logBt_jp.add(log_bt);
+				// jp5 로그인이동 버튼
+				logMv_jp.add(logMv_bt);
+				// 로그인버튼 크기지정
+				logMv_bt.setPreferredSize(new Dimension(150,40));
 				// 위치조정
-				logBt_jp.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+				logMv_jp.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
 				
 				//하단 jp7 버튼 패널에 붙이기
 				btBt_jp.add(join_bt);
-				btBt_jp.add(idFin_bt);
 				btBt_jp.add(pwFin_bt);
+				
 				// 위치조정
 				btBt_jp.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
 				
 				//모두 jp6에 집어넣기
 				add_jp.add(im_jp);
 				add_jp.add(lb_jp);
-				add_jp.add(id_jp);
+				add_jp.add(name_jp);
 				add_jp.add(pw_jp);
-				add_jp.add(logBt_jp);
+				add_jp.add(logMv_jp);
 				add_jp.add(btBt_jp);
 				
 				//jp6 jp에 넣기
@@ -230,11 +259,17 @@ public class Login_main extends JFrame{
 		{
 		jp_headerSubLeft.add(new JLabel(imageIcon));
 		jp_headerSubLeft.add(jLabel1);
+		//jp_headerSubRight.add(jbName);
+		//jp_headerSubRight.add(new JLabel(" | "));
+		//jp_headerSubRight.add(jbMyInfo);
+		//jp_headerSubRight.add(new JLabel(" | "));
+		//jp_headerSubRight.add(jbLogOut);
 		//jp_buttons.add(jb1);6
 		//jp_buttons.add(jb2);
 		//jp_buttons.add(jb3);
 		//jp_buttons.add(jb4);
 		jp_headerSub.add(jp_headerSubLeft);
+		jp_headerSub.add(jp_headerSubRight);
 		jp_headerMain.add(jp_headerSub);
 		//jp_headerMain.add(jp_buttons);
 		
@@ -265,7 +300,7 @@ public class Login_main extends JFrame{
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-	                	new Login_main();
+	                	new Id_Search();
 	                }
 	            });
 	            

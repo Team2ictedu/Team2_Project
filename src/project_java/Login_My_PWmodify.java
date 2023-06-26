@@ -26,20 +26,20 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class login_my_infomodify extends JFrame {
+public class Login_My_PWmodify extends JFrame {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
-			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
+			jp_center, jp_pw, jp_pwchk, jp_south2, jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, information_bt, update_bt,
 			pw_update_bt, withdraw_bt;
 	Font customFont;
-	JLabel jLabel1, jl_name, jl_email, jl_birth, jl_phone;
+	JLabel jLabel1, jl_pw, jl_pwchk;
 	JTextArea jta;
 	JScrollPane jsp;
-	JTextField tf_phone, tf_name, tf_email, tf_birth;
+	JTextField tf_phone, jpf_pw_, tf_pwchk, tf_birth;
+	JPasswordField jpf_pw, jpf_pwchk;
+	public Login_My_PWmodify() {
 
-	public login_my_infomodify() {
-
-		super("회원정보 수정");
+		super("비밀번호변경");
 		//여기서부터
 		{
 				
@@ -70,13 +70,10 @@ public class login_my_infomodify extends JFrame {
 			jp_south2 = new JPanel();
 			jp_west2 = new JPanel();
 
-			jp_name = new JPanel(new GridLayout(0,2));
-			jp_email = new JPanel(new GridLayout(0,2));
-			jp_phone= new JPanel(new GridLayout(0,2));
-			jp_birth = new JPanel(new GridLayout(0,2));
+			jp_pw = new JPanel(new GridLayout(0,2));
+			jp_pwchk = new JPanel(new GridLayout(0,2));
 			
 			jb1 = new JButton("새 일정 만들기");
-
 			jb1.setPreferredSize(new Dimension(120, 30));
 			jb2 = new JButton("내 일정 조회");
 			jb2.setPreferredSize(new Dimension(120, 30));
@@ -88,52 +85,34 @@ public class login_my_infomodify extends JFrame {
 			jb5= new JButton("확 인");
 			jb6= new JButton("취 소");
 			
-			tf_email = new JTextField(20);
-			tf_birth = new JTextField(20);
-			tf_phone = new JTextField(20);
-			tf_name = new JTextField(20);
-			jl_name = new JLabel("이름 : ",JLabel.CENTER);
-			jl_email = new JLabel("e-mail : ",JLabel.CENTER);
-			jl_birth = new JLabel("생년월일 : ",JLabel.CENTER);
-			jl_phone = new JLabel("전화번호 : ",JLabel.CENTER);
+			jpf_pw_ = new JPasswordField(20);
+			jpf_pwchk = new JPasswordField(20);
+			jl_pw = new JLabel("비밀번호 : ",JLabel.CENTER);
+			jl_pwchk = new JLabel("비밀번호 확인 : ",JLabel.CENTER);
 			
-			jp_name.setBackground(Color.WHITE);
-			jp_email.setBackground(Color.WHITE);
-			jp_birth.setBackground(Color.WHITE);
-			jp_phone.setBackground(Color.WHITE);
+			jp_pw.setBackground(Color.WHITE);
+			jp_pwchk.setBackground(Color.WHITE);
 			
 //회원정보수정			
 			jp.setLayout(new BorderLayout());
 			JPanel jp_title = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			JLabel jl_my_info = new JLabel("내 정보 수정");
+			JLabel jl_my_info = new JLabel("비밀번호 변경");
 			jp_title.add(jl_my_info, BorderLayout.NORTH);
 			jp_title.setBackground(Color.decode("#B19CCB"));
 			jl_my_info.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jl_my_info.setForeground(Color.WHITE);
 			jp_title.setPreferredSize(new Dimension(70,30));
 
-			jp_name.add(jl_name);
-			jl_name.setFont(new Font("Jalnan", Font.BOLD, 15));			
-			jp_name.add(tf_name);
-			tf_name.setText("김지수");			
-			tf_name.setEditable(false);
+			jp_pw.add(jl_pw);
+			jl_pw.setFont(new Font("Jalnan", Font.BOLD, 15));			
+			jp_pw.add(jpf_pw_);
 			
-			jp_email.add(jl_email);
-			jl_email.setFont(new Font("Jalnan", Font.BOLD, 15));			
-			jp_email.add(tf_email);
+			jp_pwchk.add(jl_pwchk);
+			jl_pwchk.setFont(new Font("Jalnan", Font.BOLD, 15));			
+			jp_pwchk.add(jpf_pwchk);
 			
-			jp_birth.add(jl_birth);
-			jl_birth.setFont(new Font("Jalnan", Font.BOLD, 15));			
-			jp_birth.add(tf_birth);
-			
-			jp_phone.add(jl_phone);
-			jl_phone.setFont(new Font("Jalnan", Font.BOLD, 15));			
-			jp_phone.add(tf_phone);	
-			
-			jp_center.add(jp_name);		
-			jp_center.add(jp_email);
-			jp_center.add(jp_birth);
-			jp_center.add(jp_phone);
+			jp_center.add(jp_pw);		
+			jp_center.add(jp_pwchk);
 			
 			jp_south2.add(jb5);
 			jp_south2.add(jb6);
@@ -141,7 +120,7 @@ public class login_my_infomodify extends JFrame {
 			
 			jp_center.setLayout(new BoxLayout(jp_center, BoxLayout.Y_AXIS));
 			//jp_center.setLayout(new GridLayout(5,0));
-			jp_center.setBorder(new EmptyBorder(100, 100, 200, 100));
+			jp_center.setBorder(new EmptyBorder(200, 10, 200, 100));
 			JPanel jp_center2 = new JPanel();
 			jp.add(jp_center2, BorderLayout.CENTER);
 			jp_center2.setLayout(new BorderLayout());
@@ -177,10 +156,7 @@ public class login_my_infomodify extends JFrame {
 		update_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 		pw_update_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 		withdraw_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
-		tf_email.setFont(new Font("Jalnan", Font.PLAIN, 12));
-		tf_birth.setFont(new Font("Jalnan", Font.PLAIN, 12));
-		tf_phone.setFont(new Font("Jalnan", Font.PLAIN, 12));
-		tf_name.setFont(new Font("Jalnan", Font.PLAIN, 12));
+		jpf_pw_.setFont(new Font("Jalnan", Font.PLAIN, 12));
 	
 		
 //	jbName,jbMyInfo,jbLogout 투명하게 하기
@@ -309,7 +285,7 @@ public class login_my_infomodify extends JFrame {
 //                    app.setSize(800, 600);
 //                    app.setLocationRelativeTo(null);
 //                    app.setVisible(true);
-					new login_my_infomodify();
+					new Login_My_PWmodify();
 				}
 			});
 

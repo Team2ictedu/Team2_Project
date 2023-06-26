@@ -31,7 +31,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class login_register extends JFrame {
+public class Login_Register extends JFrame {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, join_bt, cancel_bt;
 	JLabel jLabel1;
@@ -45,7 +45,7 @@ public class login_register extends JFrame {
 	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp, terms_jp ;
 	JLabel lb;
 	
-	public login_register() {
+	public Login_Register() {
 		super("회원 가입");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
@@ -356,7 +356,7 @@ public class login_register extends JFrame {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new login_register();
+					new Login_Register();
 				}
 			});
 		} catch (Exception ex) {
