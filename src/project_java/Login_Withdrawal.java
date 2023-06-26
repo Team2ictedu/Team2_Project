@@ -29,7 +29,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class Login_Withdrawal extends JFrame {
+public class Login_Withdrawal extends JPanel {
+	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_center, jp_east, jp_west;
 	JButton jbName, jbMyInfo, jbLogOut;
 	Font customFont;
@@ -41,9 +42,8 @@ public class Login_Withdrawal extends JFrame {
 	JButton withdraw_bt, cancel_bt;
 	JLabel lb;
 
-	public Login_Withdrawal() {
-		super("회원 탈퇴");
-
+	public Login_Withdrawal(Main main) {
+		this.main = main;
 //		민지
 		{
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -209,19 +209,17 @@ public class Login_Withdrawal extends JFrame {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp.add(jp_center);
-
-			add(jp_east,BorderLayout.EAST);
+			
+			setLayout(new BorderLayout()); 
 			add(jp, BorderLayout.CENTER);
-			add(jp_west,BorderLayout.WEST);
 		
-			getContentPane().add(jp_headerMain, BorderLayout.NORTH);
-			getContentPane().add(jp, BorderLayout.CENTER);
+			add(jp_headerMain, BorderLayout.NORTH);
 
-			setSize(1000, 700);
-			setLocationRelativeTo(null);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-			setVisible(true);
 		}
+	}
+
+	public Login_Withdrawal() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
