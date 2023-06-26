@@ -1,8 +1,7 @@
-package project_java;
+package project1;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,24 +39,22 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Planner_Select extends JPanel {
-	Main main;
+public class Template2 extends JFrame {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
 	JLabel jLabel1;
 
 	JLabel title, city;
-	JPanel jp_SNB, jp_planner, jp_plan_left, jp_plan_right, jp_select ,jp_sel, jp_comcan, jp_card_insert, jp_card_select;
+	JPanel jp_SNB, jp_planner, jp_plan_left, jp_plan_right, jp_select ,jp_sel, jp_comcan;
 	JButton jb_delete_spot, jb_select, jb_add_spot, bt_Cancel, bt_Complete;
-	JButton[] jb_day, jb_title;
+	JButton[] jb_day;
 	JTextField jtf_select;
 	JTextArea add_jta, select_jta;
 	JScrollPane add_jsp, select_jsp;
-	CardLayout cardlayout;
-	
-	public Planner_Select(Main main) {
-		this.main = main;
+
+	public Template2() {
+		super("PERPL");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -151,16 +147,14 @@ public class Planner_Select extends JPanel {
 		}
 
 //		add image 
-		ImageIcon imageIcon = new ImageIcon("src/images/only_logo.png");
+		ImageIcon imageIcon = new ImageIcon("src/images/logo2.png");
 		Image image = imageIcon.getImage(); // transform it
 		Image newimg = image.getScaledInstance(70, 70, java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg); // transform it back
+
 		
-		
-		
-			// 새 일정 만들기 페이지
-			jp_card_insert = new JPanel();
-			jp_card_insert.setBackground(Color.decode("#D4B8E8"));
+			// planner 작업
+			
 			jp_SNB = new JPanel();
 			jb_day = new JButton[3];
 			jp.setBackground(Color.decode("#D4B8E8"));
@@ -196,7 +190,7 @@ public class Planner_Select extends JPanel {
 
 			jp_SNB.setPreferredSize(new Dimension(150, 600));
 			jp_SNB.setBackground(Color.decode("#F083BA"));
-			jp_card_insert.add(jp_SNB, BorderLayout.WEST);
+			jp.add(jp_SNB, BorderLayout.WEST);
 			
 			// 플래너 내용들
 			jp_planner = new JPanel();
@@ -223,6 +217,46 @@ public class Planner_Select extends JPanel {
 			add_jta.setBackground(Color.WHITE);
 			
 			// 일정추가정보
+			add_jta.append("1. 관광지명 \n");
+			add_jta.append("위치: 관광지위치 \n");
+			add_jta.append("설명: 관광지설명 \n");
+			add_jta.append("평점: 관광지평점 \n");
+			add_jta.append("기본 금액: ₩ 관광지금액 \n");
+			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+			add_jta.append("관광시간: 관광시간 입력\n\n");
+			add_jta.append("1. 관광지명 \n");
+			add_jta.append("위치: 관광지위치 \n");
+			add_jta.append("설명: 관광지설명 \n");
+			add_jta.append("평점: 관광지평점 \n");
+			add_jta.append("기본 금액: ₩ 관광지금액 \n");
+			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+			add_jta.append("관광시간: 관광시간 입력\n\n");
+			add_jta.append("1. 관광지명 \n");
+			add_jta.append("위치: 관광지위치 \n");
+			add_jta.append("설명: 관광지설명 \n");
+			add_jta.append("평점: 관광지평점 \n");
+			add_jta.append("기본 금액: ₩ 관광지금액 \n");
+			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+			add_jta.append("관광시간: 관광시간 입력\n\n");
+			add_jta.append("1. 관광지명 \n");
+			add_jta.append("위치: 관광지위치 \n");
+			add_jta.append("설명: 관광지설명 \n");
+			add_jta.append("평점: 관광지평점 \n");
+			add_jta.append("기본 금액: ₩ 관광지금액 \n");
+			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+			add_jta.append("관광시간: 관광시간 입력\n\n");
+			add_jta.append("1. 관광지명 \n");
+			add_jta.append("위치: 관광지위치 \n");
+			add_jta.append("설명: 관광지설명 \n");
+			add_jta.append("평점: 관광지평점 \n");
+			add_jta.append("기본 금액: ₩ 관광지금액 \n");
+			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+			add_jta.append("관광시간: 관광시간 입력\n\n");
 			add_jta.append("1. 관광지명 \n");
 			add_jta.append("위치: 관광지위치 \n");
 			add_jta.append("설명: 관광지설명 \n");
@@ -276,6 +310,7 @@ public class Planner_Select extends JPanel {
 			// 검색한 정보
 			select_jta = new JTextArea();
 			select_jsp = new JScrollPane();
+			select_jta = new JTextArea();
 			select_jsp = new JScrollPane(select_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			select_jta.setLineWrap(true);
@@ -284,6 +319,48 @@ public class Planner_Select extends JPanel {
 			
 			// 검색정보
 			select_jta.append("1. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("2. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("3. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("4. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("5. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("6. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("7. 관광지명 \n");
+			select_jta.append("위치: 관광지위치 \n");
+			select_jta.append("설명: 관광지설명 \n");
+			select_jta.append("평점: 관광지평점 \n");
+			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+			
+			select_jta.append("8. 관광지명 \n");
 			select_jta.append("위치: 관광지위치 \n");
 			select_jta.append("설명: 관광지설명 \n");
 			select_jta.append("평점: 관광지평점 \n");
@@ -341,144 +418,8 @@ public class Planner_Select extends JPanel {
 			jp_planner.add(jp_plan_right, BorderLayout.CENTER);
 			jp_planner.add(jp_comcan, BorderLayout.SOUTH);
 			
-			jp_card_insert.add(jp_planner, BorderLayout.CENTER);
-			
-			// 내일정 조회 페이지
-			jp_card_select = new JPanel();
-			jp_card_select.setBackground(Color.decode("#D4B8E8"));
-			
-			// SNB
-			jp_SNB = new JPanel();
-			jb_title = new JButton[3];
-			jp.setBackground(Color.decode("#D4B8E8"));
-			for (int i = 0; i < 3; i++) {
-				jb_title[i] = new JButton("일정 제목");
-				jp_SNB.add(jb_title[i]);
-				jb_title[i].setPreferredSize(new Dimension(200,50));
-				jp.add(jp_SNB, BorderLayout.WEST);
-				// 폰트흰색
-				jb_title[i].setForeground(Color.white);
-				jb_title[i].setFont(new Font("Aharoni", Font.BOLD, 15));
-				jb_title[i].setBorderPainted(false);
-				
-				// 첫번째 제목은 보라색
-				if(i == 0) {
-					jb_title[i].setBackground(Color.decode("#B19CCB"));
-				} else jb_title[i].setBackground(Color.decode("#F083BA"));
-				
-				int index = i;
-				jb_title[i].addActionListener(new ActionListener() {
-		                @Override
-		                public void actionPerformed(ActionEvent e) {
-		                    // 전체 버튼의 변경색
-		                    for (int j = 0; j < jb_day.length; j++) {
-		                    	// 나머지 버튼의 배경색
-		                    	jb_title[j].setBackground(Color.decode("#F083BA"));
-		                    }
-		                    // 선택한 버튼의 배경색
-		                    jb_title[index].setBackground(Color.decode("#B19CCB"));
-		                }
-		            });
-		        }
-			jp_SNB.setPreferredSize(new Dimension(150, 600));
-			jp_SNB.setBackground(Color.decode("#F083BA"));
-			jp_card_select.add(jp_SNB, BorderLayout.WEST);
-			
-			// 일정조회 화면
-			JPanel jp_select = new JPanel();
-			jp_select.setLayout(new BorderLayout());
-			jp_select.setPreferredSize(new Dimension(800, 600));
-			jp_select.setBackground(Color.WHITE);
-			jp_card_select.add(jp_select, BorderLayout.CENTER);
-			
-			// 선택한 일정에 제목, 날짜 정보제공
-			JPanel jp_select_title = new JPanel();
-			JLabel select_title = new JLabel("     여행지: 대한민국 서울  |  날짜: 23.06.25~23.06.27(3일)");
-			select_title.setFont(new Font("Aharoni", Font.BOLD, 18));
-			select_title.setPreferredSize(new Dimension(800,30));
-			select_title.setForeground(Color.WHITE);
-
-			JButton bt_plan_edit = new JButton();
-			bt_plan_edit = new JButton("Edit");
-			bt_plan_edit.setFont(new Font("Aharoni", Font.BOLD, 13));
-			bt_plan_edit.setForeground(Color.white);
-			bt_plan_edit.setPreferredSize(new Dimension(70,25));
-			bt_plan_edit.setBackground(Color.decode("#F083BA"));
-			bt_plan_edit.setBorderPainted(false);
-			
-			JButton bt_plan_del = new JButton();
-			bt_plan_del = new JButton("Delete");
-			bt_plan_del.setFont(new Font("Aharoni", Font.BOLD, 13));
-			bt_plan_del.setForeground(Color.white);
-			bt_plan_del.setPreferredSize(new Dimension(70,25));
-			bt_plan_del.setBackground(Color.decode("#F083BA"));
-			bt_plan_del.setBorderPainted(false);
-			
-			JPanel jp_plan_bt = new JPanel();
-			jp_plan_bt.setBackground(Color.decode("#B19CCB"));
-			jp_plan_bt.add(bt_plan_edit);
-			jp_plan_bt.add(bt_plan_del);
-			
-			jp_select_title.setLayout(new BorderLayout());
-			jp_select_title.add(select_title, BorderLayout.WEST);
-			jp_select_title.add(jp_plan_bt, BorderLayout.EAST);
-			jp_select_title.setBackground(Color.decode("#B19CCB"));
-			
-			// 선택한 일정에 상세일정 정보
-			JPanel jp_select_text = new JPanel(new GridLayout(0,1));
-			jp_select_text.setBackground(Color.WHITE);
-			int r =3;
-			JTextArea[] textAreas = new JTextArea[r];
-	        JScrollPane[] scrollPanes = new JScrollPane[r];
-	        
-	        for (int i = 0; i < r; i++) {
-	            textAreas[i] = new JTextArea();
-	            textAreas[i].append("Day" + (i + 1) + "\n");
-
-	            scrollPanes[i] = new JScrollPane(textAreas[i], ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-						ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-	            textAreas[i].setLineWrap(true);
-	            textAreas[i].setEditable(false);
-	            textAreas[i].setBackground(Color.WHITE);
-				
-	            // Assign different values to each JTextArea
-	            switch (i) {
-	                case 0:
-	                    textAreas[i].append("Value for JTextArea 1\n");
-	                    break;
-	                case 1:
-	                    textAreas[i].append("Value for JTextArea 2");
-	                    break;
-	                case 2:
-	                    textAreas[i].append("Value for JTextArea 3");
-	                    break;
-	                case 3:
-	                    textAreas[i].append("Value for JTextArea 3");
-	                    break;
-	                case 4:
-	                    textAreas[i].append("Value for JTextArea 3");
-	                    break;
-	                case 5:
-	                    textAreas[i].append("Value for JTextArea 3");
-	                    break;
-	                case 6:
-	                    textAreas[i].append("Value for JTextArea 3");
-	                    break;
-	            }
-
-
-	            jp_select_text.add(scrollPanes[i]);
-	        }
-			
-			jp_select.add(jp_select_title, BorderLayout.NORTH);
-			jp_select.add(jp_select_text, BorderLayout.CENTER);
-			
-			// card에 담는구간
-			cardlayout = new CardLayout();
-			jp.setLayout(cardlayout);
-			//jp.add("insert",jp_card_insert);;
-			jp.add("select",jp_card_select);
-			
+			jp.add(jp_planner, BorderLayout.CENTER);
+		
 //		ADD 
 		{
 			jp_headerSubLeft.add(new JLabel(imageIcon));
@@ -496,16 +437,17 @@ public class Planner_Select extends JPanel {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			
-			setLayout(new BorderLayout());
+			add(jp_east, BorderLayout.EAST);
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
+			add(jp_west, BorderLayout.WEST);
+			add(jp_south, BorderLayout.SOUTH);
 		}
-	}
 
-	
-	public Planner_Select() {
-		// TODO Auto-generated constructor stub
+		setSize(1000, 800);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 
@@ -524,7 +466,7 @@ public class Planner_Select extends JPanel {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new Planner_Select();
+					new Template2();
 				}
 			});
 

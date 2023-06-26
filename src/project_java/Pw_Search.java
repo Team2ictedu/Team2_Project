@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Pw_serch extends JFrame{
+public class Pw_Search extends JFrame{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
 	Font customFont;
@@ -37,7 +37,7 @@ public class Pw_serch extends JFrame{
 	JTextField idCg_jtf, name_jtf, em_jtf;
 	JButton logMv_bt, join_bt, pwFin_bt, pwCk_bt;
 	
-	public Pw_serch() {
+	public Pw_Search() {
 		super("비밀번호 찾기");
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
@@ -260,7 +260,7 @@ public class Pw_serch extends JFrame{
 
 	                @Override
 	                public void run() {
-	                	new Pw_serch();
+	                	new Pw_Search();
 	                }
 	            });
 	            
