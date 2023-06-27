@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class Login_My_PWmodify extends JFrame {
+public class Login_My_PWmodify extends JPanel {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_pw, jp_pwchk, jp_south2, jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, information_bt, update_bt,
@@ -37,9 +37,11 @@ public class Login_My_PWmodify extends JFrame {
 	JScrollPane jsp;
 	JTextField tf_phone, jpf_pw_, tf_pwchk, tf_birth;
 	JPasswordField jpf_pw, jpf_pwchk;
-	public Login_My_PWmodify() {
+	Main main;
+	
+	public Login_My_PWmodify(Main main) {
 
-		super("비밀번호변경");
+		this.main = main;
 		//여기서부터
 		{
 				
@@ -255,20 +257,17 @@ public class Login_My_PWmodify extends JFrame {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			add(jp_east, BorderLayout.EAST);
+			
+			setLayout(new BorderLayout());
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
-			add(jp_west, BorderLayout.WEST);
-			add(jp_south, BorderLayout.SOUTH);
 			
-
-		setSize(1000, 800);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
 		}
 	}
 }
+	public Login_My_PWmodify() {
+		// TODO Auto-generated constructor stub
+	}
 	public static void main(String[] args) {
 
 		try {

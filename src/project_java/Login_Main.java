@@ -242,9 +242,9 @@ public class Login_Main extends JPanel{
 		jp_headerMain.add(jp_headerSub);
 		//jp_headerMain.add(jp_buttons);
 		
+		setLayout(new BorderLayout());
 		add(jp_headerMain, BorderLayout.NORTH);
 		add(jp,BorderLayout.CENTER);
-		setLayout(new BorderLayout());
 		}
 		
 	}
