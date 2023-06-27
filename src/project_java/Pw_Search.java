@@ -43,8 +43,8 @@ public class Pw_Search extends JFrame{
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts//Doodly.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Jalnan.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Doodly.ttf")));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -93,8 +93,8 @@ public class Pw_Search extends JFrame{
 		}
 		
 //		add image 
-		ImageIcon imageIcon = new ImageIcon("src/images/only_logo.png");
-		ImageIcon imagelogo = new ImageIcon("src/images/text_logo.png");
+		ImageIcon imageIcon = new ImageIcon("src/team/login/logo_e/logo3.png");
+		ImageIcon imagelogo = new ImageIcon("src/team/login/logo_e/Logo2.png");
 		Image image = imageIcon.getImage(); // transform it 
 		Image image2 = imagelogo.getImage();
 		Image newimg = image.getScaledInstance(70, 70,  java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
@@ -122,7 +122,7 @@ public class Pw_Search extends JFrame{
 				em_jp.setOpaque(false);
 				logMv_bt = new JButton(" 로그인 페이지로 ");
 				join_bt = new JButton("회원가입");
-				pwFin_bt = new JButton("비밀번호 찾기");
+				pwFin_bt = new JButton("아이디 찾기");
 				pwCk_bt = new JButton("확인");
 				
 				//버튼 투명도
