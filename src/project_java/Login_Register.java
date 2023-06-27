@@ -31,9 +31,10 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class Login_Register extends JFrame {
+public class Login_Register extends JPanel {
+	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
-	JButton jbName, jbMyInfo, jbLogOut, join_bt, cancel_bt;
+	JButton join_bt, cancel_bt;
 	JLabel jLabel1;
 	Font customFont;
 	JTextField tf_id, tf_pw, tf_pw2, tf_mail, tf_name, tf_birth, tf_phone;
@@ -45,10 +46,10 @@ public class Login_Register extends JFrame {
 	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp, terms_jp ;
 	JLabel lb;
 	
-	public Login_Register() {
-		super("회원 가입");
+	public Login_Register(Main main) {
+		//super("회원 가입");
+		this.main = main;
 //		FONT
-//		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		
 // 		민지
 		{
@@ -69,28 +70,11 @@ public class Login_Register extends JFrame {
 			jp_headerSubLeft = new JPanel();
 			jp_headerSubRight = new JPanel();
 			jp_center = new JPanel();
-			jbName = new JButton("이름");
-			jbMyInfo = new JButton("내 정보");
-			jbLogOut = new JButton("로그아웃");
 			newBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
 
 //		font 입력
 			jLabel1 = new JLabel(" PERSONAL PLANNER");
 			jLabel1.setFont(new Font("Doodly", Font.BOLD, 40));
-			jbName.setFont(new Font("Jalnan", Font.PLAIN, 12));
-			jbMyInfo.setFont(new Font("Jalnan", Font.PLAIN, 12));
-			jbLogOut.setFont(new Font("Jalnan", Font.PLAIN, 12));
-
-//		jbName, jbMyInfo, jbLogout 투명하게 하기
-			jbName.setOpaque(false);
-			jbName.setContentAreaFilled(false);
-			jbName.setBorderPainted(false);
-			jbMyInfo.setOpaque(false);
-			jbMyInfo.setContentAreaFilled(false);
-			jbMyInfo.setBorderPainted(false);
-			jbLogOut.setOpaque(false);
-			jbLogOut.setContentAreaFilled(false);
-			jbLogOut.setBorderPainted(false);
 
 //		색 바꾸기
 			// jb1.setBackground(Color.decode("#98b4d4"));
@@ -322,25 +306,20 @@ public class Login_Register extends JFrame {
 //			ADD 
 			jp_headerSubLeft.add(new JLabel(imageIcon));
 			jp_headerSubLeft.add(jLabel1);
-			jp_headerSubRight.add(jbName);
-			jp_headerSubRight.add(new JLabel(" | "));
-			jp_headerSubRight.add(jbMyInfo);
-			jp_headerSubRight.add(new JLabel(" | "));
-			jp_headerSubRight.add(jbLogOut);
 			jp_headerSub.add(jp_headerSubLeft);
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp.add(jp_center);
 			
-			getContentPane().add(jp_headerMain, BorderLayout.NORTH);
-			getContentPane().add(jp, BorderLayout.CENTER);
-
-			setSize(1000, 700);
-			setLocationRelativeTo(null);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-			setVisible(true);
+			setLayout(new BorderLayout());
+			add(jp_headerMain, BorderLayout.NORTH);
+			add(jp, BorderLayout.CENTER);
 			}
 		}
+
+	public Login_Register() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public static void main(String[] args) {
 		try {

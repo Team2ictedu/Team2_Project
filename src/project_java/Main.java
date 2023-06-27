@@ -25,7 +25,7 @@ public class Main extends JFrame{
 		Login_Register login_Register = new Login_Register(this);
 		Id_Search id_Search = new Id_Search(this);
 		Pw_Search pw_Search = new Pw_Search(this);
-		PwChange_login pwChange_login = new PwChange_login(this);
+		//PwChange_login pwChange_login = new PwChange_login(this);
 		
 		// 로그인 후
 		Login_My_Infomodify login_My_Infomodify = new Login_My_Infomodify(this);
@@ -42,8 +42,8 @@ public class Main extends JFrame{
 		Planner_Select planner_Select = new Planner_Select(this);
 		
 		// 관리자 객체 선언
-		AdminTemplate adminTemplate = new AdminTemplate(this);
-		AdminTemplate2 adminTemplate2 = new AdminTemplate2(this);
+		//AdminTemplate adminTemplate = new AdminTemplate(this);
+		//AdminTemplate2 adminTemplate2 = new AdminTemplate2(this);
 		
 	// 카드 패널 추가
 		// 로그인 전
@@ -51,7 +51,7 @@ public class Main extends JFrame{
 		cardJPanel.add("login_Register", login_Register);
 		cardJPanel.add("id_Search", id_Search);
 		cardJPanel.add("pw_Search", pw_Search);
-		cardJPanel.add("pwChange_login", pwChange_login);
+		//cardJPanel.add("pwChange_login", pwChange_login);
 		
 		// 로그인 후
 		cardJPanel.add("login_My_Infomodify", login_My_Infomodify);
@@ -68,8 +68,8 @@ public class Main extends JFrame{
 		cardJPanel.add("planner_Select", planner_Select);
 		
 		// 관리자
-		cardJPanel.add("adminTemplate", adminTemplate);
-		cardJPanel.add("adminTemplate2", adminTemplate2);
+		//cardJPanel.add("adminTemplate", adminTemplate);
+		//cardJPanel.add("adminTemplate2", adminTemplate2);
 		
 		add(cardJPanel);
 		
