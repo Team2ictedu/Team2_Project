@@ -11,6 +11,7 @@ Team2_project/.modulepath
 .metadata
 bin/
 tmp/
+Main/
 *.tmp
 *.bak
 *.swp
