@@ -32,7 +32,8 @@ import javax.swing.table.TableRowSorter;
 
 
 
-public class AdminTemplate1 extends JFrame{
+public class AdminTemplate1 extends JPanel{
+	AdminMain main;
 	JPanel jpWest, jpEast;
 	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut;
 	/*jpWest Buttons */ JButton adminHomeBtn,placeEditBtn , userEditBtn, reviewEditBtn, logOutBtn ;
@@ -46,9 +47,8 @@ public class AdminTemplate1 extends JFrame{
 	
 	
 	
-	public AdminTemplate1() {
-		super("Admin");
-
+	public AdminTemplate1(AdminMain main) {
+		this.main = main;
 		//font 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
@@ -250,15 +250,23 @@ public class AdminTemplate1 extends JFrame{
 		
 		
 		jpEast.setPreferredSize(new Dimension(800,700));
-		add(jpEast, BorderLayout.EAST);
+		setLayout(new BorderLayout());
 		add(jpWest, BorderLayout.CENTER);
+		add(jpEast, BorderLayout.EAST);
 		
-		setSize(1000,700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
-
+//		setSize(1000,700);
+//		setResizable(false);
+//		setLocationRelativeTo(null);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		setVisible(true);
+		
+		adminHomeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.cardLayout.show(main.cardPanel, "greeting");				
+			}
+		});
 		searchBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -268,20 +276,4 @@ public class AdminTemplate1 extends JFrame{
 		});
 	}
 	
-	 public static void main(String[] args) {
-		
-			try {
-				UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						new AdminTemplate1();
-					}
-				});
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		 
-	}
 }

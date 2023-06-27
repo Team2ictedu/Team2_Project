@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -27,7 +29,8 @@ import javax.swing.border.Border;
 
 
 
-public class AdminHome extends JFrame{
+public class AdminHome extends JPanel{
+	AdminMain main;
 	JPanel jpWest, jpEast;
 	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut;
 	/*jpWest Buttons */ JButton adminHomeBtn,placeEditBtn , userEditBtn, reviewEditBtn, logOutBtn ;
@@ -45,9 +48,8 @@ public class AdminHome extends JFrame{
 	
 	
 	
-	public AdminHome() {
-		super("Admin");
-
+	public AdminHome(AdminMain main) {
+		this.main = main;
 		//font 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
@@ -143,6 +145,7 @@ public class AdminHome extends JFrame{
 		jpWest.add(jpWestTop, BorderLayout.CENTER);
 		jpLogOut.add(logOutBtn);
 		jpWest.add(jpLogOut, BorderLayout.SOUTH);
+//		jpWest.setLayout(new BoxLayout(jpWest,BoxLayout.Y_AXIS));
 		
 		
 		//jpEast border
@@ -199,32 +202,31 @@ public class AdminHome extends JFrame{
 		
 		
 		jpEast.setPreferredSize(new Dimension(800,700));
-		add(jpEast, BorderLayout.EAST);
+		setLayout(new BorderLayout());
 		add(jpWest, BorderLayout.CENTER);
+		add(jpEast, BorderLayout.EAST);
+//		setSize(1000,700);
+//		setResizable(false);
+//		setLocationRelativeTo(null);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		setVisible(true);
 		
-		setSize(1000,700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+		
+//		adminHomeBtn  	= new JButton("관리자 홈");
+//		placeEditBtn 	= new JButton("관광지 수정");  
+//		userEditBtn 	 = new JButton("유저 수정");
+//		reviewEditBtn	 = new JButton("후기 보기/ 삭제");
+//		logOutBtn		= new JButton("로그아웃");
+//		
+		placeEditBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.cardLayout.show(main.cardPanel, "places");		
+			}
+		});
 
 			
 	}
 	
-	 public static void main(String[] args) {
-		
-			try {
-				UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						new AdminHome();
-					}
-				});
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		 
-	}
 }
