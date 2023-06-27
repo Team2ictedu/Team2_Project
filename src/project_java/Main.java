@@ -76,7 +76,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 
-		cardLayout.show(cardJPanel, "login_My_PWmodify");
+		cardLayout.show(cardJPanel, "planner_InsertSpot");
 		
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
