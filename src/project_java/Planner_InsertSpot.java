@@ -39,7 +39,7 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Planner_InsertSpot extends JPanel {
+public class Planner_InsertSpot extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
@@ -47,7 +47,7 @@ public class Planner_InsertSpot extends JPanel {
 	JLabel jLabel1;
 
 	JLabel title, city;
-	JPanel jp_SNB, jp_planner, jp_plan_left, jp_plan_right, jp_select ,jp_sel, jp_comcan;
+	JPanel jp_SNB, jp_planner, jp_plan_left, jp_plan_right, jp_select, jp_sel, jp_comcan;
 	JButton jb_delete_spot, jb_select, jb_add_spot, bt_Cancel, bt_Complete;
 	JButton[] jb_day;
 	JTextField jtf_select;
@@ -153,275 +153,273 @@ public class Planner_InsertSpot extends JPanel {
 		Image newimg = image.getScaledInstance(70, 70, java.awt.Image.SCALE_DEFAULT); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg); // transform it back
 
-		
-			// planner 작업
-			
-			jp_SNB = new JPanel();
-			jb_day = new JButton[3];
-			jp.setBackground(Color.decode("#D4B8E8"));
-			for (int i = 0; i < 3; i++) {
-				jb_day[i] = new JButton("Day " + (i+1) + " (23.06." + (25+i) + ")");
-				jp_SNB.add(jb_day[i]);
-				jb_day[i].setPreferredSize(new Dimension(150,50));
-				jp.add(jp_SNB, BorderLayout.WEST);
-				// 폰트흰색
-				jb_day[i].setForeground(Color.white);
-				jb_day[i].setFont(new Font("Aharoni", Font.BOLD, 15));
-				jb_day[i].setBorderPainted(false);
-				
-				// 기본 DAY1은 보라색, 나머지는 분홍
-				if(i == 0) {
-                    jb_day[i].setBackground(Color.decode("#B19CCB"));
-				} else jb_day[i].setBackground(Color.decode("#F083BA"));
-				
-				int index = i;
-				jb_day[i].addActionListener(new ActionListener() {
-		                @Override
-		                public void actionPerformed(ActionEvent e) {
-		                    // 전체 버튼의 변경색
-		                    for (int j = 0; j < jb_day.length; j++) {
-		                    	// 나머지 버튼의 배경색
-		                    	jb_day[j].setBackground(Color.decode("#F083BA"));
-		                    }
-		                    // 선택한 버튼의 배경색
-		                    jb_day[index].setBackground(Color.decode("#B19CCB"));
-		                }
-		            });
-		        }
+		// planner 작업
 
-			jp_SNB.setPreferredSize(new Dimension(150, 600));
-			jp_SNB.setBackground(Color.decode("#F083BA"));
+		jp_SNB = new JPanel();
+		jb_day = new JButton[3];
+		jp.setBackground(Color.decode("#D4B8E8"));
+		for (int i = 0; i < 3; i++) {
+			jb_day[i] = new JButton("Day " + (i + 1) + " (23.06." + (25 + i) + ")");
+			jp_SNB.add(jb_day[i]);
+			jb_day[i].setPreferredSize(new Dimension(150, 50));
 			jp.add(jp_SNB, BorderLayout.WEST);
-			
-			// 플래너 내용들
-			jp_planner = new JPanel();
-			jp_planner.setPreferredSize(new Dimension(800, 600));
-			jp_planner.setBackground(Color.WHITE);
-			
-			// 플래너 왼쪽
-			jp_plan_left= new JPanel();
-			jp_plan_left.setBackground(Color.decode("#B19CCB"));
-			jp_plan_left.setBorder(new LineBorder(Color.decode("#E6E6E6")));
-			
-			// 제목 부분
-			title = new JLabel("   서울여행" + "의 일정" + " - Day 1");
-			title.setForeground(Color.WHITE);
-			title.setFont(new Font("Aharoni", Font.BOLD, 18));
-			title.setPreferredSize(new Dimension(10,30));
-			
-			// 일정 추가 구간
-			add_jta = new JTextArea();
-			add_jsp = new JScrollPane(add_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			add_jta.setLineWrap(true);
-			add_jta.setEditable(false);
-			add_jta.setBackground(Color.WHITE);
-			
-			// 일정추가정보
-			add_jta.append("1. 관광지명 \n");
-			add_jta.append("위치: 관광지위치 \n");
-			add_jta.append("설명: 관광지설명 \n");
-			add_jta.append("평점: 관광지평점 \n");
-			add_jta.append("기본 금액: ₩ 관광지금액 \n");
-			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
-			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
-			add_jta.append("관광시간: 관광시간 입력\n\n");
-			add_jta.append("1. 관광지명 \n");
-			add_jta.append("위치: 관광지위치 \n");
-			add_jta.append("설명: 관광지설명 \n");
-			add_jta.append("평점: 관광지평점 \n");
-			add_jta.append("기본 금액: ₩ 관광지금액 \n");
-			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
-			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
-			add_jta.append("관광시간: 관광시간 입력\n\n");
-			add_jta.append("1. 관광지명 \n");
-			add_jta.append("위치: 관광지위치 \n");
-			add_jta.append("설명: 관광지설명 \n");
-			add_jta.append("평점: 관광지평점 \n");
-			add_jta.append("기본 금액: ₩ 관광지금액 \n");
-			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
-			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
-			add_jta.append("관광시간: 관광시간 입력\n\n");
-			add_jta.append("1. 관광지명 \n");
-			add_jta.append("위치: 관광지위치 \n");
-			add_jta.append("설명: 관광지설명 \n");
-			add_jta.append("평점: 관광지평점 \n");
-			add_jta.append("기본 금액: ₩ 관광지금액 \n");
-			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
-			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
-			add_jta.append("관광시간: 관광시간 입력\n\n");
-			add_jta.append("1. 관광지명 \n");
-			add_jta.append("위치: 관광지위치 \n");
-			add_jta.append("설명: 관광지설명 \n");
-			add_jta.append("평점: 관광지평점 \n");
-			add_jta.append("기본 금액: ₩ 관광지금액 \n");
-			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
-			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
-			add_jta.append("관광시간: 관광시간 입력\n\n");
-			add_jta.append("1. 관광지명 \n");
-			add_jta.append("위치: 관광지위치 \n");
-			add_jta.append("설명: 관광지설명 \n");
-			add_jta.append("평점: 관광지평점 \n");
-			add_jta.append("기본 금액: ₩ 관광지금액 \n");
-			add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
-			add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
-			add_jta.append("관광시간: 관광시간 입력\n\n");
-			
-			// 일정 추가한것중에 삭제하는 버튼
-			jb_delete_spot = new JButton("Delete Spot");
-			jb_delete_spot.setForeground(Color.WHITE);
-			jb_delete_spot.setFont(new Font("Aharoni", Font.BOLD, 18));
-			jb_delete_spot.setBackground(Color.decode("#F083BA"));
-			jb_delete_spot.setBorderPainted(false);
-			jb_delete_spot.setPreferredSize(new Dimension(30, 45));
-			
-			// 플래너 왼쪽부분 담는 구간
-			jp_plan_left.setLayout(new BorderLayout());
-			jp_plan_left.setPreferredSize(new Dimension(400, 400));
-			jp_plan_left.add(title, BorderLayout.NORTH);
-			jp_plan_left.add(add_jsp, BorderLayout.CENTER);
-			jp_plan_left.add(jb_delete_spot, BorderLayout.SOUTH);
-			
-			// 플래너 오른쪽 부분
-			jp_plan_right = new JPanel();
-			jp_plan_right.setBorder(new LineBorder(Color.decode("#E6E6E6")));
-			jp_plan_right.setBackground(Color.decode("#B19CCB"));
-			
-			// 제목 부분
-			city = new JLabel("   여행지: 대한민국 서울");
-			city.setFont(new Font("Aharoni", Font.BOLD, 18));
-			city.setForeground(Color.WHITE);
-			city.setPreferredSize(new Dimension(10,30));
-			
-			// 검색기능 부분
-			jp_select = new JPanel();
-			// 검색기능 부분 검색하기
-			jp_sel = new JPanel();
-			jp_sel.setBackground(Color.WHITE);
-			jtf_select = new JTextField(20);
-			ImageIcon bt_img = new ImageIcon("src/images/button.png");
-			
-			jb_select = new JButton(bt_img);
-			jb_select.setPreferredSize(new Dimension(30,30));
-			jb_select.setBackground(Color.WHITE);
-			jp_sel.setLayout(new FlowLayout(FlowLayout.LEFT));
-			jp_sel.add(jtf_select);
-			jp_sel.add(jb_select);
-			jb_select.setBorderPainted(false);
-			
-			// 검색한 정보
-			select_jta = new JTextArea();
-			select_jsp = new JScrollPane();
-			select_jta = new JTextArea();
-			select_jsp = new JScrollPane(select_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			select_jta.setLineWrap(true);
-			select_jta.setEditable(false);
-			select_jta.setBackground(Color.WHITE);
-			
-			// 검색정보
-			select_jta.append("1. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("2. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("3. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("4. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("5. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("6. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("7. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			select_jta.append("8. 관광지명 \n");
-			select_jta.append("위치: 관광지위치 \n");
-			select_jta.append("설명: 관광지설명 \n");
-			select_jta.append("평점: 관광지평점 \n");
-			select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
-			
-			// 검색한 정보 일정에 담는 버튼
-			jb_add_spot = new JButton("Add Spot");
-			jb_add_spot.setForeground(Color.white);
-			jb_add_spot.setFont(new Font("Aharoni", Font.BOLD, 18));
-			jb_add_spot.setBackground(Color.decode("#F083BA"));
-			jb_add_spot.setBorderPainted(false);
-			jb_add_spot.setPreferredSize(new Dimension(30, 45));
-			
-			// 검색부분 담는 구간
-			jp_select.setLayout(new BorderLayout());
-			jp_select.add(jp_sel, BorderLayout.NORTH);
-			jp_select.add(select_jsp, BorderLayout.CENTER);
-			jp_select.add(jb_add_spot, BorderLayout.SOUTH);
-			
-			// 작성완료 구간
-			jp_comcan = new JPanel();
-			jp_comcan.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			
-			// Complete 버튼
-			bt_Complete = new JButton("Complete");
-			bt_Complete.setFont(new Font("Aharoni", Font.BOLD, 13));
-			bt_Complete.setForeground(Color.white);
-			bt_Complete.setPreferredSize(new Dimension(120, 45));
-			bt_Complete.setBackground(Color.decode("#F083BA"));
-			bt_Complete.setBorderPainted(false);
-			
-			// Cancel 버튼
-			bt_Cancel = new JButton("Cancel");
-			bt_Cancel.setFont(new Font("Aharoni", Font.BOLD, 13));
-			bt_Cancel.setForeground(Color.white);
-			bt_Cancel.setPreferredSize(new Dimension(120, 45));
-			bt_Cancel.setBackground(Color.decode("#F7C0DC"));
-			bt_Cancel.setBorderPainted(false);
-			
-			// 작성완료 담는 구간
-			jp_comcan.setBackground(Color.WHITE);
-			jp_comcan.add(bt_Complete);
-			jp_comcan.add(bt_Cancel);
-			
-			// 플래너 오른쪽 담는 구간
-			jp_plan_right.setLayout(new BorderLayout());
-			jp_plan_right.add(city, BorderLayout.NORTH);
-			jp_plan_right.add(jp_select, BorderLayout.CENTER);
-			
-			
-			
-			// 플래너 구간 담는 곳
-			jp_planner.setLayout(new BorderLayout());
-			jp_planner.add(jp_plan_left, BorderLayout.WEST);
-			jp_planner.add(jp_plan_right, BorderLayout.CENTER);
-			jp_planner.add(jp_comcan, BorderLayout.SOUTH);
-			
-			jp.add(jp_planner, BorderLayout.CENTER);
-		
+			// 폰트흰색
+			jb_day[i].setForeground(Color.white);
+			jb_day[i].setFont(new Font("Aharoni", Font.BOLD, 15));
+			jb_day[i].setBorderPainted(false);
+
+			// 기본 DAY1은 보라색, 나머지는 분홍
+			if (i == 0) {
+				jb_day[i].setBackground(Color.decode("#B19CCB"));
+			} else
+				jb_day[i].setBackground(Color.decode("#F083BA"));
+
+			int index = i;
+			jb_day[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// 전체 버튼의 변경색
+					for (int j = 0; j < jb_day.length; j++) {
+						// 나머지 버튼의 배경색
+						jb_day[j].setBackground(Color.decode("#F083BA"));
+					}
+					// 선택한 버튼의 배경색
+					jb_day[index].setBackground(Color.decode("#B19CCB"));
+				}
+			});
+		}
+
+		jp_SNB.setPreferredSize(new Dimension(150, 600));
+		jp_SNB.setBackground(Color.decode("#F083BA"));
+		jp.add(jp_SNB, BorderLayout.WEST);
+
+		// 플래너 내용들
+		jp_planner = new JPanel();
+		jp_planner.setPreferredSize(new Dimension(800, 600));
+		jp_planner.setBackground(Color.WHITE);
+
+		// 플래너 왼쪽
+		jp_plan_left = new JPanel();
+		jp_plan_left.setBackground(Color.decode("#B19CCB"));
+		jp_plan_left.setBorder(new LineBorder(Color.decode("#E6E6E6")));
+
+		// 제목 부분
+		title = new JLabel("   서울여행" + "의 일정" + " - Day 1");
+		title.setForeground(Color.WHITE);
+		title.setFont(new Font("Aharoni", Font.BOLD, 18));
+		title.setPreferredSize(new Dimension(10, 30));
+
+		// 일정 추가 구간
+		add_jta = new JTextArea();
+		add_jsp = new JScrollPane(add_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add_jta.setLineWrap(true);
+		add_jta.setEditable(false);
+		add_jta.setBackground(Color.WHITE);
+
+		// 일정추가정보
+		add_jta.append("1. 관광지명 \n");
+		add_jta.append("위치: 관광지위치 \n");
+		add_jta.append("설명: 관광지설명 \n");
+		add_jta.append("평점: 관광지평점 \n");
+		add_jta.append("기본 금액: ₩ 관광지금액 \n");
+		add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+		add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+		add_jta.append("관광시간: 관광시간 입력\n\n");
+		add_jta.append("1. 관광지명 \n");
+		add_jta.append("위치: 관광지위치 \n");
+		add_jta.append("설명: 관광지설명 \n");
+		add_jta.append("평점: 관광지평점 \n");
+		add_jta.append("기본 금액: ₩ 관광지금액 \n");
+		add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+		add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+		add_jta.append("관광시간: 관광시간 입력\n\n");
+		add_jta.append("1. 관광지명 \n");
+		add_jta.append("위치: 관광지위치 \n");
+		add_jta.append("설명: 관광지설명 \n");
+		add_jta.append("평점: 관광지평점 \n");
+		add_jta.append("기본 금액: ₩ 관광지금액 \n");
+		add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+		add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+		add_jta.append("관광시간: 관광시간 입력\n\n");
+		add_jta.append("1. 관광지명 \n");
+		add_jta.append("위치: 관광지위치 \n");
+		add_jta.append("설명: 관광지설명 \n");
+		add_jta.append("평점: 관광지평점 \n");
+		add_jta.append("기본 금액: ₩ 관광지금액 \n");
+		add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+		add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+		add_jta.append("관광시간: 관광시간 입력\n\n");
+		add_jta.append("1. 관광지명 \n");
+		add_jta.append("위치: 관광지위치 \n");
+		add_jta.append("설명: 관광지설명 \n");
+		add_jta.append("평점: 관광지평점 \n");
+		add_jta.append("기본 금액: ₩ 관광지금액 \n");
+		add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+		add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+		add_jta.append("관광시간: 관광시간 입력\n\n");
+		add_jta.append("1. 관광지명 \n");
+		add_jta.append("위치: 관광지위치 \n");
+		add_jta.append("설명: 관광지설명 \n");
+		add_jta.append("평점: 관광지평점 \n");
+		add_jta.append("기본 금액: ₩ 관광지금액 \n");
+		add_jta.append("추가 금액: ₩ 추가할 금액 입력\n");
+		add_jta.append("총 금액: ₩ 기본금액 + 추가금액\n");
+		add_jta.append("관광시간: 관광시간 입력\n\n");
+
+		// 일정 추가한것중에 삭제하는 버튼
+		jb_delete_spot = new JButton("Delete Spot");
+		jb_delete_spot.setForeground(Color.WHITE);
+		jb_delete_spot.setFont(new Font("Aharoni", Font.BOLD, 18));
+		jb_delete_spot.setBackground(Color.decode("#F083BA"));
+		jb_delete_spot.setBorderPainted(false);
+		jb_delete_spot.setPreferredSize(new Dimension(30, 45));
+
+		// 플래너 왼쪽부분 담는 구간
+		jp_plan_left.setLayout(new BorderLayout());
+		jp_plan_left.setPreferredSize(new Dimension(400, 400));
+		jp_plan_left.add(title, BorderLayout.NORTH);
+		jp_plan_left.add(add_jsp, BorderLayout.CENTER);
+		jp_plan_left.add(jb_delete_spot, BorderLayout.SOUTH);
+
+		// 플래너 오른쪽 부분
+		jp_plan_right = new JPanel();
+		jp_plan_right.setBorder(new LineBorder(Color.decode("#E6E6E6")));
+		jp_plan_right.setBackground(Color.decode("#B19CCB"));
+
+		// 제목 부분
+		city = new JLabel("   여행지: 대한민국 서울");
+		city.setFont(new Font("Aharoni", Font.BOLD, 18));
+		city.setForeground(Color.WHITE);
+		city.setPreferredSize(new Dimension(10, 30));
+
+		// 검색기능 부분
+		jp_select = new JPanel();
+		// 검색기능 부분 검색하기
+		jp_sel = new JPanel();
+		jp_sel.setBackground(Color.WHITE);
+		jtf_select = new JTextField(20);
+		ImageIcon bt_img = new ImageIcon("src/images/button.png");
+
+		jb_select = new JButton(bt_img);
+		jb_select.setPreferredSize(new Dimension(30, 30));
+		jb_select.setBackground(Color.WHITE);
+		jp_sel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		jp_sel.add(jtf_select);
+		jp_sel.add(jb_select);
+		jb_select.setBorderPainted(false);
+
+		// 검색한 정보
+		select_jta = new JTextArea();
+		select_jsp = new JScrollPane();
+		select_jta = new JTextArea();
+		select_jsp = new JScrollPane(select_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		select_jta.setLineWrap(true);
+		select_jta.setEditable(false);
+		select_jta.setBackground(Color.WHITE);
+
+		// 검색정보
+		select_jta.append("1. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("2. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("3. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("4. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("5. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("6. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("7. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		select_jta.append("8. 관광지명 \n");
+		select_jta.append("위치: 관광지위치 \n");
+		select_jta.append("설명: 관광지설명 \n");
+		select_jta.append("평점: 관광지평점 \n");
+		select_jta.append("기본 금액: ₩ 관광지금액 \n\n");
+
+		// 검색한 정보 일정에 담는 버튼
+		jb_add_spot = new JButton("Add Spot");
+		jb_add_spot.setForeground(Color.white);
+		jb_add_spot.setFont(new Font("Aharoni", Font.BOLD, 18));
+		jb_add_spot.setBackground(Color.decode("#F083BA"));
+		jb_add_spot.setBorderPainted(false);
+		jb_add_spot.setPreferredSize(new Dimension(30, 45));
+
+		// 검색부분 담는 구간
+		jp_select.setLayout(new BorderLayout());
+		jp_select.add(jp_sel, BorderLayout.NORTH);
+		jp_select.add(select_jsp, BorderLayout.CENTER);
+		jp_select.add(jb_add_spot, BorderLayout.SOUTH);
+
+		// 작성완료 구간
+		jp_comcan = new JPanel();
+		jp_comcan.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+		// Complete 버튼
+		bt_Complete = new JButton("Complete");
+		bt_Complete.setFont(new Font("Aharoni", Font.BOLD, 13));
+		bt_Complete.setForeground(Color.white);
+		bt_Complete.setPreferredSize(new Dimension(120, 45));
+		bt_Complete.setBackground(Color.decode("#F083BA"));
+		bt_Complete.setBorderPainted(false);
+
+		// Cancel 버튼
+		bt_Cancel = new JButton("Cancel");
+		bt_Cancel.setFont(new Font("Aharoni", Font.BOLD, 13));
+		bt_Cancel.setForeground(Color.white);
+		bt_Cancel.setPreferredSize(new Dimension(120, 45));
+		bt_Cancel.setBackground(Color.decode("#F7C0DC"));
+		bt_Cancel.setBorderPainted(false);
+
+		// 작성완료 담는 구간
+		jp_comcan.setBackground(Color.WHITE);
+		jp_comcan.add(bt_Complete);
+		jp_comcan.add(bt_Cancel);
+
+		// 플래너 오른쪽 담는 구간
+		jp_plan_right.setLayout(new BorderLayout());
+		jp_plan_right.add(city, BorderLayout.NORTH);
+		jp_plan_right.add(jp_select, BorderLayout.CENTER);
+
+		// 플래너 구간 담는 곳
+		jp_planner.setLayout(new BorderLayout());
+		jp_planner.add(jp_plan_left, BorderLayout.WEST);
+		jp_planner.add(jp_plan_right, BorderLayout.CENTER);
+		jp_planner.add(jp_comcan, BorderLayout.SOUTH);
+
+		jp.add(jp_planner, BorderLayout.CENTER);
+
 //		ADD 
 		{
 			jp_headerSubLeft.add(new JLabel(imageIcon));
@@ -444,20 +442,40 @@ public class Planner_InsertSpot extends JPanel {
 			add(jp, BorderLayout.CENTER);
 			setBackground(Color.decode("#D4B8E8"));
 		}
-		
-		jb1.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				main.cardLayout.show(main.cardJPanel, "planner_Create");
-			}
-		});
+		jb1.addActionListener(this);
+		jb2.addActionListener(this);
+		jb3.addActionListener(this);
+		jb4.addActionListener(this);
+		jbMyInfo.addActionListener(this);
+		jbLogOut.addActionListener(this);
+		bt_Complete.addActionListener(this);
+		bt_Cancel.addActionListener(this);
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+			main.cardLayout.show(main.cardJPanel, "planner_Create");
+		} else if(obj==jb2) { // 내일정 조회
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if(obj==jb3) { // 여행 후기
+			main.cardLayout.show(main.cardJPanel, "allReview");
+		} else if(obj==jb4) { // 마이페이지
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if(obj==jbMyInfo) { // 내정보
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if(obj==jbLogOut) { // 로그아웃
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if(obj==bt_Complete) {
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if(obj==bt_Cancel) {
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		}
+	} 
 
 	public Planner_InsertSpot() {
 	}
-
 
 	public static void main(String[] args) {
 

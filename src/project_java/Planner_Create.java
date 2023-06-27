@@ -9,6 +9,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,7 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Planner_Create extends JPanel {
+public class Planner_Create extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
@@ -250,7 +252,13 @@ public class Planner_Create extends JPanel {
 			add(jp,BorderLayout.CENTER);
 			setBackground(Color.decode("#D4B8E8"));
 		}
-
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public Planner_Create() {
@@ -279,4 +287,5 @@ public class Planner_Create extends JPanel {
 			ex.printStackTrace();
 		}
 	}
+
 }
