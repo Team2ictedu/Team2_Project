@@ -31,7 +31,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class Login_Register extends JFrame {
+public class Login_Register extends JPanel {
+	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, join_bt, cancel_bt;
 	JLabel jLabel1;
@@ -45,8 +46,9 @@ public class Login_Register extends JFrame {
 	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp, terms_jp ;
 	JLabel lb;
 	
-	public Login_Register() {
-		super("회원 가입");
+	public Login_Register(Main main) {
+		//super("회원 가입");
+		this.main = main;
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		
@@ -332,15 +334,15 @@ public class Login_Register extends JFrame {
 			jp_headerMain.add(jp_headerSub);
 			jp.add(jp_center);
 			
-			getContentPane().add(jp_headerMain, BorderLayout.NORTH);
-			getContentPane().add(jp, BorderLayout.CENTER);
-
-			setSize(1000, 700);
-			setLocationRelativeTo(null);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-			setVisible(true);
+			getRootPane().add(jp_headerMain, BorderLayout.NORTH);
+			getRootPane().add(jp, BorderLayout.CENTER);
+			setLayout(new BorderLayout());
 			}
 		}
+
+	public Login_Register() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public static void main(String[] args) {
 		try {
