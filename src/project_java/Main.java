@@ -75,7 +75,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
-		cardLayout.show(cardJPanel, "planner_InsertSpot");
+		cardLayout.show(cardJPanel, "pw_Search");
 
 		setSize(1000, 800);
 		setLocationRelativeTo(null);

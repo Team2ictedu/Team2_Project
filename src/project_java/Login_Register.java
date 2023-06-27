@@ -10,6 +10,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -31,7 +33,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class Login_Register extends JPanel {
+public class Login_Register extends JPanel{
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton join_bt, cancel_bt;
@@ -342,4 +344,5 @@ public class Login_Register extends JPanel {
 			ex.printStackTrace();
 		}
 	}
+
 }
