@@ -46,7 +46,6 @@ public class Login_My_Infomodify extends JPanel {
 		{
 
 //		FONT
-//		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			try {
 				ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));

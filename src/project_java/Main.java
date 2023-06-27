@@ -22,7 +22,7 @@ public class Main extends JFrame{
 	// 객체 선언
 		// 로그인 전
 		Login_Main login_Main = new Login_Main(this);
-		//Login_Register login_Register = new Login_Register(this);
+		Login_Register login_Register = new Login_Register(this);
 		Id_Search id_Search = new Id_Search(this);
 		Pw_Search pw_Search = new Pw_Search(this);
 		//PwChange_login pwChange_login = new PwChange_login(this);
@@ -48,7 +48,7 @@ public class Main extends JFrame{
 	// 카드 패널 추가
 		// 로그인 전
 		cardJPanel.add("login_Main", login_Main);
-		//cardJPanel.add("login_Register", login_Register);
+		cardJPanel.add("login_Register", login_Register);
 		cardJPanel.add("id_Search", id_Search);
 		cardJPanel.add("pw_Search", pw_Search);
 		//cardJPanel.add("pwChange_login", pwChange_login);

@@ -64,8 +64,8 @@ public class MyReview extends JPanel{
 //	Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Jalnan.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/team/login/logo_e/Doodly.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Doodly.ttf")));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -248,7 +248,7 @@ public class MyReview extends JPanel{
 			review_jta.setLineWrap(true);
 			review_jta.setEditable(false);*/
 			re1_bt = new JButton("전체 후기");
-			re2_bt = new JButton("후기 작성");
+			re2_bt = new JButton("내 후기");
 			re3_bt = new JButton("작성");
 			re4_bt = new JButton("삭제");
 			combo_jp = new JPanel();
@@ -266,8 +266,8 @@ public class MyReview extends JPanel{
 			re_lb.setFont(new Font("Jalnan",Font.PLAIN,20));
 			wr_lb.setFont(new Font("Jalnan",Font.PLAIN,20));
 			view_lb.setFont(new Font("Jalnan",Font.PLAIN,20));
-			re1_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
-			re2_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
+			re1_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
+			re2_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
 			re3_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
 			re4_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
 			re1_bt.setOpaque(false);

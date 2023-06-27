@@ -52,7 +52,6 @@ public class AllReview extends JPanel {
 
 	this.main = main;
 //	FONT
-//	Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
@@ -165,8 +164,13 @@ public class AllReview extends JPanel {
 			// 좌측에 붙이기
 			left_review_jp.add(review_lb);
 			jp_west2.add(left_review_jp);
-			jp_west2.add(left_allreview_bt);
-			jp_west2.add(left_myreview_bt);
+			JPanel test = new JPanel();
+			test.setLayout(new GridLayout(0,1));
+			test.setBackground(Color.decode("#F7C0DC"));
+			test.add(left_allreview_bt);
+			test.add(new JLabel());
+			test.add(left_myreview_bt);
+			jp_west2.add(test);
 
 			// 센터 가운데 변수
 			look_lb = new JLabel("전체 후기 보기");
@@ -205,8 +209,8 @@ public class AllReview extends JPanel {
 			// font 및 버튼 꾸미기
 			review_lb.setFont(new Font("Jalnan", Font.PLAIN, 20));
 			look_lb.setFont(new Font("Jalnan", Font.PLAIN, 20));
-			left_allreview_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
-			left_myreview_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
+			left_allreview_bt.setFont(new Font("Jalnan", Font.PLAIN, 12));
+			left_myreview_bt.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			search_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
 			search_bt.setForeground(Color.WHITE);
 			search_bt.setPreferredSize(new Dimension(100, 30));
