@@ -2,6 +2,7 @@ package project_java;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Container;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -74,9 +75,9 @@ public class Main extends JFrame{
 		//cardJPanel.add("adminTemplate2", adminTemplate2);
 		
 		add(cardJPanel);
-		
-		cardLayout.show(cardJPanel, "planner_InsertSpot");
 
+		cardLayout.show(cardJPanel, "login_My_PWmodify");
+		
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
