@@ -28,6 +28,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import Main.Main;
+
 public class Login_My_Infomodify extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;

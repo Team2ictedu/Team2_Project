@@ -1,4 +1,4 @@
-package project_java;
+package Main;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -8,10 +8,23 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import project_java.AllReview;
+import project_java.Id_Search;
+import project_java.Login_Main;
+import project_java.Login_My_Infomodify;
+import project_java.Login_My_PWmodify;
+import project_java.Login_Register;
+import project_java.Login_Withdrawal;
+import project_java.MyReview;
+import project_java.Planner_Create;
+import project_java.Planner_InsertSpot;
+import project_java.Planner_Select;
+import project_java.Pw_Search;
+
 // 테스트2
 public class Main extends JFrame{
-	CardLayout cardLayout;
-	JPanel cardJPanel;
+	public CardLayout cardLayout;
+	public JPanel cardJPanel;
 	
 	public Main() {
 		super("PERSONAL PLANNER");
