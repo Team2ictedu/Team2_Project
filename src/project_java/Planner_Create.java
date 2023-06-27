@@ -28,8 +28,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import Main.Main;
-
 public class Planner_Create extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
@@ -254,13 +252,37 @@ public class Planner_Create extends JPanel implements ActionListener {
 			add(jp,BorderLayout.CENTER);
 			setBackground(Color.decode("#D4B8E8"));
 		}
+		jb1.addActionListener(this);
+		jb2.addActionListener(this);
+		jb3.addActionListener(this);
+		jb4.addActionListener(this);
+		jbMyInfo.addActionListener(this);
+		jbLogOut.addActionListener(this);
+		jb_create.addActionListener(this);
+		jb_back.addActionListener(this);
 		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		JButton obj = (JButton) e.getSource();
+		if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+			main.cardLayout.show(main.cardJPanel, "planner_Create");
+		} else if(obj==jb2) { // 내일정 조회
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if(obj==jb3) { // 여행 후기
+			main.cardLayout.show(main.cardJPanel, "allReview");
+		} else if(obj==jb4) { // 마이페이지
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if(obj==jbMyInfo) { // 내정보
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if(obj==jbLogOut) { // 로그아웃
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if(obj==jb_create) {
+			main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
+		} else if(obj==jb_back) {
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		}
 	}
 
 	public Planner_Create() {

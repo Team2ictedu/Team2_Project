@@ -25,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import Main.Main;
 
 public class Pw_Search extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;

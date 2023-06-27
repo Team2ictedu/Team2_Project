@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import Main.Main;
 
 public class Login_Main extends JPanel implements ActionListener {
 	Main main;
