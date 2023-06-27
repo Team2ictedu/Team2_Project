@@ -1,21 +1,20 @@
- package admin2;
+package admin2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 
-public class PlacesDAO {
+public class UsersDAO {
 	Connection conn = null;
 	PreparedStatement pstm = null;
 	ResultSet rs = null;
 	int result = 0 ;
 	int count = getCount();
-	
-	private static PlacesDAO PlacesDAO = new PlacesDAO();
-	public static PlacesDAO getInstance() {
-		return PlacesDAO;
+	private static UsersDAO UsersDAO = new UsersDAO();
+	public static UsersDAO getInstance() {
+		return UsersDAO;
 	}
 	
 	// DB 접속 메서드 
@@ -35,7 +34,7 @@ public class PlacesDAO {
 	public int getCount() {
 		try {
 			conn = getConnection();
-			String query = "select count(*) from placetable";
+			String query = "select count(*) from usertable";
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			rs.next();
@@ -53,30 +52,34 @@ public class PlacesDAO {
 		return 0;
 	}
 	
+	
 	public Object[][] getSelectAll() {
 		try {
 			conn = getConnection();
-			String sql = "select * from placetable" ;
+			String sql = "select * from usertable" ;
 			pstm = conn.prepareStatement(sql);
 			rs = pstm.executeQuery();
-			Object[][] list = new Object[count][8];
+			System.out.println("users : "+rs.getFetchSize());
+			Object[][] list = new Object[count][9];
 			int i = 0;
 			while(rs.next()) {
-				PlaceVO vo = new PlaceVO();
-				vo.setPlacenumber(rs.getString(1));
-				vo.setPlacename(rs.getString(2));
-				vo.setPlacelocation(rs.getString(3));
-				vo.setPlacedescription(rs.getString(4));
-				vo.setPlaceprice(rs.getString(5));
-				vo.setPlacereview( rs.getString(6));
+				UserVO vo = new UserVO();
+				vo.setUserid(rs.getString(1));
+				vo.setUserpwd(rs.getString(2));
+				vo.setUsername(rs.getString(3));
+				vo.setUserbirthday(rs.getString(4));
+				vo.setUseremail(rs.getString(5));
+				vo.setUserphone(rs.getString(6));
+				vo.setUserterms(rs.getString(7));
 				list[i][0] = rs.getString(1);
 				list[i][1] = rs.getString(2);
 				list[i][2] = rs.getString(3);
 				list[i][3] = rs.getString(4);
 				list[i][4] = rs.getString(5);
 				list[i][5] = rs.getString(6);
-				list[i][6] = "Edit";
-				list[i][7] = "Delete";
+				list[i][6] = rs.getString(7);
+				list[i][7] = "Edit";
+				list[i][8] = "Delete";
 				i++;
 				System.out.println("ss");
 			}
@@ -91,11 +94,6 @@ public class PlacesDAO {
 			}
 		}
 		return null;
-	}
-	
-	
-	public void deleteRow() {
-		
 	}
 	
 }

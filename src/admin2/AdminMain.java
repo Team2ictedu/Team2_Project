@@ -36,15 +36,18 @@ public class AdminMain extends JFrame{
 		cardPanel.setLayout(cardLayout);
 		
 		AdminHome adminHome= new AdminHome(this);
-		AdminTemplate1 adminPlaces = new AdminTemplate1(this);
-//		AdminUsers adminUsers = new AdminUsers(this);
+		AdminPlaces adminPlaces = new AdminPlaces(this);
+		AdminUsers adminUsers = new AdminUsers(this);
+		AdminReview adminReview = new AdminReview(this);
 		
 		
 		cardPanel.add("greeting",adminHome);
 		cardPanel.add("places", adminPlaces);
+		cardPanel.add("users",adminUsers);
+		cardPanel.add("reviews",adminReview);
 		add(cardPanel);
 		
-		cardLayout.show(cardPanel, "places");
+		cardLayout.show(cardPanel, "greeting");
 		
 //		pack();
 		setSize(1000, 700);

@@ -221,8 +221,8 @@ public class AdminTemplate1 extends JPanel{
 		placeTable.setRowMargin(0);
 		placeTable.setIntercellSpacing(new Dimension(0, 0));
 		placeTable.setFillsViewportHeight(true);
-//		TableRowSorter<PlaceTableModel> sorter = new TableRowSorter<>(model);
-//		placeTable.setRowSorter(sorter);
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		placeTable.setRowSorter(sorter);
 		
 		
 		

@@ -10,45 +10,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 
-public class AdminHome extends JPanel{
+public class AdminPlaces extends JPanel{
 	AdminMain main;
 	JPanel jpWest, jpEast;
 	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut;
 	/*jpWest Buttons */ JButton adminHomeBtn,placeEditBtn , userEditBtn, reviewEditBtn, logOutBtn ;
 	/*jpEast Panels*/ JPanel jpEastHeadMain, jpEastHeadNorth, jpEastHeadSouth, jpEastFootMain, jpEastFootNorth, jpEastFootCenter;
+	/*jpEastHead Buttons*/ JButton searchBtn, searchClearBtn;
+	/*jpEastHead ArrayList*/ List<String> selectionList;
+	/*jpEastHead ComboBox & TextField*/ JComboBox<String> eastHeadComboBox; JTextField eastHeadTextField;
 	/*jpEastJTA*/ JTextArea jta;
-	/*jpEastJSP*/ JScrollPane jsp;
-	/*jpEastJLABEL*/ JLabel welcomeLabel;
-	
-	
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
-	LocalDateTime now = LocalDateTime.now();  
-	String todayDate = dtf.format(now);
-	String adminName = "양동근";
-	String welcome = String.format("어서오세요, %s님!      %s", adminName, todayDate);
+	/*jpEastFootTable*/ JTable placeTable; 
+ 	/*jpEastFoot Buttons*/ 
 	
 	
 	
-	public AdminHome(AdminMain main) {
+	public AdminPlaces(AdminMain main) {
 		this.main = main;
 		//font 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -145,7 +145,6 @@ public class AdminHome extends JPanel{
 		jpWest.add(jpWestTop, BorderLayout.CENTER);
 		jpLogOut.add(logOutBtn);
 		jpWest.add(jpLogOut, BorderLayout.SOUTH);
-//		jpWest.setLayout(new BoxLayout(jpWest,BoxLayout.Y_AXIS));
 		
 		
 		//jpEast border
@@ -163,40 +162,110 @@ public class AdminHome extends JPanel{
 		jpEastHeadMain.setBackground(Color.decode("#393646"));
 		jpEastHeadNorth.setBackground(Color.decode("#393646"));
 		jpEastHeadSouth.setBackground(Color.decode("#393646"));
+		jpEastFootMain = new JPanel();
+		jpEastFootNorth = new JPanel();
+		jpEastFootCenter = new JPanel();
 		
-		//jpEast jta
-		jta = new JTextArea();
-		jta.setText(String.format(""));
-		jta.setRows(18);
-		jta.setLineWrap(true);
-		jta.setEditable(false);
-		jta.setFont(new Font("굴림", Font.PLAIN, 15));
-		jsp = new JScrollPane(jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		jta.setBounds(50, 50, 600,200);
+		//jpEastHead comboBox & textField
+		selectionList = new ArrayList<String>();
+		selectionList.add("전체보기");
+		selectionList.add("World");
+		eastHeadComboBox = new JComboBox<String>(selectionList.toArray(new String[0]));
+		eastHeadTextField = new JTextField(20);
 		
-		//jpEastWelcome
-		welcomeLabel = new JLabel(welcome);
-		welcomeLabel.setFont(new Font("Jalnan",Font.PLAIN,18));
-		jpEastHeadNorth.add(welcomeLabel);
 		
-		//jpEastHeadMain.add(North + South)
-		jpEastHeadSouth.add(jsp);
+		//jpEastHeadNorth.add(Checkbox + jtf)          
+		jpEastHeadNorth.add(eastHeadComboBox);
+		jpEastHeadNorth.add(eastHeadTextField);
+		
+		//jpEastHeadSouth buttons
+		searchBtn = new JButton("검색");
+		searchClearBtn = new JButton("검색 초기화");
+
+		//jpEastHeadSouth.add(jpEastButton)
+		jpEastHeadSouth.add(searchBtn);
+		jpEastHeadSouth.add(searchClearBtn);
+		
+		//jpEastHeadMain.add(panels)
 		jpEastHeadMain.add(jpEastHeadNorth);
 		jpEastHeadMain.add(jpEastHeadSouth);
-		
-		//jpEastHeadMain layout
 		jpEastHeadMain.setLayout(new BoxLayout(jpEastHeadMain, BoxLayout.Y_AXIS));
-		jpEastHeadNorth.setLocation(200	, 200);
+		
+		//jpEastFoot panels + colors
+		jpEastFootMain = new JPanel();
+		jpEastFootNorth = new JPanel();
+		jpEastFootCenter = new JPanel();
+		jpEastFootMain.setBackground(Color.decode("#393646"));
+		
+		//jpEastFootNorth createBtn
+			/////////*/*/*/*//데이터 추가버튼 추가하기/*/
+		
+		
+		//jpEastFootCenter table
+		/*ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll();*/ 
+		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
+		
+		/*PlaceTableModel model = new PlaceTableModel(list);*/
+		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정","삭제"};
+
+		DefaultTableModel model = new DefaultTableModel(list,columnNames);
+		
+		placeTable = new JTable(model);
+		placeTable.setShowGrid(false);
+		placeTable.setShowHorizontalLines(false);
+		placeTable.setShowVerticalLines(false);
+		placeTable.setRowMargin(0);
+		placeTable.setIntercellSpacing(new Dimension(0, 0));
+		placeTable.setFillsViewportHeight(true);
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		placeTable.setRowSorter(sorter);
+		
+		
+		
+		
+		Action delete = new AbstractAction() 
+				{
+					public void actionPerformed(ActionEvent e) {
+						/////////////////////MAKE DELETE JDBC
+						JTable table = (JTable)e.getSource();
+				        int modelRow = Integer.valueOf( e.getActionCommand() );
+				        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
+				        System.out.println("ss");
+					}
+			
+				};
+		Action edit = new AbstractAction()
+				{
+						/////////////////////MAKE EDIT JDBC
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+			
+				};
+		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 7);
+		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 6);
+
+		
+		
+		JScrollPane placeTableSP = new JScrollPane(placeTable);
+		placeTableSP.setPreferredSize(new Dimension(700,700));
+		jpEastFootCenter.add(placeTableSP);
+		
+		
+		//jpEastFootSouth btns
+		
+		
+		//jpEastFootMain.add()
+		jpEastFootMain.setPreferredSize(new Dimension(700,500));
+		jpEastFootMain.add(jpEastFootCenter);
 		
 		//jpEast.add(panels)
-		jpEast.setLayout(new BoxLayout(jpEast,BoxLayout.Y_AXIS));
-		jpEast.add(Box.createVerticalGlue());
 		jpEast.add(jpEastHeadMain);
-		jpEast.add(Box.createVerticalGlue());
-//		jpEastHeadSouth.setBorder(titledBorderEastHead);
-		
-		jpAdminHome.setBackground(Color.decode("#424050"));
+		jpEastHeadMain.setBorder(titledBorderEastHead);
+		jpEast.add(jpEastFootMain);
+		jpEastFootMain.setBorder(titledBorderEastFoot);
+		jpPlaceEdit.setBackground(Color.decode("#424050"));
 		
 		
 		
@@ -205,31 +274,27 @@ public class AdminHome extends JPanel{
 		setLayout(new BorderLayout());
 		add(jpWest, BorderLayout.CENTER);
 		add(jpEast, BorderLayout.EAST);
-//		setSize(1000,700);
-//		setResizable(false);
-//		setLocationRelativeTo(null);
-//		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		setVisible(true);
 		
 		
-//		adminHomeBtn  	= new JButton("관리자 홈");
-//		placeEditBtn 	= new JButton("관광지 수정");  
-//		userEditBtn 	 = new JButton("유저 수정");
-//		reviewEditBtn	 = new JButton("후기 보기/ 삭제");
-//		logOutBtn		= new JButton("로그아웃");
-//		
-		placeEditBtn.addActionListener(new ActionListener() {
+		adminHomeBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "places");		
+				main.cardLayout.show(main.cardPanel, "greeting");				
+			}
+		});
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("S");
 			}
 		});
 		userEditBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "users");					
+				main.cardLayout.show(main.cardPanel, "users");
 			}
 		});
 		reviewEditBtn.addActionListener(new ActionListener() {
@@ -239,8 +304,6 @@ public class AdminHome extends JPanel{
 				main.cardLayout.show(main.cardPanel, "reviews");						
 			}
 		});
-
-			
 	}
 	
 }
