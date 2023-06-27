@@ -21,7 +21,7 @@ import project_java.Planner_InsertSpot;
 import project_java.Planner_Select;
 import project_java.Pw_Search;
 
-// 테스트23123
+// 테스트2312333333333
 public class Main extends JFrame{
 	public CardLayout cardLayout;
 	public JPanel cardJPanel;
