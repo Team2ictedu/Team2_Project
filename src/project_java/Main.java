@@ -13,6 +13,8 @@ public class Main extends JFrame{
 	CardLayout cardLayout;
 	JPanel cardJPanel;
 	
+	// 메인클래스는 건드리지 말것
+	// cardLayout.show 이부분만 건드려서 자기가 원하는 페이지 확인할 것
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -73,7 +75,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
-		cardLayout.show(cardJPanel, "login_Main");
+		cardLayout.show(cardJPanel, "planner_InsertSpot");
 
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
