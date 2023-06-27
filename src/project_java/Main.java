@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-// 테스트
+// 테스트2
 public class Main extends JFrame{
 	CardLayout cardLayout;
 	JPanel cardJPanel;
