@@ -75,7 +75,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
-		cardLayout.show(cardJPanel, "myReview");
+		cardLayout.show(cardJPanel, "login_Main");
 
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
