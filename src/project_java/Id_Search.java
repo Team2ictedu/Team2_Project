@@ -39,7 +39,6 @@ public class Id_Search extends JPanel{
 	public Id_Search(Main main) {
 		this.main = main;
 //		FONT
-//		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));

@@ -43,7 +43,6 @@ public class Login_Main extends JPanel{
 	public Login_Main(Main main) {
 		this.main = main;
 //		FONT
-//		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
