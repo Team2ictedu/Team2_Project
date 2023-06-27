@@ -27,8 +27,7 @@ public class Main extends JFrame{
 		Login_Register login_Register = new Login_Register(this);
 		Id_Search id_Search = new Id_Search(this);
 		Pw_Search pw_Search = new Pw_Search(this);
-		//PwChange_login pwChange_login = new PwChange_login(this);
-		
+	
 		// 로그인 후
 		Login_My_Infomodify login_My_Infomodify = new Login_My_Infomodify(this);
 		Login_My_PWmodify login_My_PWmodify = new Login_My_PWmodify(this);
@@ -53,7 +52,6 @@ public class Main extends JFrame{
 		cardJPanel.add("login_Register", login_Register);
 		cardJPanel.add("id_Search", id_Search);
 		cardJPanel.add("pw_Search", pw_Search);
-		//cardJPanel.add("pwChange_login", pwChange_login);
 		
 		// 로그인 후
 		cardJPanel.add("login_My_Infomodify", login_My_Infomodify);
@@ -75,7 +73,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
-		cardLayout.show(cardJPanel, "planner_InsertSpot");
+		cardLayout.show(cardJPanel, "login_Register");
 
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
