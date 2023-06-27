@@ -38,7 +38,7 @@ public class AllReview extends JPanel {
 	Font customFont;
 	JLabel jLabel1;
 
-	JPanel left_review_jp, select_addr_jp, review2_jp, viewlb_jp, view_jp, jtf1_jp, jtf2_jp, center_add_jp, jp_center, center_jp;
+	JPanel review_bt_jp, left_review_jp, select_addr_jp, review2_jp, viewlb_jp, view_jp, jtf1_jp, jtf2_jp, center_add_jp, jp_center, center_jp;
 	JLabel review_lb, look_lb;
 	JTextArea review_jta;
 	JScrollPane review_jsp;
@@ -164,13 +164,13 @@ public class AllReview extends JPanel {
 			// 좌측에 붙이기
 			left_review_jp.add(review_lb);
 			jp_west2.add(left_review_jp);
-			JPanel test = new JPanel();
-			test.setLayout(new GridLayout(0,1));
-			test.setBackground(Color.decode("#F7C0DC"));
-			test.add(left_allreview_bt);
-			test.add(new JLabel());
-			test.add(left_myreview_bt);
-			jp_west2.add(test);
+			review_bt_jp = new JPanel();
+			review_bt_jp.setLayout(new GridLayout(0,1));
+			review_bt_jp.setBackground(Color.decode("#F7C0DC"));
+			review_bt_jp.add(left_allreview_bt);
+			review_bt_jp.add(new JLabel());
+			review_bt_jp.add(left_myreview_bt);
+			jp_west2.add(review_bt_jp);
 
 			// 센터 가운데 변수
 			look_lb = new JLabel("전체 후기 보기");
