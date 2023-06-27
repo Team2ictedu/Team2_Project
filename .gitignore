@@ -9,6 +9,7 @@ Team2_project/.modulepath
 
 ### Eclipse ###
 .metadata
+src/project_java/Main.java
 bin/
 tmp/
 *.tmp
