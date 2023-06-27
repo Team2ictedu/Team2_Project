@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 
@@ -199,8 +200,19 @@ public class AdminTemplate1 extends JPanel{
 		//jpEastFootNorth createBtn
 		
 		//jpEastFootCenter table
-		ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll(); 
-		PlaceTableModel model = new PlaceTableModel(list);
+//		ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll(); 
+		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
+		
+//		PlaceTableModel model = new PlaceTableModel(list);
+		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정"};
+//		Object[][] data =
+//			{
+//					{"Homer", "Simpson", "delete Homer"},
+//					{"Madge", "Simpson", "delete Madge"},
+//					{"Bart",  "Simpson", "delete Bart"},
+//					{"Lisa",  "Simpson", "delete Lisa"},
+//			};
+		DefaultTableModel model = new DefaultTableModel(list,columnNames);
 		
 		placeTable = new JTable(model);
 		placeTable.setShowGrid(false);
@@ -209,8 +221,8 @@ public class AdminTemplate1 extends JPanel{
 		placeTable.setRowMargin(0);
 		placeTable.setIntercellSpacing(new Dimension(0, 0));
 		placeTable.setFillsViewportHeight(true);
-		TableRowSorter<PlaceTableModel> sorter = new TableRowSorter<>(model);
-		placeTable.setRowSorter(sorter);
+//		TableRowSorter<PlaceTableModel> sorter = new TableRowSorter<>(model);
+//		placeTable.setRowSorter(sorter);
 		
 		
 		
@@ -218,18 +230,21 @@ public class AdminTemplate1 extends JPanel{
 		Action delet2e = new AbstractAction() 
 				{
 					public void actionPerformed(ActionEvent e) {
-						System.out.println("s");
+						JTable table = (JTable)e.getSource();
+				        int modelRow = Integer.valueOf( e.getActionCommand() );
+				        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
+				        System.out.println("ss");
 					}
 			
 				};
-		ButtonColumn buttonColumn = new ButtonColumn(placeTable, delet2e, 4);
+		ButtonColumn buttonColumn = new ButtonColumn(placeTable, delet2e, 6);
 		
 
 		
 		
 		JScrollPane placeTableSP = new JScrollPane(placeTable);
 		placeTableSP.setPreferredSize(new Dimension(600,400));
-		jpEastFootCenter.add(placeTable);
+		jpEastFootCenter.add(new JScrollPane(placeTable));
 		
 		
 		//jpEastFootSouth btns

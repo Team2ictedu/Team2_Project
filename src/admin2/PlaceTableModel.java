@@ -18,16 +18,15 @@ public class PlaceTableModel extends AbstractTableModel{
 	
 	ArrayList<PlaceVO> rowData;
 	
-	public PlaceTableModel(ArrayList<PlaceVO> rowData) {
+	public PlaceTableModel(ArrayList<PlaceVO> rowDatas) {
 		this.rowData = new ArrayList<>(20);
-		for (PlaceVO k : rowData) {
+		for (PlaceVO k : rowDatas) {
 			this.rowData.add(k);
 		}
 	}
 	
 	 public void add(ArrayList<PlaceVO> pd) {
 	        rowData.addAll(pd);
-	        fireTableDataChanged();
 	   }
 	
 	
