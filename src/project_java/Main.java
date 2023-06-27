@@ -8,13 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-
+// 테스트2
 public class Main extends JFrame{
 	CardLayout cardLayout;
 	JPanel cardJPanel;
 	
-	// 메인클래스는 건드리지 말것
-	// cardLayout.show 이부분만 건드려서 자기가 원하는 페이지 확인할 것
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -75,6 +73,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
+		// 메인은 이부분만 수정할것
 		cardLayout.show(cardJPanel, "login_Main");
 
 		setSize(1000, 800);
