@@ -36,7 +36,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
-import Main.Main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -470,7 +469,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		} else if(obj==jbLogOut) { // 로그아웃
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if(obj==bt_Complete) {
-			main.cardLayout.show(main.cardJPanel, "planner_Select");
+			main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
 		} else if(obj==bt_Cancel) {
 			main.cardLayout.show(main.cardJPanel, "planner_Select");
 		}

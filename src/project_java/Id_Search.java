@@ -25,8 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import Main.Main;
-
 public class Id_Search extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
@@ -34,11 +32,10 @@ public class Id_Search extends JPanel implements ActionListener{
 	JLabel jLabel1, lb;
 	TextPrompt tp1, tp2;
 	Border newBorder;
-	
+	Main main;
 	JPanel im_jp,log_im, lb_jp, name_jp, pw_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField jtf_name, jtf_em;
 	JButton logMv_bt, join_bt, pwFin_bt,idCk_bt;
-	Main main;
 	
 	public Id_Search(Main main) {
 		this.main = main;

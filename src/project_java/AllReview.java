@@ -30,9 +30,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
-import Main.Main;
-
 import java.awt.Component;
 import javax.swing.SwingConstants;
 
