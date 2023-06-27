@@ -9,6 +9,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -31,7 +33,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Component;
 import javax.swing.SwingConstants;
 
-public class AllReview extends JPanel {
+public class AllReview extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_south2, jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
@@ -247,6 +249,40 @@ public class AllReview extends JPanel {
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
 		}
+		left_allreview_bt.addActionListener(this);
+		left_myreview_bt.addActionListener(this);
+		search_bt.addActionListener(this);
+		jb1.addActionListener(this);
+		jb2.addActionListener(this);
+		jb3.addActionListener(this);
+		jb4.addActionListener(this);
+		jbMyInfo.addActionListener(this);
+		jbLogOut.addActionListener(this);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+			main.cardLayout.show(main.cardJPanel, "planner_Create");
+		} else if(obj==jb2) { // 내일정 조회
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if(obj==jb3) { // 여행 후기
+			main.cardLayout.show(main.cardJPanel, "allReview");
+		} else if(obj==jb4) { // 마이페이지
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if(obj==jbMyInfo) { // 내정보
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if(obj==jbLogOut) { // 로그아웃
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if(obj==left_allreview_bt) { // 전체후기 보기
+			main.cardLayout.show(main.cardJPanel, "allReview");
+		} else if(obj==left_myreview_bt) {
+			main.cardLayout.show(main.cardJPanel, "myReview");
+		} else if(obj==search_bt) {
+			// 데이터베이스 추가하고 버튼 기능 추가하기
+		}
+		
 	}
 
 	public AllReview() {
@@ -277,4 +313,5 @@ public class AllReview extends JPanel {
 			ex.printStackTrace();
 		}
 	}
+
 }
