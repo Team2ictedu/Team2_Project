@@ -478,6 +478,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		} else if (obj == jb_select) {
 			if(jtf_select.getText().length() == 0) {
 				JOptionPane.showMessageDialog(null, "검색어를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				jtf_select.requestFocus();
 			} else {
 				// 검색내용출력
 			}
@@ -491,7 +492,6 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 			int result = JOptionPane.showConfirmDialog(null, "플래너 작성을 취소하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.YES_OPTION) {
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
-			} else {
 			}
 		}
 	}
