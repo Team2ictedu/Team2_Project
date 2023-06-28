@@ -35,7 +35,9 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 
+
 public class Login_Register extends JPanel implements ActionListener {
+
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton join_bt, cancel_bt;
 	JLabel jLabel1;
