@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -45,8 +46,10 @@ public class AllReview extends JPanel implements ActionListener{
 	JTextArea review_jta;
 	JScrollPane review_jsp;
 	JButton left_allreview_bt, left_myreview_bt, search_bt;
-	JComboBox<String> serch1, serch2;
+	JComboBox<String> search1, search2;
 
+	String[] ser1 = { "::시/도::", "전체", "제주시", "서귀포시" };
+	String[] ser2 = { "::선택::", "전체", "~동", "~읍", "~면" };
 	Border newBorder;
 	Main main;
 	
@@ -181,17 +184,16 @@ public class AllReview extends JPanel implements ActionListener{
 			
 			center_add_jp.add(look_lb);
 			jp_center.add(center_add_jp);
-			
-			String[] ser1 = { "::시/도::", "제주시", "서귀포시" };
-			String[] ser2 = { "::선택::", "~동", "~읍", "~면" };
 
 			select_addr_jp = new JPanel();
 			select_addr_jp.setOpaque(false);
 
-			serch1 = new JComboBox<>(ser1);
-			serch2 = new JComboBox<>(ser2);
+			search1 = new JComboBox<>(ser1);
+			search2 = new JComboBox<>(ser2);
 			search_bt = new JButton("검색");
-
+			search1.setSelectedIndex(0);
+			search2.setSelectedIndex(0);
+		
 			review_jta = new JTextArea();
 			review_jsp = new JScrollPane(review_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -200,8 +202,8 @@ public class AllReview extends JPanel implements ActionListener{
 			review_jsp.setPreferredSize(new Dimension(0, 30));
 			
 			// 센터에 붙이기
-			select_addr_jp.add(serch1);
-			select_addr_jp.add(serch2);
+			select_addr_jp.add(search1);
+			select_addr_jp.add(search2);
 			select_addr_jp.add(search_bt);
 			select_addr_jp.setPreferredSize(new Dimension(5, -400));
 			center_add_jp.add(select_addr_jp);
@@ -280,8 +282,13 @@ public class AllReview extends JPanel implements ActionListener{
 		} else if(obj==left_myreview_bt) {
 			main.cardLayout.show(main.cardJPanel, "myReview");
 		} else if(obj==search_bt) {
+			if(search1.getSelectedIndex() == 0 || search2.getSelectedIndex() == 0) {
+				JOptionPane.showMessageDialog(null, "지역을 선택하세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+			} 
 			// 데이터베이스 추가하고 버튼 기능 추가하기
-		}
+		} 
+		search1.setSelectedIndex(0);
+		search2.setSelectedIndex(0);
 		
 	}
 
