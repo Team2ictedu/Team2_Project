@@ -253,7 +253,7 @@ public class AdminPlaces extends JPanel{
 		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
 		
 		/*PlaceTableModel model = new PlaceTableModel(list);*/
-		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정","삭제"};
+		String[] columnNames = { "Place Name", "Location","Description","price","수정","삭제"};
 
 		DefaultTableModel model = new DefaultTableModel(list,columnNames);
 		
@@ -290,8 +290,8 @@ public class AdminPlaces extends JPanel{
 					}
 			
 				};
-		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 7);
-		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 6);
+		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 5);
+		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 4);
 
 		
 		

@@ -34,7 +34,7 @@ public class UsersDAO {
 	public int getCount() {
 		try {
 			conn = getConnection();
-			String query = "select count(*) from usertable";
+			String query = "select count(*) from member";
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			rs.next();
@@ -56,30 +56,31 @@ public class UsersDAO {
 	public Object[][] getSelectAll() {
 		try {
 			conn = getConnection();
-			String sql = "select * from usertable" ;
+			String sql = "select * from member" ;
 			pstm = conn.prepareStatement(sql);
 			rs = pstm.executeQuery();
 			System.out.println("users : "+rs.getFetchSize());
-			Object[][] list = new Object[count][9];
+			Object[][] list = new Object[count][10];
 			int i = 0;
 			while(rs.next()) {
 				UserVO vo = new UserVO();
-				vo.setUserid(rs.getString(1));
-				vo.setUserpwd(rs.getString(2));
-				vo.setUsername(rs.getString(3));
-				vo.setUserbirthday(rs.getString(4));
-				vo.setUseremail(rs.getString(5));
-				vo.setUserphone(rs.getString(6));
-				vo.setUserterms(rs.getString(7));
+//				vo.setUserid(rs.getString(1));
+//				vo.setUserpwd(rs.getString(2));
+//				vo.setUsername(rs.getString(3));
+//				vo.setUserbirthday(rs.getString(4));
+//				vo.setUseremail(rs.getString(5));
+//				vo.setUserphone(rs.getString(6));
+//				vo.setUserterms(rs.getString(7));
 				list[i][0] = rs.getString(1);
-				list[i][1] = rs.getString(2);
-				list[i][2] = rs.getString(3);
-				list[i][3] = rs.getString(4);
-				list[i][4] = rs.getString(5);
-				list[i][5] = rs.getString(6);
-				list[i][6] = rs.getString(7);
-				list[i][7] = "Edit";
-				list[i][8] = "Delete";
+				list[i][1] = rs.getString(3);
+				list[i][2] = rs.getString(4);
+				list[i][3] = rs.getString(5);
+				list[i][4] = rs.getString(6);
+				list[i][5] = rs.getString(7);
+				list[i][6] = rs.getString(8);
+				list[i][7] = rs.getString(9);
+				list[i][8] = "Edit";
+				list[i][9] = "Delete";
 				i++;
 				System.out.println("ss");
 			}

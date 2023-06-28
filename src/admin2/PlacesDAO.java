@@ -35,17 +35,18 @@ public class PlacesDAO {
 	public int getCount() {
 		try {
 			conn = getConnection();
-			String query = "select count(*) from placetable";
+			String query = "select count(*) from PLACE_ALL";
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
-			System.out.println("places count is :"+count);
+			System.out.println("places count ssis :"+count);
 			return count;
 		} catch (Exception e) {
 		} finally {
 			try {
 				rs.close();
+				pstm.close();
 				conn.close();
 			} catch (Exception e2) {
 			}
@@ -56,27 +57,27 @@ public class PlacesDAO {
 	public Object[][] getSelectAll() {
 		try {
 			conn = getConnection();
-			String sql = "select * from placetable" ;
+			String sql = "select * from place_all" ;
 			pstm = conn.prepareStatement(sql);
 			rs = pstm.executeQuery();
-			Object[][] list = new Object[count][8];
+			Object[][] list = new Object[count][6];
 			int i = 0;
 			while(rs.next()) {
 				PlaceVO vo = new PlaceVO();
-				vo.setPlacenumber(rs.getString(1));
-				vo.setPlacename(rs.getString(2));
-				vo.setPlacelocation(rs.getString(3));
-				vo.setPlacedescription(rs.getString(4));
-				vo.setPlaceprice(rs.getString(5));
-				vo.setPlacereview( rs.getString(6));
-				list[i][0] = rs.getString(1);
-				list[i][1] = rs.getString(2);
-				list[i][2] = rs.getString(3);
-				list[i][3] = rs.getString(4);
-				list[i][4] = rs.getString(5);
-				list[i][5] = rs.getString(6);
-				list[i][6] = "Edit";
-				list[i][7] = "Delete";
+//				vo.setPlacenumber(rs.getString(1));
+//				vo.setPlacename(rs.getString(2));
+//				vo.setPlacelocation(rs.getString(3));
+//				vo.setPlacedescription(rs.getString(4));
+//				vo.setPlaceprice(rs.getString(5));
+//				vo.setPlacereview( rs.getString(6));
+//				list[i][0] = rs.getString(1);
+				list[i][0] = rs.getString(2);
+				list[i][1] = rs.getString(3);
+				list[i][2] = rs.getString(4);
+				list[i][3] = rs.getString(5);
+//				list[i][5] = rs.getString(6);
+				list[i][4] = "Edit";
+				list[i][5] = "Delete";
 				i++;
 				System.out.println("ss");
 			}
