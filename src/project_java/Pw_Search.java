@@ -9,6 +9,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,7 +25,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Pw_Search extends JPanel{
+
+public class Pw_Search extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight,jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3 ,jb4;
 	Font customFont;
@@ -33,7 +36,7 @@ public class Pw_Search extends JPanel{
 	
 	JPanel im_jp, log_im, lb_jp, idCg_jp, name_jp, em_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField idCg_jtf, name_jtf, em_jtf;
-	JButton logMv_bt, join_bt, pwFin_bt, pwCk_bt;
+	JButton logMv_bt, join_bt, idFin_bt, pwCk_bt;
 	Main main;
 	
 	public Pw_Search(Main main) {
@@ -120,16 +123,16 @@ public class Pw_Search extends JPanel{
 				em_jp.setOpaque(false);
 				logMv_bt = new JButton(" 로그인 페이지로 ");
 				join_bt = new JButton("회원가입");
-				pwFin_bt = new JButton("비밀번호 찾기");
+				idFin_bt = new JButton("아이디 찾기");
 				pwCk_bt = new JButton("확인");
 				
 				//버튼 투명도
 				join_bt.setOpaque(false);
 				join_bt.setContentAreaFilled(false);
 				join_bt.setBorderPainted(false);
-				pwFin_bt.setOpaque(false);
-				pwFin_bt.setContentAreaFilled(false);
-				pwFin_bt.setBorderPainted(false);
+				idFin_bt.setOpaque(false);
+				idFin_bt.setContentAreaFilled(false);
+				idFin_bt.setBorderPainted(false);
 				
 				
 				//색상
@@ -138,10 +141,10 @@ public class Pw_Search extends JPanel{
 				//font 
 				logMv_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
 				join_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
-				pwFin_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
+				idFin_bt.setFont(new Font("Jalnan",Font.PLAIN,16));
 				pwCk_bt.setFont(new Font("Jalnan",Font.PLAIN,12));
 				join_bt.setForeground(Color.GRAY);
-				pwFin_bt.setForeground(Color.GRAY);
+				idFin_bt.setForeground(Color.GRAY);
 				logMv_bt.setForeground(Color.white);
 				pwCk_bt.setForeground(Color.WHITE);
 			
@@ -209,7 +212,7 @@ public class Pw_Search extends JPanel{
 				
 				//하단 jp7 버튼 패널에 붙이기
 				btBt_jp.add(join_bt);
-				btBt_jp.add(pwFin_bt);
+				btBt_jp.add(idFin_bt);
 				
 				// 위치조정
 				btBt_jp.setBorder(BorderFactory.createEmptyBorder(45,0,0,0));
@@ -226,8 +229,10 @@ public class Pw_Search extends JPanel{
 				//jp6 jp에 넣기
 				jp.add(add_jp);
 		}
-		
-		
+			logMv_bt.addActionListener(this);
+			join_bt.addActionListener(this);
+			idFin_bt.addActionListener(this);
+			pwCk_bt.addActionListener(this);
 		
 //		ADD 
 		{
@@ -242,6 +247,21 @@ public class Pw_Search extends JPanel{
 		add(jp,BorderLayout.CENTER);
 		}
 	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if(obj==logMv_bt) { // 로그인버튼
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if(obj==join_bt) { // 회원가입으로 이동
+			main.cardLayout.show(main.cardJPanel, "login_Register");
+		} else if(obj==idFin_bt) { // 회원가입으로 이동
+			main.cardLayout.show(main.cardJPanel, "id_Search");
+		} else if(obj==pwCk_bt) { // 회원가입으로 이동
+			PwChange_login pw_ck = new PwChange_login(Pw_Search.this);
+			pw_ck.setVisible(true);
+		}
+	}
+	
 	public Pw_Search() {
 		// TODO Auto-generated constructor stub
 	}

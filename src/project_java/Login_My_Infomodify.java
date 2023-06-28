@@ -9,6 +9,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,7 +28,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class Login_My_Infomodify extends JPanel {
+
+public class Login_My_Infomodify extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, information_bt, update_bt,
@@ -278,10 +281,22 @@ public class Login_My_Infomodify extends JPanel {
 				add(jp_headerMain, BorderLayout.NORTH);
 				add(jp, BorderLayout.CENTER);
 			
+				pw_update_bt.addActionListener(this);
+				update_bt.addActionListener(this);
 			}
 		}
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if(obj==pw_update_bt) {
+			main.cardLayout.show(main.cardJPanel,"login_My_PWmodify" );
+		}else if(obj==update_bt) {
+			main.cardLayout.show(main.cardJPanel,"login_My_Infomodify");
+		}
+		
+	}
 	public Login_My_Infomodify() {
 		// TODO Auto-generated constructor stub
 	}
@@ -310,4 +325,5 @@ public class Login_My_Infomodify extends JPanel {
 			ex.printStackTrace();
 		}
 	}
+
 }
