@@ -121,14 +121,17 @@ public class PwChange_login extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
-		if (obj == ok_bt) {
-			ok = 1; // 1이 변경완료 2가 실패
-			if (ok == 1) {
+		if (obj == ok_bt) {//입력값 없을때
+			if (pwck1_jtf.getText().length() == 0 || pwck2_jtf.getText().length() == 0) { // 비밀번호 입력값이 없을때 
+				JOptionPane.showMessageDialog(null, "입력되지 않았습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				pwck1_jtf.requestFocus();
+			}else if(!pwck1_jtf.getText().equals(pwck2_jtf.getText())) { //비밀번호 확인 일치하지 않았을때
+				JOptionPane.showMessageDialog(null, "입력된 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+			}else { //실패시 안내창
 				JOptionPane.showMessageDialog(pwCh_jp, "변경이 완료되었습니다.", "변경이 완료", JOptionPane.PLAIN_MESSAGE);
 				setVisible(false);
 				pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
-			}else { //실패시 안내창
-				
+			
 			}
 		}
 	}

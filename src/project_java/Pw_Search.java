@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -38,7 +39,8 @@ public class Pw_Search extends JPanel implements ActionListener{
 	JTextField idCg_jtf, name_jtf, em_jtf;
 	JButton logMv_bt, join_bt, idFin_bt, pwCk_bt;
 	Main main;
-	
+	String id= "root";
+	String pw = "1111";
 	public Pw_Search(Main main) {
 		this.main = main;
 //		FONT
@@ -249,16 +251,39 @@ public class Pw_Search extends JPanel implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// 임의의 id와 em 생성 나중에 db연결하고 바꿀예정
+				String id = "root";
+				String name = "root";
+				String em = "root";
+				String pwSer = "1111";
 		JButton obj = (JButton) e.getSource();
 		if(obj==logMv_bt) { // 로그인버튼
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if(obj==join_bt) { // 회원가입으로 이동
 			main.cardLayout.show(main.cardJPanel, "login_Register");
-		} else if(obj==idFin_bt) { // 회원가입으로 이동
+		} else if(obj==idFin_bt) { // 아이디찾기로 이동
 			main.cardLayout.show(main.cardJPanel, "id_Search");
-		} else if(obj==pwCk_bt) { // 회원가입으로 이동
-			PwChange_login pw_ck = new PwChange_login(Pw_Search.this);
-			pw_ck.setVisible(true);
+		} else if(obj==pwCk_bt) { // 계정확인버튼
+			if(idCg_jtf.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "아이디를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				idCg_jtf.requestFocus();
+			}else if(name_jtf.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "이름을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				name_jtf.requestFocus();
+			}else if(em_jtf.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				em_jtf.requestFocus();
+			}else if(idCg_jtf.getText().equals(id) && name_jtf.getText().equals(name) && em_jtf.getText().equals(em)) {
+				idCg_jtf.setText("");
+				name_jtf.setText("");
+				em_jtf.setText("");
+				// 비밀번호 변경창 뜨기
+				PwChange_login pw_ck = new PwChange_login(Pw_Search.this);
+				pw_ck.setVisible(true);
+			}else {
+				JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+			}
+			
 		}
 	}
 	
