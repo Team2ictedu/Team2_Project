@@ -29,8 +29,10 @@ import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Login_Withdrawal extends JPanel {
+public class Login_Withdrawal extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_center, jp_east, jp_west;
 	JButton jbName, jbMyInfo, jbLogOut;
@@ -38,7 +40,7 @@ public class Login_Withdrawal extends JPanel {
 	JLabel jLabel1;
 	JTextField tf_pw, tf_withdraw;
 	Border newBorder;
-	
+
 	JPanel lb_jp, pw_jp, reason_jp, under_bt_jp;
 	JButton withdraw_bt, cancel_bt;
 	JLabel lb;
@@ -70,14 +72,12 @@ public class Login_Withdrawal extends JPanel {
 			jbLogOut = new JButton("로그아웃");
 			newBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
 
-
 //		font 입력
 			jLabel1 = new JLabel(" PERSONAL PLANNER");
 			jLabel1.setFont(new Font("Doodly", Font.BOLD, 40));
 			jbName.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jbMyInfo.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jbLogOut.setFont(new Font("Jalnan", Font.PLAIN, 12));
-
 
 //		jbName, jbMyInfo, jbLogout 투명하게 하기
 			jbName.setOpaque(false);
@@ -123,17 +123,16 @@ public class Login_Withdrawal extends JPanel {
 			reason_jp.setOpaque(false);
 			under_bt_jp = new JPanel();
 			under_bt_jp.setOpaque(false);
-			
-			// 붙일 패널 
+
+			// 붙일 패널
 			jp_center.setLayout(new BoxLayout(jp_center, BoxLayout.Y_AXIS));
-			
+
 			// 회원탈퇴 라벨
 			lb = new JLabel("회원 탈퇴");
-			lb.setFont(new Font("Jalnan",Font.PLAIN,26));
+			lb.setFont(new Font("Jalnan", Font.PLAIN, 26));
 			lb_jp.add(lb);
-			lb_jp.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
-			
-			
+			lb_jp.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
+
 			// 아이콘 + 텍스트필드
 			// 비밀번호
 			ImageIcon pwIcon = new ImageIcon("src/icons/pw.png");
@@ -147,13 +146,13 @@ public class Login_Withdrawal extends JPanel {
 			tp_pw.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_pw.setForeground(Color.gray);
 			tp_pw.changeAlpha(0.5f);
-			tp_pw.changeStyle(Font.BOLD + Font.ITALIC);           
-			tf_pw.setBorder(newBorder);          
-			tf_pw.setOpaque(false); 
+			tp_pw.changeStyle(Font.BOLD + Font.ITALIC);
+			tf_pw.setBorder(newBorder);
+			tf_pw.setOpaque(false);
 			pw_jp.add(new JLabel(pwIcon));
 			pw_jp.add(tf_pw);
-			pw_jp.setBorder(BorderFactory.createEmptyBorder(40,0,0,0));
-			
+			pw_jp.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+
 			// 탈퇴사유
 			ImageIcon withdrawIcon = new ImageIcon("src/icons/withdraw.png");
 			Image withdrawImage = withdrawIcon.getImage();
@@ -167,13 +166,13 @@ public class Login_Withdrawal extends JPanel {
 			tp_withdraw.setFont(new Font("Jalnan", Font.PLAIN, 10));
 			tp_withdraw.setForeground(Color.gray);
 			tp_withdraw.changeAlpha(0.5f);
-			tp_withdraw.changeStyle(Font.BOLD + Font.ITALIC);           
-			tf_withdraw.setBorder(newBorder);          
-			tf_withdraw.setOpaque(false); 
+			tp_withdraw.changeStyle(Font.BOLD + Font.ITALIC);
+			tf_withdraw.setBorder(newBorder);
+			tf_withdraw.setOpaque(false);
 			reason_jp.add(new JLabel(withdrawIcon));
 			reason_jp.add(tf_withdraw);
-			reason_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
-			
+			reason_jp.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+
 // 			회원탈퇴 버튼
 			withdraw_bt = new JButton("회원탈퇴");
 			withdraw_bt.setPreferredSize(new Dimension(150, 40));
@@ -181,8 +180,8 @@ public class Login_Withdrawal extends JPanel {
 			withdraw_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
 			withdraw_bt.setForeground(Color.WHITE);
 			under_bt_jp.add(withdraw_bt);
-			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
-			
+			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+
 //			취소하기 버튼
 			cancel_bt = new JButton("취소");
 			cancel_bt.setPreferredSize(new Dimension(150, 40));
@@ -190,14 +189,14 @@ public class Login_Withdrawal extends JPanel {
 			cancel_bt.setFont(new Font("Jalnan", Font.PLAIN, 15));
 			cancel_bt.setForeground(Color.WHITE);
 			under_bt_jp.add(cancel_bt);
-			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
-			
+			under_bt_jp.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+
 //			jp_center에 ADD
 			jp_center.add(lb_jp);
 			jp_center.add(pw_jp);
 			jp_center.add(reason_jp);
 			jp_center.add(under_bt_jp);
-			
+
 //			ADD(상단)
 			jp_headerSubLeft.add(new JLabel(imageIcon));
 			jp_headerSubLeft.add(jLabel1);
@@ -210,12 +209,30 @@ public class Login_Withdrawal extends JPanel {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp.add(jp_center);
-			
-			setLayout(new BorderLayout()); 
+
+			setLayout(new BorderLayout());
 			add(jp, BorderLayout.CENTER);
-		
+
 			add(jp_headerMain, BorderLayout.NORTH);
 
+			jbMyInfo.addActionListener(this);
+			jbLogOut.addActionListener(this);
+			withdraw_bt.addActionListener(this);
+			cancel_bt.addActionListener(this);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if (obj == jbMyInfo) { // 내정보
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if (obj == jbLogOut) { // 로그아웃
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if (obj == withdraw_bt) {
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if (obj == cancel_bt) {
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
 		}
 	}
 

@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -325,11 +326,14 @@ public class Login_Register extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
 		if (obj == join_bt) { // 가입하기 버튼
-			int ok = 1;
-			if(ok ==1) {
-				Register_complete register_complete = new Register_complete(this);
+			int ok = 0;
+			if(ok ==1) { // 정상적으로 입력시
+				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+				main.cardLayout.show(main.cardJPanel, "login_Main");
+			} else if(ok==0) { // 누락된 정보 있을시
+
+				JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!", "Confirm",JOptionPane.ERROR_MESSAGE);
 			}
-			
 		} else if (obj == cancel_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		}
