@@ -268,7 +268,7 @@ public class Login_Main extends JPanel implements ActionListener {
 					jtf_id.setText("");
 					jtf_pw.setText("");
 					JOptionPane.showMessageDialog(null, "로그인 되었습니다.", "Confirm", JOptionPane.OK_OPTION);
-				// ** 로그인 되었습니다 완료 후 어느화면으로 갈건지 
+					main.cardLayout.show(main.cardJPanel, "planner_Select");
 				}
 			} else if (obj == join_bt) {
 				main.cardLayout.show(main.cardJPanel, "login_Register");
