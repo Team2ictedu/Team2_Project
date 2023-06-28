@@ -528,7 +528,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 		} else if (obj == bt_plan_edit) { // 플래너 상세정보 수정
 			main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
 		} else if (obj == bt_plan_del) { // 플래너 삭제 후 새로고침
-			int result = JOptionPane.showConfirmDialog(null, "정말 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+			int result = JOptionPane.showConfirmDialog(null, "정말 플래너를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.YES_OPTION) {
 				JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
 			} else {
