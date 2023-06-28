@@ -276,7 +276,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == jb_create) {
 			if (jtf_name.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm",JOptionPane.ERROR_MESSAGE);
 				jtf_name.requestFocus(); // 커서위치 조절
 			} else if (jtf_date.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "시작날짜를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
