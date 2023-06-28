@@ -11,6 +11,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,7 +28,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Login_Main extends JPanel{
+
+public class Login_Main extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jb1, jb2, jb3 ,jb4;
@@ -227,8 +230,6 @@ public class Login_Main extends JPanel{
 				jp.add(add_jp);
 		}
 		
-		
-		
 //		ADD 
 		{
 		jp_headerSubLeft.add(new JLabel(imageIcon));
@@ -246,9 +247,26 @@ public class Login_Main extends JPanel{
 		add(jp,BorderLayout.CENTER);
 		}
 		
+		log_bt.addActionListener(this);
+		join_bt.addActionListener(this);
+		idFin_bt.addActionListener(this);
+		pwFin_bt.addActionListener(this);
 	}
-	public Login_Main() {
-		// TODO Auto-generated constructor stub
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton obj = (JButton) e.getSource();
+			if (obj == log_bt) {
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			} else if (obj == join_bt) {
+				main.cardLayout.show(main.cardJPanel, "login_Register");
+			} else if (obj == idFin_bt) {
+				main.cardLayout.show(main.cardJPanel, "id_Search");
+			} else if (obj == pwFin_bt) {
+				main.cardLayout.show(main.cardJPanel, "pw_Search");
+			}
+		}
+		public Login_Main() {
 	}
 	
 	public static void main(String[] args) {

@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -32,11 +33,10 @@ public class Id_Search extends JPanel implements ActionListener{
 	JLabel jLabel1, lb;
 	TextPrompt tp1, tp2;
 	Border newBorder;
-	
+	Main main;
 	JPanel im_jp,log_im, lb_jp, name_jp, pw_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField jtf_name, jtf_em;
 	JButton logMv_bt, join_bt, pwFin_bt,idCk_bt;
-	Main main;
 	
 	public Id_Search(Main main) {
 		this.main = main;
@@ -236,12 +236,18 @@ public class Id_Search extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
-		if(obj==logMv_bt) { // 로그인버튼
+		if(obj==logMv_bt) { // 로그인이동버튼
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if(obj==join_bt) { // 회원가입으로 이동
 			main.cardLayout.show(main.cardJPanel, "login_Register");
 		}else if(obj==pwFin_bt) { // 비밀번호 찾기로 이동
 			main.cardLayout.show(main.cardJPanel, "pw_Search");
+		}else if(obj==idCk_bt) { // 계정 확인버튼 알림창
+			  if(jtf_name.getText().length()==0 ) { // 입력값이 없을때
+			  JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인해주세요.","Confirm",JOptionPane.ERROR_MESSAGE); 
+			  } else { // 정보 일치할때 수정완료
+			  
+			  }
 		}
 	}
 	

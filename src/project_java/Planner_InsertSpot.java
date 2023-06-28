@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -299,6 +300,10 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		jp_sel = new JPanel();
 		jp_sel.setBackground(Color.WHITE);
 		jtf_select = new JTextField(20);
+		TextPrompt tp_name = new TextPrompt("검색어를 입력하세요.", jtf_select);
+		tp_name.setFont(new Font("Jalnan", Font.PLAIN, 10));
+		tp_name.setForeground(Color.gray);
+		tp_name.changeAlpha(0.5f);
 		ImageIcon bt_img = new ImageIcon("src/images/button.png");
 
 		jb_select = new JButton(bt_img);
@@ -448,6 +453,9 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		jb4.addActionListener(this);
 		jbMyInfo.addActionListener(this);
 		jbLogOut.addActionListener(this);
+		jb_select.addActionListener(this);
+		jb_add_spot.addActionListener(this);
+		jb_delete_spot.addActionListener(this);
 		bt_Complete.addActionListener(this);
 		bt_Cancel.addActionListener(this);
 	}
@@ -455,24 +463,38 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
-		if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
 			main.cardLayout.show(main.cardJPanel, "planner_Create");
-		} else if(obj==jb2) { // 내일정 조회
+		} else if (obj == jb2) { // 내일정 조회
 			main.cardLayout.show(main.cardJPanel, "planner_Select");
-		} else if(obj==jb3) { // 여행 후기
+		} else if (obj == jb3) { // 여행 후기
 			main.cardLayout.show(main.cardJPanel, "allReview");
-		} else if(obj==jb4) { // 마이페이지
+		} else if (obj == jb4) { // 마이페이지
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if(obj==jbMyInfo) { // 내정보
+		} else if (obj == jbMyInfo) { // 내정보
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if(obj==jbLogOut) { // 로그아웃
+		} else if (obj == jbLogOut) { // 로그아웃
 			main.cardLayout.show(main.cardJPanel, "login_Main");
-		} else if(obj==bt_Complete) {
+		} else if (obj == jb_select) {
+			if(jtf_select.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "검색어를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+			} else {
+				// 검색내용출력
+			}
+		} else if(obj == jb_add_spot) {
+			// 선택안하면 하면 메세지창 띄우고 선택하면 담는것
+		} else if(obj == jb_delete_spot) {
+			// 위와 동일
+		} else if (obj == bt_Complete) {
 			main.cardLayout.show(main.cardJPanel, "planner_Select");
-		} else if(obj==bt_Cancel) {
-			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if (obj == bt_Cancel) {
+			int result = JOptionPane.showConfirmDialog(null, "플래너 작성을 취소하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.YES_OPTION) {
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			} else {
+			}
 		}
-	} 
+	}
 
 	public Planner_InsertSpot() {
 	}

@@ -27,7 +27,7 @@ public class PwChange_login extends JFrame implements ActionListener {
 	JButton ok_bt;
 	Border newBorder;
 	Pw_Search pw_Search;
-	int a = 0; // 패스워드 체크여부 ox
+	int ok = 0; // 패스워드 체크여부 ox
 	public PwChange_login(Pw_Search pw_Search) {
 		super("비밀번호 재설정");
 		this.pw_Search = pw_Search;
@@ -122,11 +122,13 @@ public class PwChange_login extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
 		if (obj == ok_bt) {
-			a = 1; // 1이 변경완료 2가 실패
-			if (a == 1) {
+			ok = 1; // 1이 변경완료 2가 실패
+			if (ok == 1) {
 				JOptionPane.showMessageDialog(pwCh_jp, "변경이 완료되었습니다.", "변경이 완료", JOptionPane.PLAIN_MESSAGE);
 				setVisible(false);
 				pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
+			}else { //실패시 안내창
+				
 			}
 		}
 	}

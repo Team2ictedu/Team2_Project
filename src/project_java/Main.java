@@ -75,7 +75,7 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
-		cardLayout.show(cardJPanel, "pw_Search");
+		cardLayout.show(cardJPanel, "id_Search");
 
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
