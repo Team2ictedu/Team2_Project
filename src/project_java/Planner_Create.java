@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -35,7 +36,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 	Font customFont;
 	JLabel jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel_new;
 	JTextField jtf_name, jtf_date, jtf_days;
-	JButton jb_create, jb_back ;
+	JButton jb_create, jb_back;
 	String[] city = { "City" }; // 시
 	JComboBox<String> jcom = new JComboBox<>(city);
 	String[] town = { "Town" }; // 동읍리
@@ -132,7 +133,6 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jb3.setBackground(Color.decode("#eee3f6"));
 			jb4.setBackground(Color.decode("#eee3f6"));
 
-			
 		}
 
 //		레이아웃
@@ -144,7 +144,6 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jp_headerMain.setLayout(new BoxLayout(jp_headerMain, BoxLayout.Y_AXIS));
 //		jp_headerMain.setLayout(new GridLayout(2,0));
 			// jp_headerSub.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
 
 		}
 
@@ -164,9 +163,8 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jp_title.setLayout(new FlowLayout());
 			jp_title.add(jLabel_new);
 			jp_title.setBackground(Color.decode("#B19CCB"));
-			jp_title.setPreferredSize(new Dimension(70,30));
-			
-			
+			jp_title.setPreferredSize(new Dimension(70, 30));
+
 			// Font
 			jLabel2.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jLabel3.setFont(new Font("Jalnan", Font.PLAIN, 12));
@@ -174,14 +172,14 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jLabel5.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jLabel_new.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jLabel_new.setForeground(Color.white);
-			
+
 			// 주요 내용들
 			jp_main = new JPanel();
 			jtf_name = new JTextField();
 			jtf_date = new JTextField();
 			jtf_days = new JTextField();
 			jb_create = new JButton("CREATE");
-			jb_back = new JButton("BACK");
+			jb_back = new JButton("CANCLE");
 			jb_create.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jb_back.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jp_checkbox = new JPanel();
@@ -191,22 +189,20 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jp_main.setLayout(new GridLayout(0, 1));
 			jp_checkbox.setLayout(new GridLayout(0, 2));
 			jp_main.add(jLabel2);
-			
-			//textfield 안 글자
-			TextPrompt tp = new TextPrompt("여행제목 ", jtf_name);   //외부클래스
+
+			// textfield 안 글자
+			TextPrompt tp = new TextPrompt("여행제목 ", jtf_name); // 외부클래스
 			tp.setForeground(Color.gray);
 			tp.changeAlpha(0.5f);
 			tp.setFont(new Font("Jalnan", Font.PLAIN, 12));
-			TextPrompt tp2 = new TextPrompt("시작날짜 ", jtf_date);   //외부클래스
+			TextPrompt tp2 = new TextPrompt("시작날짜 ", jtf_date); // 외부클래스
 			tp2.setForeground(Color.gray);
 			tp2.changeAlpha(0.5f);
 			tp2.setFont(new Font("Jalnan", Font.PLAIN, 12));
-			TextPrompt tp3 = new TextPrompt("기간입력 ", jtf_days);   //외부클래스
+			TextPrompt tp3 = new TextPrompt("기간입력 ", jtf_days); // 외부클래스
 			tp3.setForeground(Color.gray);
 			tp3.changeAlpha(0.5f);
 			tp3.setFont(new Font("Jalnan", Font.PLAIN, 12));
-			
-			
 
 			jp_main.add(jtf_name);
 			jp_main.add(jLabel3);
@@ -223,11 +219,11 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jb_back.setBackground(Color.decode("#ffffff"));
 			jb_back.setForeground(Color.BLACK);
 			jp_main.setBorder(BorderFactory.createEmptyBorder(50, 350, 100, 350));
-  
+
 			jp.setLayout(new BorderLayout());
 			jp.add(jp_title, BorderLayout.NORTH);
 			jp.add(jp_main, BorderLayout.CENTER);
-			
+
 		}
 //		ADD 
 		{
@@ -246,10 +242,10 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			
+
 			setLayout(new BorderLayout());
 			add(jp_headerMain, BorderLayout.NORTH);
-			add(jp,BorderLayout.CENTER);
+			add(jp, BorderLayout.CENTER);
 			setBackground(Color.decode("#D4B8E8"));
 		}
 		jb1.addActionListener(this);
@@ -260,28 +256,53 @@ public class Planner_Create extends JPanel implements ActionListener {
 		jbLogOut.addActionListener(this);
 		jb_create.addActionListener(this);
 		jb_back.addActionListener(this);
-		
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
-		if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
 			main.cardLayout.show(main.cardJPanel, "planner_Create");
-		} else if(obj==jb2) { // 내일정 조회
+		} else if (obj == jb2) { // 내일정 조회
 			main.cardLayout.show(main.cardJPanel, "planner_Select");
-		} else if(obj==jb3) { // 여행 후기
+		} else if (obj == jb3) { // 여행 후기
 			main.cardLayout.show(main.cardJPanel, "allReview");
-		} else if(obj==jb4) { // 마이페이지
+		} else if (obj == jb4) { // 마이페이지
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if(obj==jbMyInfo) { // 내정보
+		} else if (obj == jbMyInfo) { // 내정보
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if(obj==jbLogOut) { // 로그아웃
+		} else if (obj == jbLogOut) { // 로그아웃
 			main.cardLayout.show(main.cardJPanel, "login_Main");
-		} else if(obj==jb_create) {
-			main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
-		} else if(obj==jb_back) {
-			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if (obj == jb_create) {
+			if (jtf_name.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+			} else if (jtf_date.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "시작날짜를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+			} else if (jtf_days.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+			} else { // 성공시
+				jtf_name.setText("");
+				jtf_date.setText("");
+				jtf_days.setText("");
+				main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
+			}
+		} else if (obj == jb_back) {
+			// 취소할때 문자에 길이가 있으면 페이지 이동할건지 여부 확인
+			if(jtf_name.getText().length() > 0 || jtf_date.getText().length() > 0 || jtf_days.getText().length() > 0) {			
+				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+				// 예 클릭시, 내용 초기화하고 이동시켜주고 아니오 클릭시, 이동취소
+				if(result==JOptionPane.YES_OPTION) {
+					jtf_name.setText("");
+					jtf_date.setText("");
+					jtf_days.setText("");
+				    main.cardLayout.show(main.cardJPanel, "planner_Select");
+				} else {
+					JOptionPane.showMessageDialog(null, "이동을 취소합니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+				}
+			} else { // 취소할때 문자길이가 없으면 바로 이동
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			}
 		}
 	}
 
