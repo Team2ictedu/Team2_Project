@@ -35,14 +35,16 @@ Loremipsum
 
 ## Authors
 
-[@권연준](https://github.com/kyunjun98), [@김민지](www.google.com), [@김신실](https://github.com/shinsil0601), [@김지수](www.google.com), [@이소연](https://github.com/dlthdod ), [@이수환](https://www.github.com/shlee8405)
+| [@권연준](https://github.com/kyunjun98) |[@김민지](www.google.com) | [@김신실](https://github.com/shinsil0601) | [@김지수](www.google.com) | [@이소연](https://github.com/dlthdod ) |  [@이수환](https://www.github.com/shlee8405) |
+| --------------------------------------- | -------------------------| ----------------------------------------- | --------------------------| ------------------------------------- | ------------------------------------------- |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
 
-
-## Version History
-
-
+, , , , , 
 ## Acknowledgments
-
-Inspiration, code snippets, etc.
+아이콘:
+* [icon8](https://icons8.com)
+  
+3rd파티 클래스:
 * [JTattoo](http://www.jtattoo.net/index.html)
 * [Oracle JDBC](https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html)
