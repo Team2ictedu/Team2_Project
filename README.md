@@ -42,7 +42,8 @@ Loremipsum
 
 
 ## Acknowledgments
-
-Inspiration, code snippets, etc.
+아이콘:
+* [icon8] (https://icons8.com/)
+3rd파티 클래스:
 * [JTattoo](http://www.jtattoo.net/index.html)
 * [Oracle JDBC](https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html)
