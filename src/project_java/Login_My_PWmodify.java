@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -31,13 +32,13 @@ import javax.swing.border.EmptyBorder;
 public class Login_My_PWmodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_pw, jp_pwchk, jp_south2, jp_west2;
-	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, information_bt, update_bt,
+	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, ok_bt, cancel_bt, mypage_bt, update_bt,
 			pw_update_bt, withdraw_bt;
 	Font customFont;
 	JLabel jLabel1, jl_pw, jl_pwchk;
 	JTextArea jta;
 	JScrollPane jsp;
-	JTextField tf_phone, jpf_pw_, tf_pwchk, tf_birth;
+	JTextField tf_phone, tf_pwchk, tf_birth;
 	JPasswordField jpf_pw, jpf_pwchk;
 	Main main;
 	
@@ -86,17 +87,16 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			jb4 = new JButton("마이페이지");
 			jb4.setPreferredSize(new Dimension(120, 30));
 			
-			jb5= new JButton("확 인");
-			jb6= new JButton("취 소");
+			ok_bt= new JButton("확 인");
+			cancel_bt= new JButton("취 소");
 			
-			jpf_pw_ = new JPasswordField(20);
+			jpf_pw = new JPasswordField(20);
 			jpf_pwchk = new JPasswordField(20);
 			jl_pw = new JLabel("비밀번호 : ",JLabel.CENTER);
 			jl_pwchk = new JLabel("비밀번호 확인 : ",JLabel.CENTER);
 			
 			jp_pw.setBackground(Color.WHITE);
 			jp_pwchk.setBackground(Color.WHITE);
-			
 //회원정보수정			
 			jp.setLayout(new BorderLayout());
 			JPanel jp_title = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -109,7 +109,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 
 			jp_pw.add(jl_pw);
 			jl_pw.setFont(new Font("Jalnan", Font.BOLD, 15));			
-			jp_pw.add(jpf_pw_);
+			jp_pw.add(jpf_pw);
 			
 			jp_pwchk.add(jl_pwchk);
 			jl_pwchk.setFont(new Font("Jalnan", Font.BOLD, 15));			
@@ -118,8 +118,8 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			jp_center.add(jp_pw);		
 			jp_center.add(jp_pwchk);
 			
-			jp_south2.add(jb5);
-			jp_south2.add(jb6);
+			jp_south2.add(ok_bt);
+			jp_south2.add(cancel_bt);
 			jp_south2.setBackground(Color.WHITE);
 			
 			jp_center.setLayout(new BoxLayout(jp_center, BoxLayout.Y_AXIS));
@@ -136,8 +136,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			jbName = new JButton("이름");
 			jbMyInfo = new JButton("내 정보");
 			jbLogOut = new JButton("로그아웃");
-			mypage_bt = new JButton("마이페이지");
-			information_bt = new JButton("개인 정보");
+			mypage_bt = new JButton("마이페이지");	
 			update_bt = new JButton("회원 정보 수정");
 			pw_update_bt = new JButton("비밀번호 변경");
 			withdraw_bt = new JButton("회원탈퇴");
@@ -153,15 +152,15 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 		jb2.setFont(new Font("Jalnan", Font.PLAIN, 12));
 		jb3.setFont(new Font("Jalnan", Font.PLAIN, 12));
 		jb4.setFont(new Font("Jalnan", Font.PLAIN, 12));
-		jb5.setFont(new Font("Jalnan", Font.PLAIN, 12));
-		jb6.setFont(new Font("Jalnan", Font.PLAIN, 12));
+		ok_bt.setFont(new Font("Jalnan", Font.PLAIN, 12));
+		cancel_bt.setFont(new Font("Jalnan", Font.PLAIN, 12));
 		mypage_bt.setFont(new Font("Jalnan", Font.BOLD, 20));
-		information_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 		update_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 		pw_update_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 		withdraw_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
-		jpf_pw_.setFont(new Font("Jalnan", Font.PLAIN, 12));
 	
+		jpf_pw.setFont(new Font("Jalnan", Font.PLAIN, 12));
+		jpf_pwchk.setFont(new Font("Jalnan", Font.PLAIN, 12));
 		
 //	jbName,jbMyInfo,jbLogout 투명하게 하기
 		
@@ -177,9 +176,6 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			mypage_bt.setOpaque(false);
 			mypage_bt.setContentAreaFilled(false);
 			mypage_bt.setBorderPainted(false);
-			information_bt.setOpaque(false);
-			information_bt.setContentAreaFilled(false);
-			information_bt.setBorderPainted(false);
 			update_bt.setOpaque(false);
 			update_bt.setContentAreaFilled(false);
 			update_bt.setBorderPainted(false);
@@ -236,7 +232,6 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 		jp_test.setBackground(Color.decode("#D4B8E8"));
 
 		jp_west2.add(mypage_bt);
-		jp_west2.add(information_bt);
 		jp_west2.add(update_bt);
 		jp_west2.add(pw_update_bt);
 		jp_west2.add(withdraw_bt);
@@ -268,6 +263,8 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			jb2.addActionListener(this);
 			jb3.addActionListener(this);
 			jb4.addActionListener(this);
+			ok_bt.addActionListener(this);
+			cancel_bt.addActionListener(this);
 			jbMyInfo.addActionListener(this);
 			jbLogOut.addActionListener(this);
 			pw_update_bt.addActionListener(this);
@@ -297,7 +294,35 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
 		} else if(obj==withdraw_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
-		}
+		} else if(obj == ok_bt) {	
+			String pass1 = new String(jpf_pw.getPassword());
+			String pass2 = new String(jpf_pwchk.getPassword());
+			if(pass1.length() == 0) {
+				JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
+				jpf_pw.requestFocus();
+			} else if(pass2.length() == 0) {
+				JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
+				jpf_pwchk.requestFocus();
+			} else if(pass1.equals(pass2)){
+				JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.","Confirm", JOptionPane.INFORMATION_MESSAGE);
+				main.cardLayout.show(main.cardJPanel,"planner_Select");
+				jpf_pw.setText("");
+				jpf_pwchk.setText("");
+			} else {
+				JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.","Confirm", JOptionPane.ERROR_MESSAGE);
+			}
+		 } else if(obj == cancel_bt) {
+				if(jpf_pw.getPassword().length >0 || jpf_pwchk.getPassword().length  >0) {
+					int result = JOptionPane.showConfirmDialog(null, "비밀번호 변경을 취소하시겠습니까?","Confirm", JOptionPane.YES_NO_OPTION);
+					if(result== JOptionPane.YES_OPTION) {
+						main.cardLayout.show(main.cardJPanel,"planner_Select");
+						jpf_pw.setText("");
+						jpf_pwchk.setText("");
+					}
+				}else {
+					main.cardLayout.show(main.cardJPanel, "login_My_PWmodify");
+				}
+		 }
 	}
 	public Login_My_PWmodify() {
 		// TODO Auto-generated constructor stub

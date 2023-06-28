@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -32,7 +33,7 @@ import javax.swing.border.EmptyBorder;
 public class Login_My_Infomodify extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
-	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, information_bt, update_bt,
+	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt,update_bt,
 			pw_update_bt, withdraw_bt;
 	Font customFont;
 	JLabel jLabel1, jl_name, jl_email, jl_birth, jl_phone;
@@ -158,7 +159,6 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jbMyInfo = new JButton("내 정보");
 				jbLogOut = new JButton("로그아웃");
 				mypage_bt = new JButton("마이페이지");
-				information_bt = new JButton("개인 정보");
 				update_bt = new JButton("회원 정보 수정");
 				pw_update_bt = new JButton("비밀번호 변경");
 				withdraw_bt = new JButton("회원탈퇴");
@@ -176,7 +176,6 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jb5.setFont(new Font("Jalnan", Font.PLAIN, 12));
 				jb6.setFont(new Font("Jalnan", Font.PLAIN, 12));
 				mypage_bt.setFont(new Font("Jalnan", Font.BOLD, 20));
-				information_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 				update_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 				pw_update_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
 				withdraw_bt.setFont(new Font("Jalnan", Font.PLAIN, 10));
@@ -199,9 +198,6 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				mypage_bt.setOpaque(false);
 				mypage_bt.setContentAreaFilled(false);
 				mypage_bt.setBorderPainted(false);
-				information_bt.setOpaque(false);
-				information_bt.setContentAreaFilled(false);
-				information_bt.setBorderPainted(false);
 				update_bt.setOpaque(false);
 				update_bt.setContentAreaFilled(false);
 				update_bt.setBorderPainted(false);
@@ -253,7 +249,6 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jp_test.setBackground(Color.decode("#D4B8E8"));
 
 				jp_west2.add(mypage_bt);
-				jp_west2.add(information_bt);
 				jp_west2.add(update_bt);
 				jp_west2.add(pw_update_bt);
 				jp_west2.add(withdraw_bt);
@@ -285,6 +280,8 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jb2.addActionListener(this);
 				jb3.addActionListener(this);
 				jb4.addActionListener(this);
+				jb5.addActionListener(this);
+				jb6.addActionListener(this);
 				jbMyInfo.addActionListener(this);
 				jbLogOut.addActionListener(this);
 				pw_update_bt.addActionListener(this);
@@ -314,6 +311,36 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
 			} else if(obj==withdraw_bt) {
 				main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
+			} else if(obj == jb5) {
+				if(tf_email.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "email을 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
+					tf_email.requestFocus();
+				}else if(tf_birth.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "생년월일을 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
+					tf_birth.requestFocus();
+				}else if(tf_phone.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
+					tf_phone.requestFocus();
+				} else {
+					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.","Confirm", JOptionPane.INFORMATION_MESSAGE);
+					main.cardLayout.show(main.cardJPanel,"planner_Select");
+					tf_email.setText("");
+					tf_birth.setText("");
+					tf_phone.setText("");
+				}
+				
+			}else if(obj == jb6) {
+				if(tf_email.getText().length() >0 || tf_birth.getText().length() > 0 || tf_phone.getText().length() >0) {
+					int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?","Confirm", JOptionPane.YES_NO_OPTION);
+					if(result== JOptionPane.YES_OPTION) {
+						main.cardLayout.show(main.cardJPanel,"planner_Select");
+						tf_email.setText("");
+						tf_birth.setText("");
+						tf_phone.setText("");
+					}
+				}else {
+					main.cardLayout.show(main.cardJPanel, "planner_Select");
+				}
 			}
 		}
 	public Login_My_Infomodify() {
