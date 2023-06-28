@@ -277,10 +277,13 @@ public class Planner_Create extends JPanel implements ActionListener {
 		} else if (obj == jb_create) {
 			if (jtf_name.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				jtf_name.requestFocus(); // 커서위치 조절
 			} else if (jtf_date.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "시작날짜를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				jtf_date.requestFocus();
 			} else if (jtf_days.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				jtf_days.requestFocus();
 			} else { // 성공시
 				jtf_name.setText("");
 				jtf_date.setText("");
@@ -297,9 +300,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 					jtf_date.setText("");
 					jtf_days.setText("");
 				    main.cardLayout.show(main.cardJPanel, "planner_Select");
-				} else {
-					JOptionPane.showMessageDialog(null, "이동을 취소합니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
-				}
+				} 
 			} else { // 취소할때 문자길이가 없으면 바로 이동
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			}
