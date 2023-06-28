@@ -73,12 +73,13 @@ public class Main extends JFrame{
 		
 		add(cardJPanel);
 		
-		cardLayout.show(cardJPanel, "allReview");
+		cardLayout.show(cardJPanel, "login_Main");
 
 		setSize(1000, 800);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+
 	}
 	public static void main(String[] args) {
 		try {
