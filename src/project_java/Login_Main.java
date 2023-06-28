@@ -11,6 +11,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,13 +22,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class Login_Main extends JPanel{
+
+public class Login_Main extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jb1, jb2, jb3 ,jb4;
@@ -43,7 +47,6 @@ public class Login_Main extends JPanel{
 	public Login_Main(Main main) {
 		this.main = main;
 //		FONT
-//		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
@@ -228,8 +231,6 @@ public class Login_Main extends JPanel{
 				jp.add(add_jp);
 		}
 		
-		
-		
 //		ADD 
 		{
 		jp_headerSubLeft.add(new JLabel(imageIcon));
@@ -242,14 +243,42 @@ public class Login_Main extends JPanel{
 		jp_headerMain.add(jp_headerSub);
 		//jp_headerMain.add(jp_buttons);
 		
+		setLayout(new BorderLayout());
 		add(jp_headerMain, BorderLayout.NORTH);
 		add(jp,BorderLayout.CENTER);
-		setLayout(new BorderLayout());
 		}
 		
+		log_bt.addActionListener(this);
+		join_bt.addActionListener(this);
+		idFin_bt.addActionListener(this);
+		pwFin_bt.addActionListener(this);
 	}
-	public Login_Main() {
-		// TODO Auto-generated constructor stub
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton obj = (JButton) e.getSource();
+			if (obj == log_bt) {
+				if(jtf_id.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
+					jtf_id.requestFocus(); // 커서위치 조절
+				} else if(jtf_pw.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
+					jtf_pw.requestFocus();	
+				} else {
+					jtf_id.setText("");
+					jtf_pw.setText("");
+					JOptionPane.showMessageDialog(null, "로그인 되었습니다.", "Confirm", JOptionPane.OK_OPTION);
+				// ** 로그인 되었습니다 완료 후 어느화면으로 갈건지 
+				}
+			} else if (obj == join_bt) {
+				main.cardLayout.show(main.cardJPanel, "login_Register");
+			} else if (obj == idFin_bt) {
+				main.cardLayout.show(main.cardJPanel, "id_Search");
+			} else if (obj == pwFin_bt) {
+				main.cardLayout.show(main.cardJPanel, "pw_Search");
+			}
+		}
+		public Login_Main() {
 	}
 	
 	public static void main(String[] args) {

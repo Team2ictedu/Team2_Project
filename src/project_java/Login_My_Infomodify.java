@@ -9,6 +9,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,7 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class Login_My_Infomodify extends JPanel {
+public class Login_My_Infomodify extends JPanel implements ActionListener{
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, information_bt, update_bt,
@@ -46,7 +48,6 @@ public class Login_My_Infomodify extends JPanel {
 		{
 
 //		FONT
-//		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			try {
 				ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
@@ -278,10 +279,42 @@ public class Login_My_Infomodify extends JPanel {
 				setLayout(new BorderLayout());
 				add(jp_headerMain, BorderLayout.NORTH);
 				add(jp, BorderLayout.CENTER);
-			
+
+				jb1.addActionListener(this);
+				jb2.addActionListener(this);
+				jb3.addActionListener(this);
+				jb4.addActionListener(this);
+				jbMyInfo.addActionListener(this);
+				jbLogOut.addActionListener(this);
+				pw_update_bt.addActionListener(this);
+				update_bt.addActionListener(this);
+				withdraw_bt.addActionListener(this);
 			}
 		}
 	}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton obj = (JButton) e.getSource();
+			if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+				main.cardLayout.show(main.cardJPanel, "planner_Create");
+			} else if(obj==jb2) { // 내일정 조회
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			} else if(obj==jb3) { // 여행 후기
+				main.cardLayout.show(main.cardJPanel, "allReview");
+			} else if(obj==jb4) { // 마이페이지
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if(obj==jbMyInfo) { // 내정보
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if(obj==jbLogOut) { // 로그아웃
+				main.cardLayout.show(main.cardJPanel, "login_Main");
+			} else if(obj == pw_update_bt) {
+				main.cardLayout.show(main.cardJPanel, "login_My_PWmodify");
+			}else if(obj==update_bt) {
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if(obj==withdraw_bt) {
+				main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
+			}
+		}
 
 	public Login_My_Infomodify() {
 		// TODO Auto-generated constructor stub
@@ -311,4 +344,5 @@ public class Login_My_Infomodify extends JPanel {
 			ex.printStackTrace();
 		}
 	}
+
 }
