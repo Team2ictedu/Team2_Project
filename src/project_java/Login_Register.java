@@ -328,12 +328,11 @@ public class Login_Register extends JPanel implements ActionListener {
 		if (obj == join_bt) { // 가입하기 버튼
 			int ok = 0;
 			if(ok ==1) { // 정상적으로 입력시
-				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " 회원가입 성공", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
 				main.cardLayout.show(main.cardJPanel, "login_Main");
 			} else if(ok==0) { // 누락된 정보 있을시
-				// 아이디는 아이디를 입력해주세요. 비밀번호는 비밀번호 입력해주세요 비밀번호 불일치시 비밀번호가 일치하지 않습니다.
-				// 약관동의 안할시 약관동의를 해주세요. 등등 모든것에 대한 다이어로그 띄워줄것
-				JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!", "회원가입 실패",JOptionPane.ERROR_MESSAGE);
+
+				JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!", "Confirm",JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (obj == cancel_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_Main");
