@@ -1,4 +1,4 @@
-package adminOld;
+package adminOld_dontuse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,15 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class UsersDAO {
+public class PlacesDAO {
 	Connection conn = null;
 	PreparedStatement pstm = null;
 	ResultSet rs = null;
 	int result = 0 ;
 	
-	private static UsersDAO UsersDAO = new UsersDAO();
-	public static UsersDAO getInstance() {
-		return UsersDAO;
+	private static PlacesDAO PlacesDAO = new PlacesDAO();
+	public static PlacesDAO getInstance() {
+		return PlacesDAO;
 	}
 	
 	// DB 접속 메서드 
@@ -22,7 +22,7 @@ public class UsersDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url ="jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "c##shlee";
+			String user = "c##team2";
 			String password = "1111";
 			conn = DriverManager.getConnection(url, user, password);
 			return conn;
@@ -31,22 +31,21 @@ public class UsersDAO {
 		return null;
 	}
 	
-	public ArrayList<UserVO> getSelectAll() {
+	public ArrayList<PlaceVO> getSelectAll() {
 		try {
 			conn = getConnection();
-			String sql = "select * from usertable" ;
+			String sql = "select * from placetable" ;
 			pstm = conn.prepareStatement(sql);
 			rs = pstm.executeQuery();
-			ArrayList<UserVO> list = new ArrayList<>();
+			ArrayList<PlaceVO> list = new ArrayList<>();
 			while(rs.next()) {
-				UserVO vo = new UserVO();
-				vo.setUserid(rs.getString(1));
-				vo.setUserpwd(rs.getString(2));
-				vo.setUsername(rs.getString(3));
-				vo.setUserbirthday(rs.getString(4));
-				vo.setUseremail(rs.getString(5));
-				vo.setUserphone(rs.getString(6));
-				vo.setUserterms(rs.getString(7));
+				PlaceVO vo = new PlaceVO();
+				vo.setPlacenumber(rs.getString(1));
+				vo.setPlacename(rs.getString(2));
+				vo.setPlacelocation(rs.getString(3));
+				vo.setPlacedescription(rs.getString(4));
+				vo.setPlaceprice(rs.getString(5));
+				vo.setPlacereview( rs.getString(6));
 				list.add(vo);
 			}
 			return list;
@@ -60,6 +59,10 @@ public class UsersDAO {
 			}
 		}
 		return null;
+	}
+	
+	public void deleteRow() {
+		
 	}
 	
 }

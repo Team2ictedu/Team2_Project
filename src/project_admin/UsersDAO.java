@@ -22,7 +22,7 @@ public class UsersDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url ="jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "c##shlee";
+			String user = "c##team2";
 			String password = "1111";
 			conn = DriverManager.getConnection(url, user, password);
 			return conn;
