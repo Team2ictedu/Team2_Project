@@ -61,9 +61,6 @@ public class AdminHome extends JPanel{
 			e.printStackTrace();
 		}
 		
-		
-		
-		
 		// base jpanels
 		jpWest = new JPanel();
 		jpEast = new JPanel();
