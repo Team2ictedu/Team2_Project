@@ -1,4 +1,4 @@
- package admin2;
+ package project_admin;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

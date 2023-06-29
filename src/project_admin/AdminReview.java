@@ -1,4 +1,4 @@
-package admin2;
+package project_admin;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -331,7 +331,7 @@ public class AdminReview extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "greeting");				
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_greeting");				
 			}
 		});
 		searchBtn.addActionListener(new ActionListener() {
@@ -345,21 +345,29 @@ public class AdminReview extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "places");
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_places");
 			}
 		});
 		userEditBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "users");				
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_users");				
 			}
 		});
 		reviewEditBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "reviews");						
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_reviews");						
+			}
+		});
+		
+		logOutBtn.addActionListener(new ActionListener() { //로그아웃
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.main.cardLayout.show(main.main.cardJPanel,  "login_Main");		
 			}
 		});
 	}

@@ -1,4 +1,4 @@
-package admin2;
+package project_admin;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,43 +12,48 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 
-public class AdminHome extends JPanel{
+public class AdminUsers extends JPanel{
 	AdminMain main;
 	JPanel jpWest, jpEast;
-	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut, jpWestHeader;
+	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut , jpWestHeader;
 	/*jpWest Buttons */ JButton adminHomeBtn,placeEditBtn , userEditBtn, reviewEditBtn, logOutBtn ;
 	/*jpEast Panels*/ JPanel jpEastHeadMain, jpEastHeadNorth, jpEastHeadSouth, jpEastFootMain, jpEastFootNorth, jpEastFootCenter;
+	/*jpEastHead Buttons*/ JButton searchBtn, searchClearBtn;
+	/*jpEastHead ArrayList*/ List<String> selectionList;
+	/*jpEastHead ComboBox & TextField*/ JComboBox<String> eastHeadComboBox; JTextField eastHeadTextField;
 	/*jpEastJTA*/ JTextArea jta;
-	/*jpEastJSP*/ JScrollPane jsp;
-	/*jpEastJLABEL*/ JLabel welcomeLabel;
-	
-	
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
-	LocalDateTime now = LocalDateTime.now();  
-	String todayDate = dtf.format(now);
-	String adminName = "양동근";
-	String welcome = String.format("어서오세요, %s님!      %s", adminName, todayDate);
+	/*jpEastFootTable*/ JTable placeTable; 
+ 	/*jpEastFoot Buttons*/ 
 	
 	
 	
-	public AdminHome(AdminMain main) {
+	public AdminUsers(AdminMain main) {
 		this.main = main;
 		//font 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -72,12 +77,12 @@ public class AdminHome extends JPanel{
 		
 		// jpWest panels
 		jpAdminHome 	= new JPanel();
+		jpWestHeader 	= new JPanel();
 		jpPlaceEdit 	= new JPanel();
 		jpUserEdit 		= new JPanel();
 		jpReviewEdit 	= new JPanel();
 		jpWestTop 		= new JPanel();
 		jpLogOut 		= new JPanel();
-		jpWestHeader 	= new JPanel();
 		jpAdminHome.setBackground(Color.decode("#242320"));
 		jpPlaceEdit.setBackground(Color.decode("#242320"));
 		jpUserEdit.setBackground(Color.decode("#242320"));
@@ -102,7 +107,6 @@ public class AdminHome extends JPanel{
 		Image image4 = icon4.getImage();
 		Image newimg4 = image4.getScaledInstance(25, 25,  java.awt.Image.SCALE_DEFAULT);
 		icon4 = new ImageIcon(newimg4);
-		
 		
 		// jpWest Buttons naming + decoration
 		adminHomeBtn  	= new JButton("관리자 홈");
@@ -152,29 +156,28 @@ public class AdminHome extends JPanel{
 		jpPlaceEdit.setBackground(Color.decode("#242320")); 
 		jpUserEdit.setBackground(Color.decode("#242320")); 	
 		jpReviewEdit.setBackground(Color.decode("#242320"));
-
-		// jpWest panel.add(button)
-		jpAdminHome.add(adminHomeBtn);
-		jpPlaceEdit.add(placeEditBtn);
-		jpUserEdit.add(userEditBtn);
-		jpReviewEdit.add(reviewEditBtn);
 		
-		//jpWestHeader 
+		// jpWestHeader
 		jpWestHeader.setPreferredSize(new Dimension(200,100));
 		jpWestHeader.setBackground(Color.decode("#242320"));
 		ImageIcon icon = new ImageIcon("src/icons/donaldtrump.png");
 		Image image = icon.getImage();
 		Image newimg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_DEFAULT);
 		icon = new ImageIcon(newimg);
-		JLabel adminLabel = new JLabel(adminName);
+		AdminHome home = new AdminHome(main);
+		JLabel adminLabel = new JLabel(home.adminName);
 		adminLabel.setFont(new Font("Jalnan",Font.PLAIN,20));
 		adminLabel.setForeground(Color.decode("#dbd8cc"));
 		jpWestHeader.setLayout(new GridBagLayout());
 		jpWestHeader.add(new JLabel(icon));
 		jpWestHeader.add(adminLabel);
 		
-		//icons
-
+		
+		// jpWest panel.add(button)
+		jpAdminHome.add(adminHomeBtn);
+		jpPlaceEdit.add(placeEditBtn);
+		jpUserEdit.add(userEditBtn);
+		jpReviewEdit.add(reviewEditBtn);
 		
 		//jpWest.add(panel)
 		jpWest.setLayout(new BorderLayout());
@@ -182,11 +185,10 @@ public class AdminHome extends JPanel{
 		jpWestTop.add(jpAdminHome);
 		jpWestTop.add(jpPlaceEdit);
 		jpWestTop.add(jpUserEdit);
-		jpWestTop.add(jpReviewEdit);		
+		jpWestTop.add(jpReviewEdit);
 		jpWest.add(jpWestTop, BorderLayout.CENTER);
 		jpLogOut.add(logOutBtn);
 		jpWest.add(jpLogOut, BorderLayout.SOUTH);
-//		jpWest.setLayout(new BoxLayout(jpWest,BoxLayout.Y_AXIS));
 		
 		
 		//jpEast border
@@ -196,8 +198,12 @@ public class AdminHome extends JPanel{
 		Border newBorder2 = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#d6d6d6"));
 		jpWestHeader.setBorder(newBorder2);
 		jpWestHeader.setOpaque(true);
+		
 		Border titledBorderEastHead = BorderFactory.createTitledBorder("검색창");
 		Border titledBorderEastFoot = BorderFactory.createTitledBorder("내용");
+		((TitledBorder) titledBorderEastHead).setTitleColor(Color.decode("#dbd8cc"));
+		((TitledBorder) titledBorderEastFoot).setTitleColor(Color.decode("#dbd8cc"));
+		repaint();
 		
 		//jpEast panels naming + colors
 		jpEastHeadMain = new JPanel();
@@ -206,41 +212,111 @@ public class AdminHome extends JPanel{
 		jpEastHeadMain.setBackground(Color.decode("#2e2e2e"));
 		jpEastHeadNorth.setBackground(Color.decode("#2e2e2e"));
 		jpEastHeadSouth.setBackground(Color.decode("#2e2e2e"));
+		jpEastFootMain = new JPanel();
+		jpEastFootNorth = new JPanel();
+		jpEastFootCenter = new JPanel();
 		
-		//jpEast jta
-		jta = new JTextArea();
-		jta.setText(String.format(""));
-		jta.setRows(18);
-		jta.setLineWrap(true);
-		jta.setEditable(false);
-		jta.setFont(new Font("굴림", Font.PLAIN, 15));
-		jsp = new JScrollPane(jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		jta.setBounds(50, 50, 600,200);
+		//jpEastHead comboBox & textField
+		selectionList = new ArrayList<String>();
+		selectionList.add("전체보기");
+		selectionList.add("World");
+		eastHeadComboBox = new JComboBox<String>(selectionList.toArray(new String[0]));
+		eastHeadTextField = new JTextField(20);
 		
-		//jpEastWelcome
-		welcomeLabel = new JLabel(welcome);
-		welcomeLabel.setFont(new Font("Jalnan",Font.PLAIN,18));
-		welcomeLabel.setForeground(Color.decode("#dbd8cc"));
-		jpEastHeadNorth.add(welcomeLabel);
 		
-		//jpEastHeadMain.add(North + South)
-		jpEastHeadSouth.add(jsp);
+		//jpEastHeadNorth.add(Checkbox + jtf)          
+		jpEastHeadNorth.add(eastHeadComboBox);
+		jpEastHeadNorth.add(eastHeadTextField);
+		
+		//jpEastHeadSouth buttons
+		searchBtn = new JButton("검색");
+		searchClearBtn = new JButton("검색 초기화");
+
+		//jpEastHeadSouth.add(jpEastButton)
+		jpEastHeadSouth.add(searchBtn);
+		jpEastHeadSouth.add(searchClearBtn);
+		
+		//jpEastHeadMain.add(panels)
 		jpEastHeadMain.add(jpEastHeadNorth);
 		jpEastHeadMain.add(jpEastHeadSouth);
-		
-		//jpEastHeadMain layout
 		jpEastHeadMain.setLayout(new BoxLayout(jpEastHeadMain, BoxLayout.Y_AXIS));
-		jpEastHeadNorth.setLocation(200	, 200);
+		
+		//jpEastFoot panels + colors
+		jpEastFootMain = new JPanel();
+		jpEastFootNorth = new JPanel();
+		jpEastFootCenter = new JPanel();
+		jpEastFootMain.setBackground(Color.decode("#2e2e2e"));
+		
+		//jpEastFootNorth createBtn
+			/////////*/*/*/*//데이터 추가버튼 추가하기/*/
+		
+		
+		//jpEastFootCenter table
+		/*ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll();*/ 
+		Object[][] list = UsersDAO.getInstance().getSelectAll(); 
+		System.out.println("users list :"+list.length);
+		
+		/*PlaceTableModel model = new PlaceTableModel(list);*/
+		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정","삭제"};
+
+		DefaultTableModel model = new DefaultTableModel(list,columnNames);
+		
+		placeTable = new JTable(model);
+		placeTable.setShowGrid(false);
+		placeTable.setShowHorizontalLines(false);
+		placeTable.setShowVerticalLines(false);
+		placeTable.setRowMargin(0);
+		placeTable.setIntercellSpacing(new Dimension(0, 0));
+		placeTable.setFillsViewportHeight(true);
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		placeTable.setRowSorter(sorter);
+		
+		
+		
+		
+		Action delete = new AbstractAction() 
+				{
+					public void actionPerformed(ActionEvent e) {
+						/////////////////////MAKE DELETE JDBC
+						JTable table = (JTable)e.getSource();
+				        int modelRow = Integer.valueOf( e.getActionCommand() );
+				        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
+				        System.out.println("ss");
+					}
+			
+				};
+		Action edit = new AbstractAction()
+				{
+						/////////////////////MAKE EDIT JDBC
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+			
+				};
+		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 7);
+		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 6);
+
+		
+		
+		JScrollPane placeTableSP = new JScrollPane(placeTable);
+		placeTableSP.setPreferredSize(new Dimension(600,400));
+		jpEastFootCenter.add(placeTableSP);
+		
+		
+		//jpEastFootSouth btns
+		
+		
+		//jpEastFootMain.add()
+		jpEastFootMain.setPreferredSize(new Dimension(700,500));
+		jpEastFootMain.add(jpEastFootCenter);
 		
 		//jpEast.add(panels)
-		jpEast.setLayout(new BoxLayout(jpEast,BoxLayout.Y_AXIS));
-		jpEast.add(Box.createVerticalGlue());
 		jpEast.add(jpEastHeadMain);
-		jpEast.add(Box.createVerticalGlue());
-//		jpEastHeadSouth.setBorder(titledBorderEastHead);
-		
-		jpAdminHome.setBackground(Color.decode("#2e2e2e"));
+		jpEastHeadMain.setBorder(titledBorderEastHead);
+		jpEast.add(jpEastFootMain);
+		jpEastFootMain.setBorder(titledBorderEastFoot);
+		jpUserEdit.setBackground(Color.decode("#2e2e2e"));
 		
 		
 		
@@ -249,42 +325,44 @@ public class AdminHome extends JPanel{
 		setLayout(new BorderLayout());
 		add(jpWest, BorderLayout.CENTER);
 		add(jpEast, BorderLayout.EAST);
-//		setSize(1000,700);
-//		setResizable(false);
-//		setLocationRelativeTo(null);
-//		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		setVisible(true);
 		
 		
-//		adminHomeBtn  	= new JButton("관리자 홈");
-//		placeEditBtn 	= new JButton("관광지 수정");  
-//		userEditBtn 	 = new JButton("유저 수정");
-//		reviewEditBtn	 = new JButton("후기 보기/ 삭제");
-//		logOutBtn		= new JButton("로그아웃");
-//		
+		adminHomeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_greeting");				
+			}
+		});
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("S");
+			}
+		});
 		placeEditBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "places");		
-			}
-		});
-		userEditBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "users");					
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_places");
 			}
 		});
 		reviewEditBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "reviews");						
+				main.main.cardLayout.show(main.main.cardJPanel, "admin_reviews");						
 			}
 		});
-
+		
+		logOutBtn.addActionListener(new ActionListener() { //로그아웃
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.main.cardLayout.show(main.main.cardJPanel,  "login_Main");		
+			}
+		});
 	}
 	
 }

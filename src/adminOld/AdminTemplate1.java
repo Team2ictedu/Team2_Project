@@ -1,4 +1,4 @@
-package admin2;
+package adminOld;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,6 +30,10 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
+import project_admin.AdminMain;
+import project_admin.ButtonColumn;
+import project_admin.PlacesDAO;
 
 
 
@@ -279,7 +283,7 @@ public class AdminTemplate1 extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.cardLayout.show(main.cardPanel, "greeting");				
+//				main.cardLayout.show(main.cardPanel, "greeting");				
 			}
 		});
 		searchBtn.addActionListener(new ActionListener() {

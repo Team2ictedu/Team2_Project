@@ -1,4 +1,4 @@
-package admin2;
+package adminOld;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import project_admin.ButtonColumn;
 
 public class TEST extends JFrame{
 	public TEST() {

@@ -1,4 +1,4 @@
-package admin2;
+package project_admin;
 
 public class UserVO {
 	private String userid, userpwd, username, userbirthday, useremail, userphone, userterms;
