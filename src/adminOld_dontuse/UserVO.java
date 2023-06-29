@@ -1,4 +1,4 @@
-package adminOld;
+package adminOld_dontuse;
 
 public class UserVO {
 	private String userid, userpwd, username, userbirthday, useremail, userphone, userterms;
