@@ -8,10 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import project_admin.AdminMain;
+
 
 public class Main extends JFrame{
-	CardLayout cardLayout;
-	JPanel cardJPanel;
+	public CardLayout cardLayout;
+	public JPanel cardJPanel;
 	
 	public Main() {
 		super("PERSONAL PLANNER");
@@ -42,8 +44,7 @@ public class Main extends JFrame{
 		Planner_Select planner_Select = new Planner_Select(this);
 		
 		// 관리자 객체 선언
-		//AdminTemplate adminTemplate = new AdminTemplate(this);
-		//AdminTemplate2 adminTemplate2 = new AdminTemplate2(this);
+		AdminMain adminMain = new AdminMain(this);
 		
 	// 카드 패널 추가
 		// 로그인 전
@@ -68,6 +69,10 @@ public class Main extends JFrame{
 		cardJPanel.add("planner_Select", planner_Select);
 		
 		// 관리자
+		cardJPanel.add("admin_greeting", adminMain.adminHome);
+		cardJPanel.add("admin_places", adminMain.adminPlaces);
+		cardJPanel.add("admin_users", adminMain.adminUsers);
+		cardJPanel.add("admin_reviews", adminMain.adminReview);
 		//cardJPanel.add("adminTemplate", adminTemplate);
 		//cardJPanel.add("adminTemplate2", adminTemplate2);
 		

@@ -257,7 +257,13 @@ public class Login_Main extends JPanel implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton obj = (JButton) e.getSource();
 			if (obj == log_bt) {
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
+				if (jtf_id.getText().equals("admin")) {							// 유저 == 관리자 (유효성검사)? 임시 관리자페이지로 가기
+					main.cardLayout.show(main.cardJPanel, "admin_greeting");   // 임시 관리자페이지로 가기
+				} else {
+					main.cardLayout.show(main.cardJPanel, "planner_Select");
+					
+				}
+				
 			} else if (obj == join_bt) {
 				main.cardLayout.show(main.cardJPanel, "login_Register");
 			} else if (obj == idFin_bt) {
@@ -270,25 +276,6 @@ public class Login_Main extends JPanel implements ActionListener {
 	}
 	
 	public static void main(String[] args) {
-		  try {
-	            // Select the Look and Feel
-	            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 
-	            SwingUtilities.invokeLater(new Runnable() {
-
-	                @Override
-	                public void run() {
-	                    // Start the application
-////	                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//	                    app.setSize(800, 600);
-//	                    app.setLocationRelativeTo(null);
-//	                    app.setVisible(true);
-	                	new Login_Main();
-	                }
-	            });
-	            
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	        }
 	}
 }
