@@ -255,13 +255,21 @@ public class Pw_Search extends JPanel implements ActionListener{
 				String id = "root";
 				String name = "root";
 				String em = "root";
-				String pwSer = "1111";
 		JButton obj = (JButton) e.getSource();
 		if(obj==logMv_bt) { // 로그인버튼
+			idCg_jtf.setText("");
+			name_jtf.setText("");
+			em_jtf.setText("");
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if(obj==join_bt) { // 회원가입으로 이동
+			idCg_jtf.setText("");
+			name_jtf.setText("");
+			em_jtf.setText("");
 			main.cardLayout.show(main.cardJPanel, "login_Register");
 		} else if(obj==idFin_bt) { // 아이디찾기로 이동
+			idCg_jtf.setText("");
+			name_jtf.setText("");
+			em_jtf.setText("");
 			main.cardLayout.show(main.cardJPanel, "id_Search");
 		} else if(obj==pwCk_bt) { // 계정확인버튼
 			if(idCg_jtf.getText().length() == 0) {
