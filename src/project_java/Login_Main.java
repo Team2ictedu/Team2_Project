@@ -22,7 +22,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -39,7 +41,8 @@ public class Login_Main extends JPanel implements ActionListener {
 	Border newBorder;
 	
 	JPanel im_jp,log_im, lb_jp, id_jp, pw_jp, logBt_jp, btBt_jp, add_jp;
-	JTextField jtf_id, jtf_pw;
+	JTextField jtf_id;
+	JPasswordField jtf_pw;
 	JButton log_bt, join_bt, idFin_bt, pwFin_bt;
 
 	
@@ -184,7 +187,7 @@ public class Login_Main extends JPanel implements ActionListener {
 				
 				// jp3, jp4 / textfield+textprompt
 				jtf_id = new JTextField(30);
-				jtf_pw = new JTextField(30);
+				jtf_pw = new JPasswordField(30);
 		
 				TextPrompt textprompt = new TextPrompt("아이디", jtf_id);
 				textprompt.setForeground(Color.gray);
@@ -256,13 +259,37 @@ public class Login_Main extends JPanel implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton obj = (JButton) e.getSource();
+			//DB에 있는 정보
+			String id = "root";
+			String pw = "root";
+			
+			String inpw = new String(jtf_pw.getPassword()); // 입력한 패스워드를 inpw에 담는다.
 			if (obj == log_bt) {
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
+				if(jtf_id.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
+					jtf_id.requestFocus(); // 커서위치 조절
+				} else if(inpw.equals("")) {
+					JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
+					jtf_pw.requestFocus();	
+				} else if(jtf_id.getText().equals(id) && pw.equals(inpw)) {
+					jtf_id.setText("");
+					jtf_pw.setText("");
+					JOptionPane.showMessageDialog(null, "로그인 되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+					main.cardLayout.show(main.cardJPanel, "planner_Select");
+				} else {
+					JOptionPane.showMessageDialog(null, "입력한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				}
 			} else if (obj == join_bt) {
+				jtf_id.setText("");
+				jtf_pw.setText("");
 				main.cardLayout.show(main.cardJPanel, "login_Register");
 			} else if (obj == idFin_bt) {
+				jtf_id.setText("");
+				jtf_pw.setText("");
 				main.cardLayout.show(main.cardJPanel, "id_Search");
 			} else if (obj == pwFin_bt) {
+				jtf_id.setText("");
+				jtf_pw.setText("");
 				main.cardLayout.show(main.cardJPanel, "pw_Search");
 			}
 		}

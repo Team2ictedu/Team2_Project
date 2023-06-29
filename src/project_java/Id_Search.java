@@ -229,14 +229,20 @@ public class Id_Search extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// 임의의 id와 em 생성 나중에 db연결하고 바꿀예정
 		String id = "root";
+		String name = "root";
 		String em = "root";
-		String idSer = id;
 		JButton obj = (JButton) e.getSource();
 		if (obj == logMv_bt) { // 로그인이동버튼
+			jtf_name.setText("");
+			jtf_em.setText("");
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == join_bt) { // 회원가입으로 이동
+			jtf_name.setText("");
+			jtf_em.setText("");
 			main.cardLayout.show(main.cardJPanel, "login_Register");
 		} else if (obj == pwFin_bt) { // 비밀번호 찾기로 이동
+			jtf_name.setText("");
+			jtf_em.setText("");
 			main.cardLayout.show(main.cardJPanel, "pw_Search");
 		} else if (obj == idCk_bt) { // 계정 확인버튼 알림창
 			if (jtf_name.getText().length() == 0) { // 입력값이 없을때
@@ -245,10 +251,10 @@ public class Id_Search extends JPanel implements ActionListener {
 			} else if (jtf_em.getText().length() == 0) {
 				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_em.requestFocus();
-			} else if (jtf_name.getText().equals(id) && jtf_em.getText().equals(em)) { //입력정보 일치
+			} else if (jtf_name.getText().equals(name) && jtf_em.getText().equals(em)) { //입력정보 일치
 				jtf_name.setText("");
 				jtf_em.setText("");
-				int result = JOptionPane.showConfirmDialog(null, "아이디는 " + idSer + "입니다.\n 비밀번호도 찾으시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(null, "아이디는 " + id + "입니다.\n 비밀번호도 찾으시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
 				if(result==JOptionPane.YES_OPTION) {
 					main.cardLayout.show(main.cardJPanel, "pw_Search");
 				} else {
