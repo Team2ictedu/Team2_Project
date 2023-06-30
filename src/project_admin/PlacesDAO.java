@@ -40,7 +40,6 @@ public class PlacesDAO {
 			rs = pstm.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
-			System.out.println("places count ssis :"+count);
 			return count;
 		} catch (Exception e) {
 		} finally {
@@ -64,18 +63,11 @@ public class PlacesDAO {
 			int i = 0;
 			while(rs.next()) {
 				PlaceVO vo = new PlaceVO();
-//				vo.setPlacenumber(rs.getString(1));
-//				vo.setPlacename(rs.getString(2));
-//				vo.setPlacelocation(rs.getString(3));
-//				vo.setPlacedescription(rs.getString(4));
-//				vo.setPlaceprice(rs.getString(5));
-//				vo.setPlacereview( rs.getString(6));
-//				list[i][0] = rs.getString(1);
+
 				list[i][0] = rs.getString(2);
 				list[i][1] = rs.getString(3);
 				list[i][2] = rs.getString(4);
 				list[i][3] = rs.getString(5);
-//				list[i][5] = rs.getString(6);
 				list[i][4] = "Edit";
 				list[i][5] = "Delete";
 				i++;
