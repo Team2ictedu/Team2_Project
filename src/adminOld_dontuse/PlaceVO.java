@@ -1,4 +1,4 @@
-package adminOld;
+package adminOld_dontuse;
 
 public class PlaceVO {
 	private String placenumber, placename, placelocation, placedescription, placeprice, placereview;

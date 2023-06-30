@@ -12,7 +12,7 @@ public class PlacesDAO {
 	ResultSet rs = null;
 	int result = 0 ;
 	int count = getCount();
-	
+
 	private static PlacesDAO PlacesDAO = new PlacesDAO();
 	public static PlacesDAO getInstance() {
 		return PlacesDAO;

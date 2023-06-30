@@ -23,10 +23,11 @@ public class AdminMain extends JPanel{
 	public AdminUsers adminUsers;
 	public AdminPlaces adminPlaces;
 	public AdminHome adminHome;
+	
+	
 	public AdminMain(Main main) {
 		this.main = main;
-		
-		
+	
 //		cardPanel = new JPanel();
 //		cardLayout = new CardLayout();
 //		cardPanel.setLayout(cardLayout);

@@ -8,6 +8,7 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -46,7 +49,14 @@ public class AdminPlaces extends JPanel{
 	/*jpEastHead ComboBox & TextField*/ JComboBox<String> eastHeadComboBox; JTextField eastHeadTextField;
 	/*jpEastJTA*/ JTextArea jta;
 	/*jpEastFootTable*/ JTable placeTable; 
- 	/*jpEastFoot Buttons*/ 
+ 	/*jpEastFoot Buttons*/ JButton addPlaceBtn; 
+	/*jPop panel*/ JPanel jPop;
+	/*jPop JTextField*/ JTextField popPlaceName, popPlaceLocation, popPlaceDescription, popPlacePrice;
+	/*jPop Button*/	JButton popAddBtn, popCancelBtn;
+	/*Popup*/ Popup po;
+	/*PopupFactory*/ PopupFactory pf;
+	
+	
 	
 	
 	
@@ -115,10 +125,6 @@ public class AdminPlaces extends JPanel{
 		reviewEditBtn	 = new JButton("후기 보기/ 삭제");
 		reviewEditBtn.add(new JLabel(icon4));
 		logOutBtn		= new JButton("로그아웃");
-//		adminHomeBtn.setBackground(Color.decode("#393646"));
-//		placeEditBtn.setBackground(Color.decode("#393646")); 
-//		userEditBtn.setBackground(Color.decode("#393646")); 	
-//		reviewEditBtn.setBackground(Color.decode("#393646"));
 		adminHomeBtn.setOpaque(false); 
 		adminHomeBtn.setContentAreaFilled(false);
 		adminHomeBtn.setBorderPainted(false);
@@ -216,7 +222,10 @@ public class AdminPlaces extends JPanel{
 		//jpEastHead comboBox & textField
 		selectionList = new ArrayList<String>();
 		selectionList.add("전체보기");
-		selectionList.add("World");
+		selectionList.add("관광지이름");
+		selectionList.add("위치");
+		selectionList.add("설명");
+		selectionList.add("금액");
 		eastHeadComboBox = new JComboBox<String>(selectionList.toArray(new String[0]));
 		eastHeadTextField = new JTextField(20);
 		
@@ -253,7 +262,7 @@ public class AdminPlaces extends JPanel{
 		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
 		
 		/*PlaceTableModel model = new PlaceTableModel(list);*/
-		String[] columnNames = { "Place Name", "Location","Description","price","수정","삭제"};
+		String[] columnNames = { "관광지 이름", "위치","설명","금액","수정","삭제"};
 
 		DefaultTableModel model = new DefaultTableModel(list,columnNames);
 		
@@ -300,12 +309,44 @@ public class AdminPlaces extends JPanel{
 		jpEastFootCenter.add(placeTableSP);
 		
 		
-		//jpEastFootSouth btns
 		
+		//jpEastFootSouth btns
+		addPlaceBtn = new JButton("관광지 추가");
+		
+		//
+		popPlaceName = new JTextField(20);
+		popAddBtn = new JButton("추가");
+		jPop = new JPanel();
+		jPop.add(popPlaceName);
+		jPop.add(popAddBtn);
+		pf = new PopupFactory();
+		 Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		    int x = (int) ((dimension.getWidth() / 2));
+		    int y = (int) ((dimension.getHeight() / 2));
+		    
+		po = pf.getPopup(jpEast, jPop, x, y);
+		
+		addPlaceBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String d = e.getActionCommand();
+				po.show();
+			}
+		});
+		popAddBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				po.hide();
+				po = pf.getPopup(jpEast, jPop, x, y);
+			}
+		});
 		
 		//jpEastFootMain.add()
 		jpEastFootMain.setPreferredSize(new Dimension(700,500));
 		jpEastFootMain.add(jpEastFootCenter);
+		jpEastFootMain.add(addPlaceBtn);
 		
 		//jpEast.add(panels)
 		jpEast.add(jpEastHeadMain);
@@ -313,8 +354,6 @@ public class AdminPlaces extends JPanel{
 		jpEast.add(jpEastFootMain);
 		jpEastFootMain.setBorder(titledBorderEastFoot);
 		jpPlaceEdit.setBackground(Color.decode("#2e2e2e"));
-		
-		
 		
 		
 		jpEast.setPreferredSize(new Dimension(800,700));

@@ -1,4 +1,4 @@
-package adminOld;
+package adminOld_dontuse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,15 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class PlacesDAO {
+public class UsersDAO {
 	Connection conn = null;
 	PreparedStatement pstm = null;
 	ResultSet rs = null;
 	int result = 0 ;
 	
-	private static PlacesDAO PlacesDAO = new PlacesDAO();
-	public static PlacesDAO getInstance() {
-		return PlacesDAO;
+	private static UsersDAO UsersDAO = new UsersDAO();
+	public static UsersDAO getInstance() {
+		return UsersDAO;
 	}
 	
 	// DB 접속 메서드 
@@ -22,7 +22,7 @@ public class PlacesDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url ="jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "c##shlee";
+			String user = "c##team2";
 			String password = "1111";
 			conn = DriverManager.getConnection(url, user, password);
 			return conn;
@@ -31,21 +31,22 @@ public class PlacesDAO {
 		return null;
 	}
 	
-	public ArrayList<PlaceVO> getSelectAll() {
+	public ArrayList<UserVO> getSelectAll() {
 		try {
 			conn = getConnection();
-			String sql = "select * from placetable" ;
+			String sql = "select * from usertable" ;
 			pstm = conn.prepareStatement(sql);
 			rs = pstm.executeQuery();
-			ArrayList<PlaceVO> list = new ArrayList<>();
+			ArrayList<UserVO> list = new ArrayList<>();
 			while(rs.next()) {
-				PlaceVO vo = new PlaceVO();
-				vo.setPlacenumber(rs.getString(1));
-				vo.setPlacename(rs.getString(2));
-				vo.setPlacelocation(rs.getString(3));
-				vo.setPlacedescription(rs.getString(4));
-				vo.setPlaceprice(rs.getString(5));
-				vo.setPlacereview( rs.getString(6));
+				UserVO vo = new UserVO();
+				vo.setUserid(rs.getString(1));
+				vo.setUserpwd(rs.getString(2));
+				vo.setUsername(rs.getString(3));
+				vo.setUserbirthday(rs.getString(4));
+				vo.setUseremail(rs.getString(5));
+				vo.setUserphone(rs.getString(6));
+				vo.setUserterms(rs.getString(7));
 				list.add(vo);
 			}
 			return list;
@@ -59,10 +60,6 @@ public class PlacesDAO {
 			}
 		}
 		return null;
-	}
-	
-	public void deleteRow() {
-		
 	}
 	
 }
