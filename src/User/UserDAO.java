@@ -187,4 +187,26 @@ public class UserDAO {
 		}
 		return 0;
 	}
+	
+	// 로그인 후 비밀번호 변경
+	public int getUpdate(UserVO vo){
+		try {
+			conn = getConnection();
+			String sql = "update member set M_PW = ? where M_ID = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, vo.getM_PW());
+			pstm.setString(2, vo.getM_ID());
+			int result = pstm.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				pstm.close();
+				conn.close();
+			} catch (Exception e2) {
+			}
+		}
+		return 0;
+	}
 }

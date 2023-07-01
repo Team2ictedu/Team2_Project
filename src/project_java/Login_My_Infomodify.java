@@ -155,7 +155,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jp_center2.add(jp_south2, BorderLayout.SOUTH);
 
 //	jb4.setPreferredSize(new Dimension(80, 40));
-				jbName = new JButton(main.vo.getM_NAME());
+				jbName = new JButton(main.vo.getM_NAME() + "님");
 				jbMyInfo = new JButton("내 정보");
 				jbLogOut = new JButton("로그아웃");
 				mypage_bt = new JButton("마이페이지");
