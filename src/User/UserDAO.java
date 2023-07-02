@@ -99,10 +99,10 @@ public class UserDAO {
 	public int getUserUpdate(UserVO vo){
 		try {
 			conn = getConnection();
-			String sql = "update member set m_email=?, m_birth = ?, m_phone =? where m_id = ?";
+			String sql = "update member set m_email=?, m_name = ?, m_phone =? where m_id = ?";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, vo.getM_EMAIL());
-			pstm.setString(2, vo.getM_BIRTH());
+			pstm.setString(2, vo.getM_NAME());
 			pstm.setString(3, vo.getM_PHONE());
 			pstm.setString(4, vo.getM_ID());
 			int result = pstm.executeUpdate();
@@ -216,7 +216,7 @@ public class UserDAO {
 	}
 	
 	// 로그인 후 비밀번호 변경
-	public int getUpdate(UserVO vo){
+	public int getUserPwChange(UserVO vo){
 		try {
 			conn = getConnection();
 			String sql = "update member set M_PW = ? where M_ID = ?";
