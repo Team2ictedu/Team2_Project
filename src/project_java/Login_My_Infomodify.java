@@ -118,7 +118,6 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jl_name.setFont(new Font("Jalnan", Font.BOLD, 15));
 				jp_name.add(tf_name);
 				tf_name.setText(main.vo.getM_NAME());
-				tf_name.setEditable(false);
 
 				jp_email.add(jl_email);
 				jl_email.setFont(new Font("Jalnan", Font.BOLD, 15));
@@ -129,6 +128,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jl_birth.setFont(new Font("Jalnan", Font.BOLD, 15));
 				tf_birth.setText(main.vo.getM_BIRTH());
 				jp_birth.add(tf_birth);
+				tf_birth.setEditable(false);
 
 				jp_phone.add(jl_phone);
 				jl_phone.setFont(new Font("Jalnan", Font.BOLD, 15));
@@ -314,19 +314,19 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 		} else if (obj == withdraw_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
 		} else if (obj == jb5) {
-			if (tf_email.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "email을 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+			if (tf_name.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "이름을 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+				tf_name.requestFocus();
+			} else if (tf_email.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_email.requestFocus();
-			} else if (tf_birth.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "생년월일을 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
-				tf_birth.requestFocus();
 			} else if (tf_phone.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_phone.requestFocus();
 			} else {
 				UserVO vo = new UserVO();
 				vo.setM_EMAIL(tf_email.getText());
-				vo.setM_BIRTH(tf_birth.getText());
+				vo.setM_NAME(tf_name.getText());
 				vo.setM_PHONE(tf_phone.getText());
 				vo.setM_ID(main.vo.getM_ID());
 				int result = UserDAO.getInstance().getUserUpdate(vo);

@@ -67,15 +67,42 @@ public class UserDAO {
 		}
 		return null;
 	}	
+	// 삽입
+	public int getUserRegister(UserVO vo) {
+		try {
+			conn = getConnection();
+			String sql = "insert into MEMBER(M_ID, M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS, M_CLASS) values(?,?,?,?,?,?,?,?)";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, vo.getM_ID());
+			pstm.setString(2, vo.getM_PW());
+			pstm.setString(3, vo.getM_EMAIL());
+			pstm.setString(4, vo.getM_NAME());
+			pstm.setString(5, vo.getM_BIRTH());
+			pstm.setString(6, vo.getM_PHONE());
+			pstm.setString(7, vo.getM_TERMS());
+			pstm.setString(8, "1");
+			int result = pstm.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			try {
+				pstm.close();
+				conn.close();
+			} catch (Exception e2) {
+			}
+		}
+		return 0;
+	}
 	
 	// 개인정보 변경
 	public int getUserUpdate(UserVO vo){
 		try {
 			conn = getConnection();
-			String sql = "update member set m_email=?, m_birth = ?, m_phone =? where m_id = ?";
+			String sql = "update member set m_email=?, m_name = ?, m_phone =? where m_id = ?";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, vo.getM_EMAIL());
-			pstm.setString(2, vo.getM_BIRTH());
+			pstm.setString(2, vo.getM_NAME());
 			pstm.setString(3, vo.getM_PHONE());
 			pstm.setString(4, vo.getM_ID());
 			int result = pstm.executeUpdate();
@@ -189,7 +216,7 @@ public class UserDAO {
 	}
 	
 	// 로그인 후 비밀번호 변경
-	public int getUpdate(UserVO vo){
+	public int getUserPwChange(UserVO vo){
 		try {
 			conn = getConnection();
 			String sql = "update member set M_PW = ? where M_ID = ?";

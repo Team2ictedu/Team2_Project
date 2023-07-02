@@ -36,6 +36,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import User.UserDAO;
+import User.UserVO;
 
 public class Login_Register extends JPanel implements ActionListener {
 
@@ -438,17 +439,21 @@ public class Login_Register extends JPanel implements ActionListener {
 				vo.setM_BIRTH(tf_birth.getText());
 				vo.setM_PHONE(tf_phone.getText());
 				vo.setM_TERMS("동의");
-				int result = project_java.UserDAO.getInstance().getInsert(vo);
-				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
-				tf_id.setText("");
-				jpf_pw.setText("");
-				jpf_pwchk.setText("");
-				tf_mail.setText("");
-				tf_name.setText("");
-				tf_birth.setText("");
-				tf_phone.setText("");
-				cb_TermsofUse.setSelected(false);
-				main.cardLayout.show(main.cardJPanel, "login_Main");
+				int result = UserDAO.getInstance().getUserRegister(vo);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+					tf_id.setText("");
+					jpf_pw.setText("");
+					jpf_pwchk.setText("");
+					tf_mail.setText("");
+					tf_name.setText("");
+					tf_birth.setText("");
+					tf_phone.setText("");
+					cb_TermsofUse.setSelected(false);
+					main.cardLayout.show(main.cardJPanel, "login_Main");
+				}
 			}
 		}
 	}

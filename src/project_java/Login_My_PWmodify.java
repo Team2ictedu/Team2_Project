@@ -312,7 +312,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 					UserVO vo = new UserVO();
 					vo.setM_PW(newPass1);
 					vo.setM_ID(main.vo.getM_ID());
-					int result = UserDAO.getInstance().getUpdate(vo);
+					int result = UserDAO.getInstance().getUserPwChange(vo);
 					if (result == 0) {
 						JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
 					} else {
