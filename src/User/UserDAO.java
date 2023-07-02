@@ -32,13 +32,112 @@ public class UserDAO {
 		return null;
 	}
 	
-	// login시 확인
+	// 유저 정보
 	public UserVO getLogin(String M_ID){
 		try {
 			conn = getConnection();
 			String sql = "select M_ID, M_PW, M_NAME, to_char(M_BIRTH, 'yyyy-mm-dd'), M_EMAIL, M_PHONE, M_TERMS, M_CLASS, DELETE_CON, DELETE_TIME, M_LASTLOGIN from Member where M_ID = ?";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, M_ID);
+			rs = pstm.executeQuery();
+			UserVO vo = new UserVO();
+			while(rs.next()) {
+				vo.setM_ID(rs.getString(1));
+				vo.setM_PW(rs.getString(2));
+				vo.setM_NAME(rs.getString(3));
+				vo.setM_BIRTH(rs.getString(4));
+				vo.setM_EMAIL(rs.getString(5));
+				vo.setM_PHONE(rs.getString(6));
+				vo.setM_TERMS(rs.getString(7));
+				vo.setM_CLASS(rs.getString(8));
+				vo.setDELETE_CON(rs.getString(9));
+				vo.setDELETE_TIME(rs.getString(10));
+				vo.setM_LASTLOGIN(rs.getString(11));
+			}
+			return vo;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				rs.close();
+				pstm.close();
+				conn.close();
+			} catch (Exception e2) {
+			}
+		}
+		return null;
+	}	
+	
+	// 개인정보 변경
+	public int getUserUpdate(UserVO vo){
+		try {
+			conn = getConnection();
+			String sql = "update member set m_email=?, m_birth = ?, m_phone =? where m_id = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, vo.getM_EMAIL());
+			pstm.setString(2, vo.getM_BIRTH());
+			pstm.setString(3, vo.getM_PHONE());
+			pstm.setString(4, vo.getM_ID());
+			int result = pstm.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				pstm.close();
+				conn.close();
+			} catch (Exception e2) {
+			}
+		}
+		return 0;
+	}
+	
+	// 아이디 찾기
+	public UserVO getIdFind(String name, String email){
+		try {
+			conn = getConnection();
+			String sql = "select M_ID, M_PW, M_NAME, to_char(M_BIRTH, 'yyyy-mm-dd'), M_EMAIL, M_PHONE, M_TERMS, M_CLASS, DELETE_CON, DELETE_TIME, M_LASTLOGIN from Member where M_NAME=? AND M_EMAIL=?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, name);
+			pstm.setString(2, email);
+			rs = pstm.executeQuery();
+			UserVO vo = new UserVO();
+			while(rs.next()) {
+				vo.setM_ID(rs.getString(1));
+				vo.setM_PW(rs.getString(2));
+				vo.setM_NAME(rs.getString(3));
+				vo.setM_BIRTH(rs.getString(4));
+				vo.setM_EMAIL(rs.getString(5));
+				vo.setM_PHONE(rs.getString(6));
+				vo.setM_TERMS(rs.getString(7));
+				vo.setM_CLASS(rs.getString(8));
+				vo.setDELETE_CON(rs.getString(9));
+				vo.setDELETE_TIME(rs.getString(10));
+				vo.setM_LASTLOGIN(rs.getString(11));
+			}
+			return vo;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				rs.close();
+				pstm.close();
+				conn.close();
+			} catch (Exception e2) {
+			}
+		}
+		return null;
+	}	
+	
+	// 비밀번호 찾기
+	public UserVO getPwFind(String id, String name, String email){
+		try {
+			conn = getConnection();
+			String sql = "select M_ID, M_PW, M_NAME, to_char(M_BIRTH, 'yyyy-mm-dd'), M_EMAIL, M_PHONE, M_TERMS, M_CLASS, DELETE_CON, DELETE_TIME, M_LASTLOGIN from Member where M_ID=? AND M_NAME=? AND M_EMAIL=?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, id);
+			pstm.setString(2, name);
+			pstm.setString(3, email);
 			rs = pstm.executeQuery();
 			UserVO vo = new UserVO();
 			while(rs.next()) {
@@ -65,17 +164,16 @@ public class UserDAO {
 			}
 		}
 		return null;
-	}	
+	}
 	
-	public int getUserUpdate(UserVO vo){
+	// 비밀번호 찾기 변경
+	public int getPwChange(String pw, String id){
 		try {
 			conn = getConnection();
-			String sql = "update member set m_email=?, m_birth = ?, m_phone =? where m_id = ?";
+			String sql = "update member set m_pw=? where m_id = ?";
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, vo.getM_EMAIL());
-			pstm.setString(2, vo.getM_BIRTH());
-			pstm.setString(3, vo.getM_PHONE());
-			pstm.setString(4, vo.getM_ID());
+			pstm.setString(1, pw);
+			pstm.setString(2, id);
 			int result = pstm.executeUpdate();
 			return result;
 		} catch (Exception e) {
@@ -89,5 +187,26 @@ public class UserDAO {
 		}
 		return 0;
 	}
-
+	
+	// 로그인 후 비밀번호 변경
+	public int getUpdate(UserVO vo){
+		try {
+			conn = getConnection();
+			String sql = "update member set M_PW = ? where M_ID = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, vo.getM_PW());
+			pstm.setString(2, vo.getM_ID());
+			int result = pstm.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				pstm.close();
+				conn.close();
+			} catch (Exception e2) {
+			}
+		}
+		return 0;
+	}
 }
