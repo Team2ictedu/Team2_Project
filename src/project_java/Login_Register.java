@@ -35,7 +35,10 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import User.UserDAO;
+
 public class Login_Register extends JPanel implements ActionListener {
+
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton join_bt, cancel_bt;
 	JLabel jLabel1;
@@ -427,6 +430,15 @@ public class Login_Register extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(this, "약관에 동의해야 회원가입이 가능합니다.", "약관 동의 필요", JOptionPane.WARNING_MESSAGE);
 				cb_TermsofUse.requestFocus();
 			} else {
+				UserVO vo = new UserVO();
+				vo.setM_ID(tf_id.getText());
+				vo.setM_PW(pass1);
+				vo.setM_EMAIL(tf_mail.getText());
+				vo.setM_NAME(tf_name.getText());
+				vo.setM_BIRTH(tf_birth.getText());
+				vo.setM_PHONE(tf_phone.getText());
+				vo.setM_TERMS("동의");
+				int result = project_java.UserDAO.getInstance().getInsert(vo);
 				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
 				tf_id.setText("");
 				jpf_pw.setText("");
