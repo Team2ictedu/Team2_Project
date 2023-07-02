@@ -21,6 +21,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import User.UserDAO;
+import User.UserVO;
+
 public class PwChange_login extends JFrame implements ActionListener {
 	JPanel pwCh_jp, add_jp, lb_jp, pw1_jp, pw2_jp, ok_jp;
 	JLabel lb;
@@ -28,12 +31,10 @@ public class PwChange_login extends JFrame implements ActionListener {
 	JButton ok_bt;
 	Border newBorder;
 	Pw_Search pw_Search;
-	int ok = 0; // 패스워드 체크여부 ox
 
 	public PwChange_login(Pw_Search pw_Search) {
 		super("비밀번호 재설정");
 		this.pw_Search = pw_Search;
-
 		// 글꼴
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
@@ -126,24 +127,30 @@ public class PwChange_login extends JFrame implements ActionListener {
 		// 패스워드필드를 String 변수로 받는다.
 		String pass1 = new String(pwck1_jtf.getPassword());
 		String pass2 = new String(pwck2_jtf.getPassword());
+		// vo = UserDAO.getInstance().getPwFind(id);
 		if (obj == ok_bt) {// 입력값 없을때
 			if (pass1.length() == 0) { // 비밀번호 입력값이 없을때
 				JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
 				pwck1_jtf.requestFocus();
 			} else if (pass2.length() == 0) {
-				JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "비밀번호 확인을 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
 				pwck2_jtf.requestFocus();
 			} else if (pass1.length() > 18) { // 비밀번호 18글자 초과할 때
 				JOptionPane.showMessageDialog(null, "비밀번호를 18자리 이내로 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 			} else if (!pass1.equals(pass2)) { // 비밀번호 확인 일치하지 않았을때
 				JOptionPane.showMessageDialog(null, "입력된 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 			} else { // 실패시 안내창
-				pwck1_jtf.setText("");
-				pwck2_jtf.setText("");
-				JOptionPane.showMessageDialog(pwCh_jp, "비밀번호 설정이 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
-				setVisible(false);
-				pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
-
+				int result = UserDAO.getInstance().getPwChange(pass1, pw_Search.vo.getM_ID());
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
+				} else {
+					pwck1_jtf.setText("");
+					pwck2_jtf.setText("");
+					JOptionPane.showMessageDialog(pwCh_jp, "비밀번호 설정이 완료되었습니다.", "Confirm",
+							JOptionPane.INFORMATION_MESSAGE);
+					setVisible(false);
+					pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
+				}
 			}
 		}
 	}
