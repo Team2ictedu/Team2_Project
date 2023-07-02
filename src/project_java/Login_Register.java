@@ -35,6 +35,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import User.UserDAO;
+
 public class Login_Register extends JPanel implements ActionListener {
 
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
@@ -435,7 +437,8 @@ public class Login_Register extends JPanel implements ActionListener {
 				vo.setM_NAME(tf_name.getText());
 				vo.setM_BIRTH(tf_birth.getText());
 				vo.setM_PHONE(tf_phone.getText());
-				vo.setM_TERMS(cb_TermsofUse.getText());
+				vo.setM_TERMS("동의");
+				int result = project_java.UserDAO.getInstance().getInsert(vo);
 				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
 				tf_id.setText("");
 				jpf_pw.setText("");

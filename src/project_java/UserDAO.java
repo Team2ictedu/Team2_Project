@@ -34,7 +34,7 @@ public class UserDAO {
 		public int getInsert(UserVO vo) {
 			try {
 				conn = getConnection();
-				String sql = "insert into MEMBER(M_ID, M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS) values(?,?,?,?,?,?,?)";
+				String sql = "insert into MEMBER(M_ID, M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS, M_CLASS) values(?,?,?,?,?,?,?,?)";
 				pstm = conn.prepareStatement(sql);
 				pstm.setString(1, vo.getM_ID());
 				pstm.setString(2, vo.getM_PW());
@@ -43,9 +43,11 @@ public class UserDAO {
 				pstm.setString(5, vo.getM_BIRTH());
 				pstm.setString(6, vo.getM_PHONE());
 				pstm.setString(7, vo.getM_TERMS());
+				pstm.setString(8, "1");
 				int result = pstm.executeUpdate();
 				return result;
 			} catch (Exception e) {
+				System.out.print(e);
 			} finally {
 				try {
 					pstm.close();
