@@ -18,13 +18,4 @@ public class DAO {
 		ss.commit();
 		return result;
 	}
-	
-	public static boolean getIdCheck(String M_ID) {
-		boolean result = false;
-		VO vo = getSession().selectOne("idCheck", M_ID);
-		if(vo == null) {
-			result = true;
-		}
-		return result;
-	}
 }

@@ -333,7 +333,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				if (result == 0) {
 					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
 				} else {
-					main.vo = UserDAO.getInstance().getLogin(main.vo.getM_ID());
+					//main.vo = UserDAO.getInstance().getLogin(main.vo.getM_ID());
 					main.Main2();
 					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
 						JOptionPane.INFORMATION_MESSAGE);

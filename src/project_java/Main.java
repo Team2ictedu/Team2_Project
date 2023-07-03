@@ -16,13 +16,11 @@ import Server.Protocol;
 import project_admin.AdminMain;
 import UserDB.DAO;
 import UserDB.VO;
-import dontUse.UserDAO;
-import dontUse.UserVO;
 
 public class Main extends JFrame{
 	public CardLayout cardLayout;
 	public JPanel cardJPanel;
-	public UserVO vo;
+	public VO vo;
 	Login_My_Infomodify login_My_Infomodify;
 	
 	Socket s;

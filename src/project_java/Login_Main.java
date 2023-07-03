@@ -272,7 +272,6 @@ public class Login_Main extends JPanel implements ActionListener {
 				jtf_pw.requestFocus();
 			} else {
 				vo = UserDAO.getInstance().getLogin(jtf_id.getText());
-				main.vo = vo;
 				if (jtf_id.getText().equalsIgnoreCase(vo.getM_ID()) && inpw.equals(vo.getM_PW())) {
 					jtf_id.setText("");
 					jtf_pw.setText("");

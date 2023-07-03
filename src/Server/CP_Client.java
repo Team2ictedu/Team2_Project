@@ -36,13 +36,7 @@ public class CP_Client extends Thread {
 						out.writeObject(p);
 						out.flush();
 						break;
-					case 1: // 아이디체크
-						VO vo2 = p.getVo();
-						DAO.getIdCheck(vo2.getM_ID());
-						out.writeObject(p);
-						out.flush();
-						break;
-					case 2: //회원가입
+					case 1: //회원가입
 						VO vo = p.getVo();
 						DAO.getInsert(vo);
 						out.writeObject(p);

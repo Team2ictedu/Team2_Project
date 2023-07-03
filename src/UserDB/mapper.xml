@@ -3,15 +3,10 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mybatis.example.BlogMapper">
-	
 	<insert id="userIns" parameterType="UserDB.VO">
 	insert into MEMBER(M_ID, M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS, M_CLASS) 
 	values(#{M_ID},#{M_PW},#{M_EMAIL},#{M_NAME},#{M_BIRTH},#{M_PHONE},#{M_TERMS},#{M_CLASS})
 	</insert>
-
-	<select id="idCheck" parameterType="String" resultType="UserDB.VO">
-		select M_ID from MEMBER where M_ID = #{M_ID} 
-	</select>
 </mapper>
 
 

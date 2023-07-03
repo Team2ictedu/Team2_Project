@@ -2,7 +2,6 @@ package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,15 +16,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,16 +30,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Server.Protocol;
-import UserDB.DAO;
 import UserDB.VO;
-import dontUse.UserDAO;
-import dontUse.UserVO;
 
 public class Login_Register extends JPanel implements ActionListener, Runnable {
 
@@ -446,47 +437,33 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 				cb_TermsofUse.requestFocus();
 			} else {
 				VO vo = new VO();
-				vo.setM_ID(tf_id.getText());
-				vo.setM_PW(pass1);
-				vo.setM_EMAIL(tf_mail.getText());
-				vo.setM_NAME(tf_name.getText());
-				vo.setM_BIRTH(tf_birth.getText());
-				vo.setM_PHONE(tf_phone.getText());
+				vo.setM_ID(tf_id.getText().trim());
+				vo.setM_PW(pass1.trim());
+				vo.setM_EMAIL(tf_mail.getText().trim());
+				vo.setM_NAME(tf_name.getText().trim());
+				vo.setM_BIRTH(tf_birth.getText().trim());
+				vo.setM_PHONE(tf_phone.getText().trim());
 				vo.setM_TERMS("동의");
 				vo.setM_CLASS("1");
 				try {
 					Protocol p = new Protocol();
+					p.setCmd(1); // 회원가입
 					p.setVo(vo);
-					p.setCmd(1); // 아이디 중복체크
 					out.writeObject(p);
 					out.flush();
+					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+					tf_id.setText("");
+					jpf_pw.setText("");
+					jpf_pwchk.setText("");
+					tf_mail.setText("");
+					tf_name.setText("");
+					tf_birth.setText("");
+					tf_phone.setText("");
+					cb_TermsofUse.setSelected(false);
+					main.cardLayout.show(main.cardJPanel, "login_Main");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm", JOptionPane.INFORMATION_MESSAGE);
 					e1.printStackTrace();
-				}
-				try {
-					if (idCheck) {
-						Protocol p = new Protocol();
-						p.setVo(vo);
-						p.setCmd(2); // 회원가입
-						out.writeObject(p);
-						out.flush();
-						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm",
-								JOptionPane.INFORMATION_MESSAGE);
-						tf_id.setText("");
-						jpf_pw.setText("");
-						jpf_pwchk.setText("");
-						tf_mail.setText("");
-						tf_name.setText("");
-						tf_birth.setText("");
-						tf_phone.setText("");
-						cb_TermsofUse.setSelected(false);
-						main.cardLayout.show(main.cardJPanel, "login_Main");
-					} else {
-						JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-				} catch (Exception e2) {
 				}
 			}
 		}
@@ -517,18 +494,11 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 				Object obj = in.readObject();
 				if (obj != null) {
 					Protocol p = (Protocol) obj;
-					VO vo = p.getVo();
 					switch (p.getCmd()) {
 					case 0:
 						break esc;
-					case 1: // 아이디 중복확인
-						idCheck = DAO.getIdCheck(tf_id.getText());
-						break;
-					case 2: // 회원가입
-						result = DAO.getInsert(vo);
-						if (result == 1) {
-							System.out.println("'" + p.getVo().getM_ID() + "' 계정 생성 완료");
-						}
+					case 1: // 회원가입
+						p.setCmd(1);
 						break;
 					}
 				}
