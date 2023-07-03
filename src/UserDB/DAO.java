@@ -18,4 +18,13 @@ public class DAO {
 		ss.commit();
 		return result;
 	}
+	
+	public static int getIdChk(String M_ID) {
+		int result = 0; //중복일때
+		VO vo = getSession().selectOne("idChk", M_ID);
+		if(vo == null) {
+			result = 1; // 중복x
+		}
+		return result;
+	}
 }

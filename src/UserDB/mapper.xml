@@ -7,6 +7,10 @@
 	insert into MEMBER(M_ID, M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS, M_CLASS) 
 	values(#{M_ID},#{M_PW},#{M_EMAIL},#{M_NAME},#{M_BIRTH},#{M_PHONE},#{M_TERMS},#{M_CLASS})
 	</insert>
+	
+	<select id="idChk" parameterType="String" resultType="UserDB.VO">
+		select M_ID from member where M_ID= #{M_ID}
+	</select>
 </mapper>
 
 

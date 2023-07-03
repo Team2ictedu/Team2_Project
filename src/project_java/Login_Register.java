@@ -34,6 +34,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Server.Protocol;
+import UserDB.DAO;
 import UserDB.VO;
 
 public class Login_Register extends JPanel implements ActionListener, Runnable {
@@ -56,8 +57,7 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-	int result;
-	boolean idCheck;
+	int idCheck;
 
 	public Login_Register(Main main) {
 		this.main = main;
@@ -447,22 +447,11 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 				vo.setM_CLASS("1");
 				try {
 					Protocol p = new Protocol();
-					p.setCmd(1); // 회원가입
 					p.setVo(vo);
+					p.setCmd(2);
 					out.writeObject(p);
 					out.flush();
-					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
-					tf_id.setText("");
-					jpf_pw.setText("");
-					jpf_pwchk.setText("");
-					tf_mail.setText("");
-					tf_name.setText("");
-					tf_birth.setText("");
-					tf_phone.setText("");
-					cb_TermsofUse.setSelected(false);
-					main.cardLayout.show(main.cardJPanel, "login_Main");
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm", JOptionPane.INFORMATION_MESSAGE);
 					e1.printStackTrace();
 				}
 			}
@@ -497,8 +486,23 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 					switch (p.getCmd()) {
 					case 0:
 						break esc;
-					case 1: // 회원가입
-						p.setCmd(1);
+					case 3:
+						JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+						break;
+					case 4:
+						p.setCmd(5);
+						out.writeObject(p);
+						out.flush();
+						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+						tf_id.setText("");
+						jpf_pw.setText("");
+						jpf_pwchk.setText("");
+						tf_mail.setText("");
+						tf_name.setText("");
+						tf_birth.setText("");
+						tf_phone.setText("");
+						cb_TermsofUse.setSelected(false);
+						main.cardLayout.show(main.cardJPanel, "login_Main");
 						break;
 					}
 				}
