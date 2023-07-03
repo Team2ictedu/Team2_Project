@@ -11,8 +11,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -40,6 +44,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import project_server.ProjectConnectionClass;
+import project_server.ProjectProtocol;
+
 public class AdminPlaces extends JPanel {
 	AdminMain main;
 	JPanel jpWest, jpEast;
@@ -63,6 +70,7 @@ public class AdminPlaces extends JPanel {
 
 	/**/
 
+
 	public AdminPlaces(AdminMain main) {
 		this.main = main;
 		
@@ -72,7 +80,6 @@ public class AdminPlaces extends JPanel {
 				JTable table = (JTable) e.getSource();
 				int modelRow = Integer.valueOf(e.getActionCommand());
 				((DefaultTableModel) table.getModel()).removeRow(modelRow);
-				System.out.println("ss");
 			}
 
 		};
@@ -343,6 +350,11 @@ public class AdminPlaces extends JPanel {
 		add(jpWest, BorderLayout.CENTER);
 		add(jpEast, BorderLayout.EAST);
 
+
+		
+
+		
+		
 		adminHomeBtn.addActionListener(new ActionListener() { // go to cardpanel adminHome
 
 			@Override
@@ -371,11 +383,23 @@ public class AdminPlaces extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try { //////
+
+						ProjectProtocol p = new ProjectProtocol();
+						p.setCmd(1);
+						p.setName("TEST");
+						main.main.out.writeObject(p);
+						main.main.out.flush();
+					
+
+					
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
 				String input = eastHeadTextField.getText();
 				if(model.getRowCount()>0) {
 					deleteTable();
 				}
-				System.out.println("S");
 				System.out.println(eastHeadComboBox.getSelectedItem().toString()); 
 				if((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("전체보기")) {
 					try {

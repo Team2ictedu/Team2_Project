@@ -61,6 +61,8 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 	public Planner_Select(Main main) {
 		this.main = main;
+		
+		repaint();
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -94,7 +96,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 			jb4 = new JButton("마이페이지");
 			jb4.setPreferredSize(new Dimension(120, 30));
 //		jb4.setPreferredSize(new Dimension(80, 40));
-			jbName = new JButton("이름");
+			jbName = new JButton(main.user);
 			jbMyInfo = new JButton("내 정보");
 			jbLogOut = new JButton("로그아웃");
 		}

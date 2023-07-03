@@ -1,9 +1,7 @@
 package project_java;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,7 +18,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,6 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+
+import project_server.ProjectProtocol;
 
 public class Login_Main extends JPanel implements ActionListener {
 	Main main;
@@ -272,11 +271,28 @@ public class Login_Main extends JPanel implements ActionListener {
 				jtf_id.setText("");
 				jtf_pw.setText("");
 				JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+				main.user = userId;
+//				main.cardLayout.removeLayoutComponent(main.planner_Select);
+				main.cardJPanel.remove(main.planner_Select);
+				main.planner_Select = new Planner_Select(main);
+				main.cardJPanel.add("planner_Select", main.planner_Select);
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			} else if (jtf_id.getText().equals(adminId) && userPw.equals(adminPw)) {
 				jtf_id.setText("");
 				jtf_pw.setText("");
 				JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+
+				try {
+					ProjectProtocol p = new ProjectProtocol();
+					p.setCmd(71);
+					p.setName(adminId);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				
 				main.cardLayout.show(main.cardJPanel, "admin_greeting");
 			} else {
 				JOptionPane.showMessageDialog(null, "입력한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);

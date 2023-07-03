@@ -285,7 +285,6 @@ public class AdminReview extends JPanel{
 						JTable table = (JTable)e.getSource();
 				        int modelRow = Integer.valueOf( e.getActionCommand() );
 				        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-				        System.out.println("ss");
 					}
 			
 				};
@@ -338,7 +337,6 @@ public class AdminReview extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("S");
 			}
 		});
 		placeEditBtn.addActionListener(new ActionListener() {

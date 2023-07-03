@@ -71,7 +71,6 @@ public class PlacesDAO {
 				list[i][4] = "Edit";
 				list[i][5] = "Delete";
 				i++;
-				System.out.println("ss");
 			}
 			return list;
 		} catch (Exception e) {
