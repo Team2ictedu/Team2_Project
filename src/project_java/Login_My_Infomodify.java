@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import User.UserDAO;
-import User.UserVO;
+import dontUse.UserDAO;
+import dontUse.UserVO;
 
 public class Login_My_Infomodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,

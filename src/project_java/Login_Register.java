@@ -14,6 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,10 +39,13 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import User.UserDAO;
-import User.UserVO;
+import Server.Protocol;
+import UserDB.DAO;
+import UserDB.VO;
+import dontUse.UserDAO;
+import dontUse.UserVO;
 
-public class Login_Register extends JPanel implements ActionListener {
+public class Login_Register extends JPanel implements ActionListener, Runnable {
 
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton join_bt, cancel_bt;
@@ -51,10 +58,15 @@ public class Login_Register extends JPanel implements ActionListener {
 	JScrollPane jsp;
 	Border newBorder;
 	Main main;
-
+	String pass1, pass2;
 	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp,
 			terms_jp;
 	JLabel lb;
+	Socket s;
+	ObjectOutputStream out;
+	ObjectInputStream in;
+	int result;
+	boolean idCheck;
 
 	public Login_Register(Main main) {
 		this.main = main;
@@ -346,6 +358,8 @@ public class Login_Register extends JPanel implements ActionListener {
 		}
 		join_bt.addActionListener(this);
 		cancel_bt.addActionListener(this);
+		// 접속
+		connected();
 
 	}
 
@@ -355,8 +369,8 @@ public class Login_Register extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
-		String pass1 = new String(jpf_pw.getPassword());
-		String pass2 = new String(jpf_pwchk.getPassword());
+		pass1 = new String(jpf_pw.getPassword());
+		pass2 = new String(jpf_pwchk.getPassword());
 		if (obj == cancel_bt) {
 			if (tf_id.getText().length() > 0 || new String(jpf_pw.getPassword()).length() > 0
 					|| new String(jpf_pwchk.getPassword()).length() > 0 || tf_mail.getText().length() > 0
@@ -431,7 +445,7 @@ public class Login_Register extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(this, "약관에 동의해야 회원가입이 가능합니다.", "약관 동의 필요", JOptionPane.WARNING_MESSAGE);
 				cb_TermsofUse.requestFocus();
 			} else {
-				UserVO vo = new UserVO();
+				VO vo = new VO();
 				vo.setM_ID(tf_id.getText());
 				vo.setM_PW(pass1);
 				vo.setM_EMAIL(tf_mail.getText());
@@ -439,20 +453,40 @@ public class Login_Register extends JPanel implements ActionListener {
 				vo.setM_BIRTH(tf_birth.getText());
 				vo.setM_PHONE(tf_phone.getText());
 				vo.setM_TERMS("동의");
-				int result = UserDAO.getInstance().getUserRegister(vo);
-				if (result == 0) {
-					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
-					tf_id.setText("");
-					jpf_pw.setText("");
-					jpf_pwchk.setText("");
-					tf_mail.setText("");
-					tf_name.setText("");
-					tf_birth.setText("");
-					tf_phone.setText("");
-					cb_TermsofUse.setSelected(false);
-					main.cardLayout.show(main.cardJPanel, "login_Main");
+				vo.setM_CLASS("1");
+				try {
+					Protocol p = new Protocol();
+					p.setVo(vo);
+					p.setCmd(1); // 아이디 중복체크
+					out.writeObject(p);
+					out.flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					if (idCheck) {
+						Protocol p = new Protocol();
+						p.setVo(vo);
+						p.setCmd(2); // 회원가입
+						out.writeObject(p);
+						out.flush();
+						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
+						tf_id.setText("");
+						jpf_pw.setText("");
+						jpf_pwchk.setText("");
+						tf_mail.setText("");
+						tf_name.setText("");
+						tf_birth.setText("");
+						tf_phone.setText("");
+						cb_TermsofUse.setSelected(false);
+						main.cardLayout.show(main.cardJPanel, "login_Main");
+					} else {
+						JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (Exception e2) {
 				}
 			}
 		}
@@ -463,25 +497,56 @@ public class Login_Register extends JPanel implements ActionListener {
 		return email.matches(emailRegex);
 	}
 
-	public static void main(String[] args) {
+	// 접속
+	public void connected() {
 		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+			s = new Socket("192.168.0.44", 7780);
+			out = new ObjectOutputStream(s.getOutputStream());
+			in = new ObjectInputStream(s.getInputStream());
+			new Thread(this).start();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-//	                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//	                    app.setSize(800, 600);
-//	                    app.setLocationRelativeTo(null);
-//	                    app.setVisible(true);
-					new Login_Register();
+	// 활동내용
+	@Override
+	public void run() {
+		esc: while (true) {
+			try {
+				Object obj = in.readObject();
+				if (obj != null) {
+					Protocol p = (Protocol) obj;
+					VO vo = p.getVo();
+					switch (p.getCmd()) {
+					case 0:
+						break esc;
+					case 1: // 아이디 중복확인
+						idCheck = DAO.getIdCheck(tf_id.getText());
+						break;
+					case 2: // 회원가입
+						result = DAO.getInsert(vo);
+						if (result == 1) {
+							System.out.println("'" + p.getVo().getM_ID() + "' 계정 생성 완료");
+						}
+						break;
+					}
 				}
-			});
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("회원가입 오류발생: " + e);
+			}
+		}
+		closed();
+	}
+
+	// 끝내기
+	public void closed() {
+		try {
+			out.close();
+			in.close();
+			s.close();
+			System.exit(0);
+		} catch (Exception e) {
 		}
 	}
 

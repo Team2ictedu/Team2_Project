@@ -31,8 +31,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import User.UserDAO;
-import User.UserVO;
+
+import dontUse.UserDAO;
+import dontUse.UserVO;
 import project_admin.AdminMain;
 
 public class Login_Main extends JPanel implements ActionListener {
