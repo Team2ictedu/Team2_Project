@@ -2,21 +2,32 @@ package project_java;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import User.UserDAO;
-import User.UserVO;
+import Server.Protocol;
 import project_admin.AdminMain;
+import UserDB.DAO;
+import UserDB.VO;
+import dontUse.UserDAO;
+import dontUse.UserVO;
 
-public class Main extends JFrame {
+public class Main extends JFrame{
 	public CardLayout cardLayout;
 	public JPanel cardJPanel;
 	public UserVO vo;
 	Login_My_Infomodify login_My_Infomodify;
+	
+	Socket s;
+	ObjectOutputStream out;
+	ObjectInputStream in;
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -46,6 +57,7 @@ public class Main extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		
 	}
 
 	public void Main2() {
@@ -87,7 +99,6 @@ public class Main extends JFrame {
 		cardJPanel.add("admin_users", adminMain.adminUsers);
 		cardJPanel.add("admin_reviews", adminMain.adminReview);
 	}
-
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
@@ -104,5 +115,4 @@ public class Main extends JFrame {
 		}
 
 	}
-
 }

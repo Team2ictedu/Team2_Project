@@ -1,4 +1,4 @@
-package User;
+package dontUse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
