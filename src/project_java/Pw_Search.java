@@ -26,9 +26,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
-
 public class Pw_Search extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
@@ -41,7 +38,6 @@ public class Pw_Search extends JPanel implements ActionListener {
 	JTextField idCg_jtf, name_jtf, em_jtf;
 	JButton logMv_bt, join_bt, idFin_bt, pwCk_bt;
 	Main main;
-	UserVO vo;
 	
 	public Pw_Search(Main main) {
 		this.main = main;
