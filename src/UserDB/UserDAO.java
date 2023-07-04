@@ -2,7 +2,7 @@ package UserDB;
 
 import org.apache.ibatis.session.SqlSession;
 
-public class DAO {
+public class UserDAO {
 	// 실제 사용하는 클래스 : SqlSession
 	private static SqlSession ss;
 	
@@ -13,18 +13,21 @@ public class DAO {
 		}
 		return ss;
 	}
-	public static int getInsert(VO vo) {
+	public static int getInsert(UserVO vo) {
 		int result = getSession().insert("userIns", vo);
 		ss.commit();
 		return result;
 	}
-	
 	public static int getIdChk(String M_ID) {
 		int result = 0; //중복일때
-		VO vo = getSession().selectOne("idChk", M_ID);
+		UserVO vo = getSession().selectOne("idChk", M_ID);
 		if(vo == null) {
 			result = 1; // 중복x
 		}
 		return result;
+	}
+	public static UserVO getUser(UserVO vo) {
+		UserVO vo2 = getSession().selectOne("userInfo", vo);
+		return vo2;
 	}
 }

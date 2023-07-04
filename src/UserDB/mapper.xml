@@ -10,6 +10,10 @@
 	
 	<select id="idChk" parameterType="String" resultType="UserDB.VO">
 		select M_ID from member where M_ID= #{M_ID}
+	</select>	
+	
+	<select id="userInfo" parameterType="String" resultType="UserDB.VO">
+		select * from member where M_ID= #{M_ID} and M_PW=#{M_PW}
 	</select>
 </mapper>
 

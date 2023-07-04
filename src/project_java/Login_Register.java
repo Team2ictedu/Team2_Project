@@ -13,9 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -34,8 +31,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Server.Protocol;
-import UserDB.DAO;
-import UserDB.VO;
+import UserDB.UserVO;
 
 public class Login_Register extends JPanel implements ActionListener {
 
@@ -431,7 +427,7 @@ public class Login_Register extends JPanel implements ActionListener {
 			} else {
 				try {
 					Protocol p = new Protocol();
-					VO vo = new VO();
+					UserVO vo = new UserVO();
 					vo.setM_ID(tf_id.getText().trim());
 					vo.setM_PW(pass1.trim());
 					vo.setM_EMAIL(tf_mail.getText().trim());

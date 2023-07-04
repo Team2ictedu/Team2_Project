@@ -15,18 +15,31 @@ import javax.swing.UIManager;
 
 import Server.Protocol;
 import project_admin.AdminMain;
-import UserDB.DAO;
-import UserDB.VO;
+import UserDB.UserDAO;
+import UserDB.UserVO;
 
 public class Main extends JFrame implements Runnable {
 	public CardLayout cardLayout;
 	public JPanel cardJPanel;
 	Login_My_Infomodify login_My_Infomodify;
 	Login_Register login_Register;
+	Login_Main login_Main;
+	Id_Search id_Search;
+	Pw_Search pw_Search;
+	Login_My_PWmodify login_My_PWmodify;
+	Login_Withdrawal login_Withdrawal;
+	AllReview allReview;
+	MyReview myReview ;
+	Planner_Create planner_Create;
+	Planner_InsertSpot planner_InsertSpot;
+	Planner_Select planner_Select;
+
+			// 관리자 객체 선언
+			AdminMain adminMain = new AdminMain(this);
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-
+	Protocol p;
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -36,10 +49,10 @@ public class Main extends JFrame implements Runnable {
 		// 로그인 후
 		// 객체 선언
 		// 로그인 전
-		Login_Main login_Main = new Login_Main(this);
+		login_Main = new Login_Main(this);
 		login_Register = new Login_Register(this);
-		Id_Search id_Search = new Id_Search(this);
-		Pw_Search pw_Search = new Pw_Search(this);
+		id_Search = new Id_Search(this);
+		pw_Search = new Pw_Search(this);
 		// PwChange_login pwChange_login = new PwChange_login(this);
 		// 로그인 전
 		cardJPanel.add("login_Main", login_Main);
@@ -61,17 +74,17 @@ public class Main extends JFrame implements Runnable {
 
 	public void Main2() {
 		login_My_Infomodify = new Login_My_Infomodify(this);
-		Login_My_PWmodify login_My_PWmodify = new Login_My_PWmodify(this);
-		Login_Withdrawal login_Withdrawal = new Login_Withdrawal(this);
+		login_My_PWmodify = new Login_My_PWmodify(this);
+		login_Withdrawal = new Login_Withdrawal(this);
 
 		// 리뷰 객체 선언
-		AllReview allReview = new AllReview(this);
-		MyReview myReview = new MyReview(this);
+		allReview = new AllReview(this);
+		myReview = new MyReview(this);
 
 		// 플래너 객체 선언
-		Planner_Create planner_Create = new Planner_Create(this);
-		Planner_InsertSpot planner_InsertSpot = new Planner_InsertSpot(this);
-		Planner_Select planner_Select = new Planner_Select(this);
+		planner_Create = new Planner_Create(this);
+		planner_InsertSpot = new Planner_InsertSpot(this);
+		planner_Select = new Planner_Select(this);
 
 		// 관리자 객체 선언
 		AdminMain adminMain = new AdminMain(this);
@@ -97,7 +110,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel.add("admin_places", adminMain.adminPlaces);
 		cardJPanel.add("admin_users", adminMain.adminUsers);
 		cardJPanel.add("admin_reviews", adminMain.adminReview);
-	
+
 	}
 
 	public static void main(String[] args) {
@@ -116,13 +129,14 @@ public class Main extends JFrame implements Runnable {
 		}
 
 	}
+
 	@Override
 	public void run() {
 		esc: while (true) {
 			try {
 				Object obj = in.readObject();
 				if (obj != null) {
-					Protocol p = (Protocol) obj;
+					p = (Protocol) obj;
 					switch (p.getCmd()) {
 					case 0:
 						break esc;
@@ -143,14 +157,36 @@ public class Main extends JFrame implements Runnable {
 						login_Register.tf_phone.setText("");
 						login_Register.cb_TermsofUse.setSelected(false);
 						break;
+					case 5:
+						if(p.getVo() == null) {
+							JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						} else {
+							if (p.getVo().getM_CLASS().equals("0")) {
+								Main2();
+								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
+										JOptionPane.INFORMATION_MESSAGE);
+								cardLayout.show(cardJPanel, "admin_greeting");
+							} else if (p.getVo().getM_CLASS().equals("1")) {
+								Main2();
+								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
+										JOptionPane.INFORMATION_MESSAGE);
+								cardLayout.show(cardJPanel, "planner_Select");
+							} else if (p.getVo().getM_CLASS().equals("4")) {
+								JOptionPane.showMessageDialog(null, p.getVo().getM_ID() + "님은 탈퇴한 계정입니다.", "Confirm",
+										JOptionPane.ERROR_MESSAGE);
+							}
+						}
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		closed();
+
+	closed();
+
 	}
+
 	// 접속
 	public void connected() {
 		try {
@@ -162,7 +198,6 @@ public class Main extends JFrame implements Runnable {
 			System.out.println(e);
 		}
 	}
-
 
 	// 끝내기
 	public void closed() {

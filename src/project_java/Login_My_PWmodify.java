@@ -138,7 +138,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 				jp_center2.add(jp_south2, BorderLayout.SOUTH);
 
 //	jb4.setPreferredSize(new Dimension(80, 40));
-				jbName = new JButton(main.vo.getM_NAME() + "님");
+				jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 				jbMyInfo = new JButton("내 정보");
 				jbLogOut = new JButton("로그아웃");
 				mypage_bt = new JButton("마이페이지");
@@ -299,7 +299,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			if (pass.length() == 0) {
 				JOptionPane.showMessageDialog(null, "현재 비밀번호를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jpf_pw.requestFocus();
-			} else if (pass.equals(main.vo.getM_PW())) {
+			} else if (pass.equals(main.p.getVo().getM_PW())) {
 				if (newPass1.length() == 0) {
 					JOptionPane.showMessageDialog(null, "새 비밀번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 					jpf_newPw1.requestFocus();
@@ -311,7 +311,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 				} else {
 					UserVO vo = new UserVO();
 					vo.setM_PW(newPass1);
-					vo.setM_ID(main.vo.getM_ID());
+					vo.setM_ID(main.p.getVo().getM_ID());
 					int result = UserDAO.getInstance().getUserPwChange(vo);
 					if (result == 0) {
 						JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);

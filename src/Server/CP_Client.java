@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import UserDB.DAO;
-import UserDB.VO;
+import UserDB.UserDAO;
+import UserDB.UserVO;
 
 public class CP_Client extends Thread {
 	Socket s;
@@ -33,24 +33,29 @@ public class CP_Client extends Thread {
 				Object obj = in.readObject();
 				if (obj != null) {
 					Protocol p = (Protocol) obj;
-					VO vo = p.getVo();
+					UserVO vo = p.getVo();
 					switch (p.getCmd()) {
 					case 0:
 						out.writeObject(p);
 						out.flush();
 						break;
 					case 1: // 중복제거
-						int result = DAO.getIdChk(vo.getM_ID());
-						if(result == 0) {
+						int result = UserDAO.getIdChk(vo.getM_ID());
+						if(result == 0) { // 아이디 중복됨
 							p.setCmd(2);
 							out.writeObject(p);
 							out.flush();
-						} else {
-							DAO.getInsert(vo);
+						} else { // 아이디 중복되지 않음
+							UserDAO.getInsert(vo);
 							p.setCmd(3);
 							out.writeObject(p);
 							out.flush();
 						}
+					case 4:
+							p.setVo(UserDAO.getUser(vo));
+							p.setCmd(5);
+							out.writeObject(p);
+							out.flush();
 						break;
 					}
 				}
