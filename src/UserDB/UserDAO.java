@@ -18,9 +18,9 @@ public class UserDAO {
 		ss.commit();
 		return result;
 	}
-	public static int getIdChk(String M_ID) {
+	public static int getChk(String M_ID) {
 		int result = 0; //중복일때
-		UserVO vo = getSession().selectOne("idChk", M_ID);
+		UserVO vo = getSession().selectOne("Chk", M_ID);
 		if(vo == null) {
 			result = 1; // 중복x
 		}
@@ -29,5 +29,11 @@ public class UserDAO {
 	public static UserVO getUser(UserVO vo) {
 		UserVO vo2 = getSession().selectOne("userInfo", vo);
 		return vo2;
+	}
+	
+	public static int getPWUpdate(UserVO vo) {
+		int result = getSession().update("pwUpdate", vo);
+		ss.commit();
+		return result;
 	}
 }

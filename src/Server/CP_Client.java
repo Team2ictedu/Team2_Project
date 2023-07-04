@@ -40,8 +40,8 @@ public class CP_Client extends Thread {
 						out.flush();
 						break;
 					case 1: // 중복제거
-						int result = UserDAO.getIdChk(vo.getM_ID());
-						if(result == 0) { // 아이디 중복됨
+						int result = UserDAO.getChk(vo.getM_ID());
+						if (result == 0) { // 아이디 중복됨
 							p.setCmd(2);
 							out.writeObject(p);
 							out.flush();
@@ -51,11 +51,20 @@ public class CP_Client extends Thread {
 							out.writeObject(p);
 							out.flush();
 						}
+						break;
 					case 4:
-							p.setVo(UserDAO.getUser(vo));
-							p.setCmd(5);
-							out.writeObject(p);
-							out.flush();
+						p.setVo(UserDAO.getUser(vo));
+						p.setCmd(5);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 202: // 비밀번호 변경
+						System.out.println(2);
+						UserDAO.getPWUpdate(vo);
+						System.out.println(3);
+						p.setCmd(203);
+						out.writeObject(p);
+						out.flush();
 						break;
 					}
 				}

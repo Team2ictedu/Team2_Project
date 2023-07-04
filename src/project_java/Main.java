@@ -174,6 +174,16 @@ public class Main extends JFrame implements Runnable {
 										JOptionPane.ERROR_MESSAGE);
 							}
 						}
+						break;
+					case 203:
+						Main2();
+						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
+						cardLayout.show(cardJPanel, "planner_Select");
+						login_My_PWmodify.jpf_pw.setText("");
+						login_My_PWmodify.jpf_newPw1.setText("");
+						login_My_PWmodify.jpf_newPw2.setText("");
+						break;
 					}
 				}
 			} catch (Exception e) {

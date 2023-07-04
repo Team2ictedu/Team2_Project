@@ -8,13 +8,17 @@
 	values(#{M_ID},#{M_PW},#{M_EMAIL},#{M_NAME},#{M_BIRTH},#{M_PHONE},#{M_TERMS},#{M_CLASS})
 	</insert>
 	
-	<select id="idChk" parameterType="String" resultType="UserDB.UserVO">
+	<select id="Chk" parameterType="String" resultType="UserDB.UserVO">
 		select M_ID from member where M_ID= #{M_ID}
 	</select>	
 	
 	<select id="userInfo" parameterType="String" resultType="UserDB.UserVO">
 		select * from member where M_ID= #{M_ID} and M_PW=#{M_PW}
 	</select>
+	
+	<update id="pwUpdate" parameterType="UserDB.UserVO">
+		update member set M_PW=#{M_PW} where M_ID=#{M_ID}
+	</update>
 </mapper>
 
 
