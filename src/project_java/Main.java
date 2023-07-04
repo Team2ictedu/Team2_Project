@@ -33,9 +33,7 @@ public class Main extends JFrame implements Runnable {
 	Planner_Create planner_Create;
 	Planner_InsertSpot planner_InsertSpot;
 	Planner_Select planner_Select;
-
-			// 관리자 객체 선언
-			AdminMain adminMain = new AdminMain(this);
+	AdminMain adminMain;
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;

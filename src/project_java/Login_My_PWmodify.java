@@ -28,6 +28,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import dontUse.UserDAO;
+import dontUse.UserVO;
+
 public class Login_My_PWmodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_pw, jp_south2, jp_west2;
@@ -306,6 +309,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 				} else if (!newPass1.equals(newPass2)) {
 					JOptionPane.showMessageDialog(null, "새 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				} else {
+					UserVO vo = new UserVO();
 					vo.setM_PW(newPass1);
 					vo.setM_ID(main.p.getVo().getM_ID());
 					int result = UserDAO.getInstance().getUserPwChange(vo);

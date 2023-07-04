@@ -27,6 +27,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import dontUse.UserDAO;
+import dontUse.UserVO;
+
 public class Login_My_Infomodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
@@ -321,6 +324,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_phone.requestFocus();
 			} else {
+				UserVO vo = new UserVO();
 				vo.setM_EMAIL(tf_email.getText());
 				vo.setM_NAME(tf_name.getText());
 				vo.setM_PHONE(tf_phone.getText());
