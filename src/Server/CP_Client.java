@@ -39,27 +39,23 @@ public class CP_Client extends Thread {
 						out.writeObject(p);
 						out.flush();
 						break;
-					case 1: // 회원가입
-					case 2: // 중복제거
+					case 1: // 중복제거
 						int result = DAO.getIdChk(vo.getM_ID());
-						if (result == 0) {
-							p.setCmd(3);
+						if(result == 0) {
+							p.setCmd(2);
+							out.writeObject(p);
+							out.flush();
 						} else {
-							p.setCmd(4);
+							DAO.getInsert(vo);
+							p.setCmd(3);
+							out.writeObject(p);
+							out.flush();
 						}
-						out.writeObject(p);
-						out.flush();
 						break;
-					case 5: // 회원가입
-						DAO.getInsert(vo);
-						out.writeObject(p);
-						out.flush();
-						break;
-
 					}
 				}
 			} catch (Exception e) {
-				System.out.println("CP_Client: " + e);
+				e.printStackTrace();
 			}
 		}
 
