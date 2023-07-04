@@ -19,6 +19,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+src/project_java/main.java
+src/Server/CP_Client
 
 # External tool builders
 .externalToolBuilders/
