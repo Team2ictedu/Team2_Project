@@ -27,9 +27,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
-
 public class Login_My_Infomodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
@@ -117,22 +114,22 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jp_name.add(jl_name);
 				jl_name.setFont(new Font("Jalnan", Font.BOLD, 15));
 				jp_name.add(tf_name);
-				tf_name.setText(main.vo.getM_NAME());
+				tf_name.setText(main.p.getVo().getM_NAME());
 
 				jp_email.add(jl_email);
 				jl_email.setFont(new Font("Jalnan", Font.BOLD, 15));
-				tf_email.setText(main.vo.getM_EMAIL());
+				tf_email.setText(main.p.getVo().getM_EMAIL());
 				jp_email.add(tf_email);
 
 				jp_birth.add(jl_birth);
 				jl_birth.setFont(new Font("Jalnan", Font.BOLD, 15));
-				tf_birth.setText(main.vo.getM_BIRTH());
+				tf_birth.setText(main.p.getVo().getM_BIRTH());
 				jp_birth.add(tf_birth);
 				tf_birth.setEditable(false);
 
 				jp_phone.add(jl_phone);
 				jl_phone.setFont(new Font("Jalnan", Font.BOLD, 15));
-				tf_phone.setText(main.vo.getM_PHONE());
+				tf_phone.setText(main.p.getVo().getM_PHONE());
 				jp_phone.add(tf_phone);
 
 				jp_center.add(jp_name);
@@ -155,7 +152,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jp_center2.add(jp_south2, BorderLayout.SOUTH);
 
 //	jb4.setPreferredSize(new Dimension(80, 40));
-				jbName = new JButton(main.vo.getM_NAME() + "님");
+				jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 				jbMyInfo = new JButton("내 정보");
 				jbLogOut = new JButton("로그아웃");
 				mypage_bt = new JButton("마이페이지");
@@ -324,16 +321,15 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_phone.requestFocus();
 			} else {
-				UserVO vo = new UserVO();
 				vo.setM_EMAIL(tf_email.getText());
 				vo.setM_NAME(tf_name.getText());
 				vo.setM_PHONE(tf_phone.getText());
-				vo.setM_ID(main.vo.getM_ID());
+				vo.setM_ID(main.p.getVo().getM_ID());
 				int result = UserDAO.getInstance().getUserUpdate(vo);
 				if (result == 0) {
 					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
 				} else {
-					main.vo = UserDAO.getInstance().getLogin(main.vo.getM_ID());
+					//main.vo = UserDAO.getInstance().getLogin(main.vo.getM_ID());
 					main.Main2();
 					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
 						JOptionPane.INFORMATION_MESSAGE);

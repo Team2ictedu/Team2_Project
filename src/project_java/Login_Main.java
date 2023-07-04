@@ -1,9 +1,7 @@
 package project_java;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,14 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,9 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
-import project_admin.AdminMain;
+import Server.Protocol;
+import UserDB.UserVO;
 
 public class Login_Main extends JPanel implements ActionListener {
 	Main main;
@@ -48,8 +42,6 @@ public class Login_Main extends JPanel implements ActionListener {
 	JTextField jtf_id;
 	JPasswordField jtf_pw;
 	JButton log_bt, join_bt, idFin_bt, pwFin_bt;
-	UserVO vo;
-	static String id;
 
 	public Login_Main(Main main) {
 //		FONT
@@ -271,27 +263,18 @@ public class Login_Main extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_pw.requestFocus();
 			} else {
-				vo = UserDAO.getInstance().getLogin(jtf_id.getText());
-				main.vo = vo;
-				if (jtf_id.getText().equalsIgnoreCase(vo.getM_ID()) && inpw.equals(vo.getM_PW())) {
-					jtf_id.setText("");
-					jtf_pw.setText("");
-					if (vo.getM_CLASS().equals("0")) {
-						main.Main2();
-						JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
-								JOptionPane.INFORMATION_MESSAGE);
-						main.cardLayout.show(main.cardJPanel, "admin_greeting");
-					} else if (vo.getM_CLASS().equals("1")) {
-						main.Main2();
-						JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
-								JOptionPane.INFORMATION_MESSAGE);
-						main.cardLayout.show(main.cardJPanel, "planner_Select");
-					} else if (vo.getM_CLASS().equals("4")) {
-						JOptionPane.showMessageDialog(null, vo.getM_ID() + "님은 탈퇴한 계정입니다.", "Confirm",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				UserVO vo = new UserVO();
+				try {
+					Protocol p = new Protocol();
+					vo.setM_ID(jtf_id.getText().trim());
+					vo.setM_PW(inpw);
+					p.setVo(vo);
+					p.setCmd(4);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		} else if (obj == join_bt) {

@@ -5,8 +5,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import UserDB.DAO;
-import UserDB.VO;
+import javax.swing.JOptionPane;
+
+import UserDB.UserDAO;
+import UserDB.UserVO;
 
 public class CP_Client extends Thread {
 	Socket s;
@@ -31,27 +33,34 @@ public class CP_Client extends Thread {
 				Object obj = in.readObject();
 				if (obj != null) {
 					Protocol p = (Protocol) obj;
+					UserVO vo = p.getVo();
 					switch (p.getCmd()) {
 					case 0:
 						out.writeObject(p);
 						out.flush();
 						break;
-					case 1: // 아이디체크
-						VO vo2 = p.getVo();
-						DAO.getIdCheck(vo2.getM_ID());
-						out.writeObject(p);
-						out.flush();
-						break;
-					case 2: //회원가입
-						VO vo = p.getVo();
-						DAO.getInsert(vo);
-						out.writeObject(p);
-						out.flush();
+					case 1: // 중복제거
+						int result = UserDAO.getIdChk(vo.getM_ID());
+						if(result == 0) { // 아이디 중복됨
+							p.setCmd(2);
+							out.writeObject(p);
+							out.flush();
+						} else { // 아이디 중복되지 않음
+							UserDAO.getInsert(vo);
+							p.setCmd(3);
+							out.writeObject(p);
+							out.flush();
+						}
+					case 4:
+							p.setVo(UserDAO.getUser(vo));
+							p.setCmd(5);
+							out.writeObject(p);
+							out.flush();
 						break;
 					}
 				}
 			} catch (Exception e) {
-				System.out.println("CP_Client: " + e);
+				e.printStackTrace();
 			}
 		}
 
