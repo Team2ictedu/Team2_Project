@@ -26,6 +26,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import dontUse.UserDAO;
+import dontUse.UserVO;
+
+
+
 public class Id_Search extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
@@ -37,6 +42,7 @@ public class Id_Search extends JPanel implements ActionListener {
 	JPanel im_jp, log_im, lb_jp, name_jp, pw_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField jtf_name, jtf_em;
 	JButton logMv_bt, join_bt, pwFin_bt, idCk_bt;
+	UserVO vo;
 
 	public Id_Search(Main main) {
 		this.main = main;
@@ -227,41 +233,42 @@ public class Id_Search extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// 임의의 id와 em 생성 나중에 db연결하고 바꿀예정
-		String id = "root";
-		String name = "root";
-		String em = "root";
-		JButton obj = (JButton) e.getSource();
-		if (obj == logMv_bt) { // 로그인이동버튼
+		JButton obj2 = (JButton) e.getSource();
+		if (obj2 == logMv_bt) { // 로그인이동버튼
 			jtf_name.setText("");
 			jtf_em.setText("");
 			main.cardLayout.show(main.cardJPanel, "login_Main");
-		} else if (obj == join_bt) { // 회원가입으로 이동
+		} else if (obj2 == join_bt) { // 회원가입으로 이동
 			jtf_name.setText("");
 			jtf_em.setText("");
 			main.cardLayout.show(main.cardJPanel, "login_Register");
-		} else if (obj == pwFin_bt) { // 비밀번호 찾기로 이동
+		} else if (obj2 == pwFin_bt) { // 비밀번호 찾기로 이동
 			jtf_name.setText("");
 			jtf_em.setText("");
 			main.cardLayout.show(main.cardJPanel, "pw_Search");
-		} else if (obj == idCk_bt) { // 계정 확인버튼 알림창
-			if (jtf_name.getText().length() == 0) { // 입력값이 없을때
+		} else if (obj2 == idCk_bt) { // 계정 확인버튼 알림창
+			if (jtf_name.getText().equals("")) { // 입력값이 없을때
 				JOptionPane.showMessageDialog(null, "이름을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_name.requestFocus();
-			} else if (jtf_em.getText().length() == 0) {
+			} else if (jtf_em.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_em.requestFocus();
-			} else if (jtf_name.getText().equals(name) && jtf_em.getText().equals(em)) { //입력정보 일치
-				jtf_name.setText("");
-				jtf_em.setText("");
-				int result = JOptionPane.showConfirmDialog(null, "아이디는 " + id + "입니다.\n 비밀번호도 찾으시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
-				if(result==JOptionPane.YES_OPTION) {
-					main.cardLayout.show(main.cardJPanel, "pw_Search");
-				} else {
-					main.cardLayout.show(main.cardJPanel, "login_Main");
-				}
 			} else {
-				JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				this.vo = UserDAO.getInstance().getIdFind(jtf_name.getText(), jtf_em.getText());
+				if (jtf_name.getText().equals(vo.getM_NAME()) && jtf_em.getText().equals(vo.getM_EMAIL())) { // 입력정보 일치
+					jtf_name.setText("");
+					jtf_em.setText("");
+					int result = JOptionPane.showConfirmDialog(null,
+							vo.getM_NAME() + "님의 아이디는 " + vo.getM_ID() + "입니다.\n비밀번호도 찾으시겠습니까?", "Confirm",
+							JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						main.cardLayout.show(main.cardJPanel, "pw_Search");
+					} else {
+						main.cardLayout.show(main.cardJPanel, "login_Main");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 	}

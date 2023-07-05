@@ -1,9 +1,7 @@
 package project_java;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,7 +18,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,6 +27,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import Server.Protocol;
+import UserDB.UserVO;
+
 public class Login_Main extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_buttons, jp_east, jp_west, jp_south;
@@ -38,15 +38,14 @@ public class Login_Main extends JPanel implements ActionListener {
 	JLabel jLabel1, lb;
 	TextPrompt tp1, tp2;
 	Border newBorder;
-
 	JPanel im_jp, log_im, lb_jp, id_jp, pw_jp, logBt_jp, btBt_jp, add_jp;
 	JTextField jtf_id;
 	JPasswordField jtf_pw;
 	JButton log_bt, join_bt, idFin_bt, pwFin_bt;
 
 	public Login_Main(Main main) {
-		this.main = main;
 //		FONT
+		this.main = main;
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Jalnan.ttf")));
@@ -248,18 +247,13 @@ public class Login_Main extends JPanel implements ActionListener {
 		join_bt.addActionListener(this);
 		idFin_bt.addActionListener(this);
 		pwFin_bt.addActionListener(this);
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// DB에 있는 정보 나중에는 등급 0은 관리자, 1은 유저, 4는 탈퇴유저 구분할것
 		JButton obj = (JButton) e.getSource();
-		// DB에 있는 정보 나중에는 등급 0은 관리자 1은 유저로 구분할것
-		String adminId = "root";
-		String adminPw = "1111";
-		
-		String userId = "user";
-		String userPw = "1111";
-
 		String inpw = new String(jtf_pw.getPassword()); // 입력한 패스워드를 inpw에 담는다.
 		if (obj == log_bt) {
 			if (jtf_id.getText().equals("")) {
@@ -268,18 +262,20 @@ public class Login_Main extends JPanel implements ActionListener {
 			} else if (inpw.equals("")) {
 				JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_pw.requestFocus();
-			} else if (jtf_id.getText().equals(userId) && userPw.equals(inpw)) {
-				jtf_id.setText("");
-				jtf_pw.setText("");
-				JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm", JOptionPane.INFORMATION_MESSAGE);
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
-			} else if (jtf_id.getText().equals(adminId) && userPw.equals(adminPw)) {
-				jtf_id.setText("");
-				jtf_pw.setText("");
-				JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm", JOptionPane.INFORMATION_MESSAGE);
-				main.cardLayout.show(main.cardJPanel, "admin_greeting");
 			} else {
-				JOptionPane.showMessageDialog(null, "입력한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				UserVO vo = new UserVO();
+				try {
+					Protocol p = new Protocol();
+					vo.setM_ID(jtf_id.getText().trim());
+					vo.setM_PW(inpw);
+					p.setVo(vo);
+					p.setCmd(4);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		} else if (obj == join_bt) {
 			jtf_id.setText("");
@@ -297,6 +293,7 @@ public class Login_Main extends JPanel implements ActionListener {
 	}
 
 	public Login_Main() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {

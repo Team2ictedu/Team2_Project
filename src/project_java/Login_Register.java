@@ -2,7 +2,6 @@ package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -16,12 +15,10 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,12 +27,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import Server.Protocol;
+import UserDB.UserVO;
+
 public class Login_Register extends JPanel implements ActionListener {
+
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton join_bt, cancel_bt;
 	JLabel jLabel1;
@@ -47,7 +46,7 @@ public class Login_Register extends JPanel implements ActionListener {
 	JScrollPane jsp;
 	Border newBorder;
 	Main main;
-
+	String pass1, pass2;
 	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp,
 			terms_jp;
 	JLabel lb;
@@ -342,7 +341,6 @@ public class Login_Register extends JPanel implements ActionListener {
 		}
 		join_bt.addActionListener(this);
 		cancel_bt.addActionListener(this);
-
 	}
 
 	public Login_Register() {
@@ -351,8 +349,8 @@ public class Login_Register extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
-		String pass1 = new String(jpf_pw.getPassword());
-		String pass2 = new String(jpf_pwchk.getPassword());
+		pass1 = new String(jpf_pw.getPassword());
+		pass2 = new String(jpf_pwchk.getPassword());
 		if (obj == cancel_bt) {
 			if (tf_id.getText().length() > 0 || new String(jpf_pw.getPassword()).length() > 0
 					|| new String(jpf_pwchk.getPassword()).length() > 0 || tf_mail.getText().length() > 0
@@ -427,16 +425,24 @@ public class Login_Register extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(this, "약관에 동의해야 회원가입이 가능합니다.", "약관 동의 필요", JOptionPane.WARNING_MESSAGE);
 				cb_TermsofUse.requestFocus();
 			} else {
-				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
-				tf_id.setText("");
-				jpf_pw.setText("");
-				jpf_pwchk.setText("");
-				tf_mail.setText("");
-				tf_name.setText("");
-				tf_birth.setText("");
-				tf_phone.setText("");
-				cb_TermsofUse.setSelected(false);
-				main.cardLayout.show(main.cardJPanel, "login_Main");
+				try {
+					Protocol p = new Protocol();
+					UserVO vo = new UserVO();
+					vo.setM_ID(tf_id.getText().trim());
+					vo.setM_PW(pass1.trim());
+					vo.setM_EMAIL(tf_mail.getText().trim());
+					vo.setM_NAME(tf_name.getText().trim());
+					vo.setM_BIRTH(tf_birth.getText().trim());
+					vo.setM_PHONE(tf_phone.getText().trim());
+					vo.setM_TERMS("동의");
+					vo.setM_CLASS("1");
+					p.setVo(vo);
+					p.setCmd(1);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
@@ -445,27 +451,4 @@ public class Login_Register extends JPanel implements ActionListener {
 		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 		return email.matches(emailRegex);
 	}
-
-	public static void main(String[] args) {
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-//	                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//	                    app.setSize(800, 600);
-//	                    app.setLocationRelativeTo(null);
-//	                    app.setVisible(true);
-					new Login_Register();
-				}
-			});
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 }
