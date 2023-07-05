@@ -78,7 +78,15 @@ public class CP_Client extends Thread {
 							out.writeObject(p);
 							out.flush();
 						break;
+					case 204: // 아이디 찾기
+						p.setVo(UserDAO.getidChk(vo));
+						p.setCmd(205);
+						out.writeObject(p);
+						out.flush();
+						break;
 					}
+				
+						
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

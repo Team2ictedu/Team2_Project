@@ -200,8 +200,27 @@ public class Main extends JFrame implements Runnable {
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
 						break;
-					}
-				}
+					case 205: // 아이디 찾기
+						if(p.getVo() == null) {
+							JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						}else {
+							int result = JOptionPane.showConfirmDialog(null,
+									id_Search.jtf_name.getText() + "님의 아이디는 " + p.getVo().getM_ID() + "입니다.\n비밀번호도 찾으시겠습니까?", "Confirm",
+									JOptionPane.YES_NO_OPTION);
+							if (result == JOptionPane.YES_OPTION) {
+								cardLayout.show(cardJPanel, "pw_Search");
+							} else {
+								cardLayout.show(cardJPanel, "login_Main");
+								id_Search.jtf_name.setText("");
+								id_Search.jtf_em.setText("");
+						}
+						
+						break;
+					
+						//this.vo = UserDAO.getInstance().getIdFind(jtf_name.getText(), jtf_em.getText());
+						}
+				}	
+			}
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -215,7 +234,7 @@ public class Main extends JFrame implements Runnable {
 	// 접속
 	public void connected() {
 		try {
-			s = new Socket("192.168.0.44", 7780);
+			s = new Socket("192.168.0.45", 7780);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 			new Thread(this).start();

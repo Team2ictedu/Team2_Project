@@ -18,6 +18,11 @@
 		resultType="UserDB.UserVO">
 		select * from member where M_ID= #{M_ID} and M_PW=#{M_PW}
 	</select>
+	
+	<select id="idChk" parameterType="String"
+		resultType="UserDB.UserVO">
+		select M_ID from member where M_NAME= #{M_NAME} AND M_EMAIL = #{M_EMAIL}
+	</select>
 
 	<update id="pwUpdate" parameterType="UserDB.UserVO">
 		update member set

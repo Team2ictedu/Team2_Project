@@ -30,7 +30,22 @@ public class UserDAO {
 		}
 		return result;
 	}
-
+	
+//	// 로그인 전 - 아이디찾기
+//	public static int getidChk(String M_ID) {
+//		int result = 0; // 일치하지 않을때
+//		UserVO vo = getSession().selectOne("idChk", M_ID);
+//		if (vo == null) {
+//			result = 1; // 일치할때
+//		}
+//		return result;
+//	}
+	// 로그인 전 - 아이디찾기 - 테스트
+	public static UserVO getidChk(UserVO vo) {
+		UserVO vo3 = getSession().selectOne("idChk", vo);
+		return vo3;
+	}
+	
 	// 유저정보 저장
 	public static UserVO getUser(UserVO vo) {
 		UserVO vo2 = getSession().selectOne("userInfo", vo);
