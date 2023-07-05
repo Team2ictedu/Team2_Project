@@ -33,7 +33,7 @@ import javax.swing.table.TableRowSorter;
 
 import project_admin.AdminMain;
 import project_admin.ButtonColumn;
-import project_admin.PlacesDAO;
+import project_admin.AdminPlacesDAO;
 
 
 
@@ -205,7 +205,7 @@ public class AdminTemplate1 extends JPanel{
 		
 		//jpEastFootCenter table
 //		ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll(); 
-		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
+		Object[][] list = AdminPlacesDAO.getInstance().getSelectAll(); 
 		
 //		PlaceTableModel model = new PlaceTableModel(list);
 		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정"};

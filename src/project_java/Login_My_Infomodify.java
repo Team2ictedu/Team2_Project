@@ -17,11 +17,9 @@ import java.io.IOException;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -29,22 +27,21 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import Server.Protocol;
+import UserDB.UserVO;
 
-public class Login_My_Infomodify extends JPanel implements ActionListener{
+public class Login_My_Infomodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_center, jp_name, jp_email, jp_phone, jp_birth, jp_south2, jp_west2;
-	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt,update_bt,
-			pw_update_bt, withdraw_bt;
+	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4, jb5, jb6, mypage_bt, update_bt, pw_update_bt, withdraw_bt;
 	Font customFont;
 	JLabel jLabel1, jl_name, jl_email, jl_birth, jl_phone;
 	JTextArea jta;
 	JScrollPane jsp;
 	JTextField tf_phone, tf_name, tf_email, tf_birth;
 	Main main;
-	
-	
-	public Login_My_Infomodify(Main main) {
 
+	public Login_My_Infomodify(Main main) {
 		this.main = main;
 		// 여기서부터
 		{
@@ -120,19 +117,22 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jp_name.add(jl_name);
 				jl_name.setFont(new Font("Jalnan", Font.BOLD, 15));
 				jp_name.add(tf_name);
-				tf_name.setText("김지수");
-				tf_name.setEditable(false);
+				tf_name.setText(main.p.getVo().getM_NAME());
 
 				jp_email.add(jl_email);
 				jl_email.setFont(new Font("Jalnan", Font.BOLD, 15));
+				tf_email.setText(main.p.getVo().getM_EMAIL());
 				jp_email.add(tf_email);
 
 				jp_birth.add(jl_birth);
 				jl_birth.setFont(new Font("Jalnan", Font.BOLD, 15));
+				tf_birth.setText(main.p.getVo().getM_BIRTH());
 				jp_birth.add(tf_birth);
+				tf_birth.setEditable(false);
 
 				jp_phone.add(jl_phone);
 				jl_phone.setFont(new Font("Jalnan", Font.BOLD, 15));
+				tf_phone.setText(main.p.getVo().getM_PHONE());
 				jp_phone.add(tf_phone);
 
 				jp_center.add(jp_name);
@@ -155,7 +155,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jp_center2.add(jp_south2, BorderLayout.SOUTH);
 
 //	jb4.setPreferredSize(new Dimension(80, 40));
-				jbName = new JButton("이름");
+				jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 				jbMyInfo = new JButton("내 정보");
 				jbLogOut = new JButton("로그아웃");
 				mypage_bt = new JButton("마이페이지");
@@ -271,7 +271,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 				jp_headerSub.add(jp_headerSubRight);
 				jp_headerMain.add(jp_headerSub);
 				jp_headerMain.add(jp_buttons);
-			
+
 				setLayout(new BorderLayout());
 				add(jp_headerMain, BorderLayout.NORTH);
 				add(jp, BorderLayout.CENTER);
@@ -290,86 +290,73 @@ public class Login_My_Infomodify extends JPanel implements ActionListener{
 			}
 		}
 	}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JButton obj = (JButton) e.getSource();
-			if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
-				main.cardLayout.show(main.cardJPanel, "planner_Create");
-			} else if(obj==jb2) { // 내일정 조회
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
-			} else if(obj==jb3) { // 여행 후기
-				main.cardLayout.show(main.cardJPanel, "allReview");
-			} else if(obj==jb4) { // 마이페이지
-				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-			} else if(obj==jbMyInfo) { // 내정보
-				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-			} else if(obj==jbLogOut) { // 로그아웃
-				main.cardLayout.show(main.cardJPanel, "login_Main");
-			} else if(obj == pw_update_bt) {
-				main.cardLayout.show(main.cardJPanel, "login_My_PWmodify");
-			}else if(obj==update_bt) {
-				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-			} else if(obj==withdraw_bt) {
-				main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
-			} else if(obj == jb5) {
-				if(tf_email.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "email을 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
-					tf_email.requestFocus();
-				}else if(tf_birth.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "생년월일을 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
-					tf_birth.requestFocus();
-				}else if(tf_phone.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요","Confirm", JOptionPane.ERROR_MESSAGE);
-					tf_phone.requestFocus();
-				} else {
-					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.","Confirm", JOptionPane.INFORMATION_MESSAGE);
-					main.cardLayout.show(main.cardJPanel,"planner_Select");
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		main.Main2();
+		JButton obj = (JButton) e.getSource();
+		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+			main.cardLayout.show(main.cardJPanel, "planner_Create");
+		} else if (obj == jb2) { // 내일정 조회
+			main.cardLayout.show(main.cardJPanel, "planner_Select");
+		} else if (obj == jb3) { // 여행 후기
+			main.cardLayout.show(main.cardJPanel, "allReview");
+		} else if (obj == jb4) { // 마이페이지
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if (obj == jbMyInfo) { // 내정보
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if (obj == jbLogOut) { // 로그아웃
+			main.cardLayout.show(main.cardJPanel, "login_Main");
+		} else if (obj == pw_update_bt) {
+			main.cardLayout.show(main.cardJPanel, "login_My_PWmodify");
+		} else if (obj == update_bt) {
+			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+		} else if (obj == withdraw_bt) {
+			main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
+		} else if (obj == jb5) {
+			if (tf_name.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "이름을 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+				tf_name.requestFocus();
+			} else if (tf_email.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+				tf_email.requestFocus();
+			} else if (tf_phone.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+				tf_phone.requestFocus();
+			} else {
+				try {
+					Protocol p = new Protocol();
+					UserVO vo = new UserVO();
+					vo.setM_EMAIL(tf_email.getText());
+					vo.setM_NAME(tf_name.getText());
+					vo.setM_PHONE(tf_phone.getText());
+					vo.setM_ID(main.p.getVo().getM_ID());
+					vo.setM_PW(main.p.getVo().getM_PW());
+					p.setVo(vo);
+					p.setCmd(6);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e1) {
+					System.out.println(e1);
+				}
+			}
+		} else if (obj == jb6) {
+			if (tf_email.getText().length() > 0 || tf_birth.getText().length() > 0 || tf_phone.getText().length() > 0) {
+				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					main.cardLayout.show(main.cardJPanel, "planner_Select");
 					tf_email.setText("");
 					tf_birth.setText("");
 					tf_phone.setText("");
 				}
-				
-			}else if(obj == jb6) {
-				if(tf_email.getText().length() >0 || tf_birth.getText().length() > 0 || tf_phone.getText().length() >0) {
-					int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?","Confirm", JOptionPane.YES_NO_OPTION);
-					if(result== JOptionPane.YES_OPTION) {
-						main.cardLayout.show(main.cardJPanel,"planner_Select");
-						tf_email.setText("");
-						tf_birth.setText("");
-						tf_phone.setText("");
-					}
-				}else {
-					main.cardLayout.show(main.cardJPanel, "planner_Select");
-				}
+			} else {
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			}
 		}
+	}
+
 	public Login_My_Infomodify() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public static void main(String[] args) {
-
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-////                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//                    app.setSize(800, 600);
-//                    app.setLocationRelativeTo(null);
-//                    app.setVisible(true);
-					new Login_My_Infomodify();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 }

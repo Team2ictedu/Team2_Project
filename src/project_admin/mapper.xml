@@ -5,34 +5,57 @@
 <mapper namespace="org.mybatis.example.BlogMapper">
 
 
-	<insert id="userIns" parameterType="project_admin.UserVO">
-    insert into MEMBER(M_ID, M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS, M_CLASS) 
-    values(#{m_id},#{m_pw},#{m_email},#{m_name},#{m_birth},#{m_phone},#{m_terms},#{m_class})
+	<insert id="userIns" parameterType="project_admin.AdminUserVO">
+    insert into MEMBER(m_id, m_pw, m_email, m_name, m_birth, m_phone, m_terms, m_class)values(#{m_id},#{m_pw},#{m_email},#{m_name},#{m_birth},#{m_phone},#{m_terms},#{m_class})
     </insert>
 
 	
-	<select id="membersList" resultType="project_admin.UserVO">
+	<select id="membersList" resultType="project_admin.AdminUserVO">
 	    select * from member order by m_id
+	</select> 
+	
+	<select id="placesList" resultType="project_admin.AdminPlaceVO">
+	    select * from place_all order by pa_num
 	</select>
 	
-	<delete id="memberDel" parameterType="project_admin.UserVO">
+	<select id="placesListName" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_name = #{pa_name}
+	</select>
+	
+	<select id="placesListLocation" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_location = #{pa_location}
+	</select>
+	
+	<select id="placesListCon" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_con = #{pa_con}
+	</select>
+	
+	<select id="placesListPrice" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all  where pa_price = #{pa_price}
+	</select>
+	
+	<delete id="placeDel" parameterType="project_admin.AdminPlaceVO">
+		delete from place_all where pa_name = #{pa_name} and pa_location = #{pa_location} and pa_con = #{pa_con} 
+	</delete>
+	
+	<delete id="memberDel" parameterType="project_admin.AdminUserVO">
 		delete from member where m_id = #{m_id}
 	</delete>
 	
-	<select id="memberId" parameterType="String" resultType="project_admin.UserVO">
+	<select id="memberId" parameterType="String" resultType="project_admin.AdminUserVO">
 		select * from member where m_id= #{m_id}
 	</select>
 	
-	<select id="memberName" parameterType="String" resultType="project_admin.UserVO">
+	<select id="memberName" parameterType="String" resultType="project_admin.AdminUserVO">
 		select * from member where m_name= #{m_name}
 	</select>
 	
-	<select id="memberEmail" parameterType="String" resultType="project_admin.UserVO">
+	<select id="memberEmail" parameterType="String" resultType="project_admin.AdminUserVO">
 		select * from member where m_email= #{m_email}
 	</select>
 	
 	
-	<select id="idChk" parameterType="String" resultType="project_admin.UserVO">
+	<select id="idChk" parameterType="String" resultType="project_admin.AdminUserVO">
 		select m_id from member where m_id= #{m_id}
 	</select>
 	

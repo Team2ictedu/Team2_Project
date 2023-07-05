@@ -7,20 +7,13 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +37,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import project_server.ProjectConnectionClass;
 import project_server.ProjectProtocol;
 
 public class AdminPlaces extends JPanel {
@@ -59,27 +51,43 @@ public class AdminPlaces extends JPanel {
 	/* jpEastHead ComboBox & TextField */ JComboBox<String> eastHeadComboBox;
 	JTextField eastHeadTextField;
 	/* jpEastJTA */ JTextArea jta;
-	DefaultTableModel model = new DefaultTableModel();
+	public DefaultTableModel model = new DefaultTableModel();
 	/* jpEastFootTable */ JTable placeTable = new JTable(model);
 	/* jpEastFoot Buttons */ JButton addPlaceBtn;
 	/* jPop panel */ JPanel jPop;
-	/* jPop JTextField */ JTextField popPlaceName, popPlaceLocation, popPlaceDescription, popPlacePrice;
+	/* jPop JTextField */ JTextField popPlaceName, popPlaceLocation, popPlaceCon, popPlacePrice;
 	/* jPop Button */ JButton popAddBtn, popCancelBtn;
 	/* Popup */ Popup po;
 	/* PopupFactory */ PopupFactory pf;
-
+	public JLabel adminLabel; // 양동근
 	/**/
-
 
 	public AdminPlaces(AdminMain main) {
 		this.main = main;
-		
-		//buttoncolumn action
+
+		// buttoncolumn action
 		Action delete = new AbstractAction() {
+			
 			public void actionPerformed(ActionEvent e) {
-				JTable table = (JTable) e.getSource();
-				int modelRow = Integer.valueOf(e.getActionCommand());
-				((DefaultTableModel) table.getModel()).removeRow(modelRow);
+				JTable table = (JTable)e.getSource();
+		        int modelRow = Integer.valueOf( e.getActionCommand() );
+		        System.out.println("AdminPlace selected model row is :"+modelRow);
+		        AdminPlaceVO vo = new AdminPlaceVO();
+		        vo.setPa_name(table.getValueAt(modelRow, 0).toString());
+		        vo.setPa_location(table.getValueAt(modelRow, 1).toString());
+		        vo.setPa_con(table.getValueAt(modelRow, 2).toString());
+		        System.out.println(vo.getPa_name());
+				try {
+					ProjectProtocol p = new ProjectProtocol();
+					p.setCmd(54); 
+					p.setRow(modelRow);
+					p.setPlacevo(vo);
+					main.main.out.writeObject(p);
+					main.main.out.flush();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+		        
 			}
 
 		};
@@ -194,7 +202,7 @@ public class AdminPlaces extends JPanel {
 		Image newimg = image.getScaledInstance(40, 40, java.awt.Image.SCALE_DEFAULT);
 		icon = new ImageIcon(newimg);
 		AdminHome home = new AdminHome(main);
-		JLabel adminLabel = new JLabel(home.adminName);
+		adminLabel = new JLabel(home.adminName);
 		adminLabel.setFont(new Font("Jalnan", Font.PLAIN, 20));
 		adminLabel.setForeground(Color.decode("#dbd8cc"));
 		jpWestHeader.setLayout(new GridBagLayout());
@@ -222,6 +230,7 @@ public class AdminPlaces extends JPanel {
 		Border newBorder = BorderFactory.createMatteBorder(0, 0, 0, 3, Color.decode("#d6d6d6"));
 		jpWest.setBorder(newBorder);
 		jpWest.setOpaque(true);
+
 		Border newBorder2 = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#d6d6d6"));
 		jpWestHeader.setBorder(newBorder2);
 		jpWestHeader.setOpaque(true);
@@ -303,33 +312,61 @@ public class AdminPlaces extends JPanel {
 		// jpEastFootSouth btns
 		addPlaceBtn = new JButton("관광지 추가");
 
-		//
+		//pop
 		popPlaceName = new JTextField(20);
+		popPlaceName.setEditable(true);
+		popPlaceLocation = new JTextField(20);
+		popPlaceCon = new JTextField(20);
+		popPlacePrice = new JTextField(20);
+		JLabel popPlaceNameLabel = new JLabel("관광지 이름");
+		JLabel popPlaceLocationLabel = new JLabel("위치");
+		JLabel popPlaceConLabel = new JLabel("설명");
+		JLabel popPlacePriceLabel = new JLabel("가격");
 		popAddBtn = new JButton("추가");
+		popCancelBtn = new JButton("취소");
 		jPop = new JPanel();
-		jPop.add(popPlaceName);
-		jPop.add(popAddBtn);
+		
+		jPop.setLayout(new GridLayout(0,2));
+		
 		pf = new PopupFactory();
+		pf = pf.getSharedInstance();
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() / 2));
 		int y = (int) ((dimension.getHeight() / 2));
 
-		po = pf.getPopup(jpEast, jPop, x, y);
-
+		po = pf.getPopup(jpWest, jPop, x-100, y-100);
+		
+		
 		addPlaceBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String d = e.getActionCommand();
+				jPop.add(popPlaceNameLabel);
+				jPop.add(popPlaceName);
+				jPop.add(popPlaceLocationLabel);
+				jPop.add(popPlaceLocation);
+				jPop.add(popPlaceConLabel);
+				jPop.add(popPlaceCon);
+				jPop.add(popPlacePriceLabel);
+				jPop.add(popPlacePrice);
+				JLabel test1 = new JLabel("test1");
+				JTextField test2 = new JTextField(20);
+				test2.setEditable(true);
+				jPop.add(popAddBtn);
+				jPop.add(popCancelBtn);
+
+				
+				
 				po.show();
 			}
 		});
-		popAddBtn.addActionListener(new ActionListener() {
+		popCancelBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				po.hide();
-				po = pf.getPopup(jpEast, jPop, x, y);
+				po = pf.getPopup(jpEast, jPop, x-100, y-100);
 			}
 		});
 
@@ -350,11 +387,6 @@ public class AdminPlaces extends JPanel {
 		add(jpWest, BorderLayout.CENTER);
 		add(jpEast, BorderLayout.EAST);
 
-
-		
-
-		
-		
 		adminHomeBtn.addActionListener(new ActionListener() { // go to cardpanel adminHome
 
 			@Override
@@ -380,120 +412,41 @@ public class AdminPlaces extends JPanel {
 		});
 
 		searchBtn.addActionListener(new ActionListener() { // 검색 JButton
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try { //////
-
+				if ((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("전체보기")) {
+					try {
 						ProjectProtocol p = new ProjectProtocol();
-						p.setCmd(1);
-						p.setName("TEST");
+						p.setCmd(51);
 						main.main.out.writeObject(p);
 						main.main.out.flush();
-					
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				} else {
+					try {
+						ProjectProtocol p = new ProjectProtocol();
+						p.setCmd(53);
+						p.setMsg(eastHeadComboBox.getSelectedItem().toString());
+						p.setMsg2(eastHeadTextField.getText());
+						main.main.out.writeObject(p);
+						main.main.out.flush();
+					} catch (Exception e2) {
+					}
 
-					
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-				String input = eastHeadTextField.getText();
-				if(model.getRowCount()>0) {
-					deleteTable();
-				}
-				System.out.println(eastHeadComboBox.getSelectedItem().toString()); 
-				if((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("전체보기")) {
-					try {
-						
-						if (model.getRowCount()!=0) {
-							return;
-						} else {
-							Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "c##team2", "1111");
-				            PreparedStatement pstm = con.prepareStatement("SELECT * FROM place_all");
-				            ResultSet Rs = pstm.executeQuery();
-				            
-				            while(Rs.next()){
-				                model.addRow(new Object[]{Rs.getString(2), Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"});
-						}
-						
-			            }
-					} catch (Exception e2) {
-					}
-				} else if ((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("관광지이름")) {
-					try {
-						if (model.getRowCount()>0) {
-							return;
-						} else {
-							Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "c##team2", "1111");
-				            PreparedStatement pstm = con.prepareStatement("SELECT * FROM place_all where pa_name like '%"+input+"%'");
-				            ResultSet Rs = pstm.executeQuery();
-				            
-				            while(Rs.next()){
-				                model.addRow(new Object[]{Rs.getString(2), Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"});
-						}
-						
-			            }
-					} catch (Exception e2) {
-					}
-				} else if((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("위치")){
-					try {
-						if (model.getRowCount()>0) {
-							return;
-						} else {
-							Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "c##team2", "1111");
-				            PreparedStatement pstm = con.prepareStatement("SELECT * FROM place_all where PA_LOCATION like '%"+input+"%'");
-				            ResultSet Rs = pstm.executeQuery();
-				            
-				            while(Rs.next()){
-				                model.addRow(new Object[]{Rs.getString(2), Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"});
-						}
-						
-			            }
-					} catch (Exception e2) {
-					}
-				}else if((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("설명")){
-					try {
-						if (model.getRowCount()>0) {
-							return;
-						} else {
-							Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "c##team2", "1111");
-				            PreparedStatement pstm = con.prepareStatement("SELECT * FROM place_all where PA_CON  like '%"+input+"%'");
-				            ResultSet Rs = pstm.executeQuery();
-				            
-				            while(Rs.next()){
-				                model.addRow(new Object[]{Rs.getString(2), Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"});
-						}
-						
-			            }
-					} catch (Exception e2) {
-					}
-				} else if((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("금액")){
-					try {
-						if (model.getRowCount()>0) {
-							return;
-						} else {
-							Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "c##team2", "1111");
-				            PreparedStatement pstm = con.prepareStatement("SELECT * FROM place_all where PA_PRICE   like '%"+input+"%'");
-				            ResultSet Rs = pstm.executeQuery();
-				            
-				            while(Rs.next()){
-				                model.addRow(new Object[]{Rs.getString(2), Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"});
-						}
-						
-			            }
-					} catch (Exception e2) {
-					}
 				}
 			}
 		});
-	
-		searchClearBtn.addActionListener(new ActionListener() {// 검색 초기화 JButton 
-			
+
+		searchClearBtn.addActionListener(new ActionListener() {// 검색 초기화 JButton
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(int i = 0 ; i <= model.getRowCount()+1; i++) {
+				for (int i = 0; i <= model.getRowCount() + 1; i++) {
 					model.removeRow(0);
 				}
-							
+
 			}
 		});
 
@@ -505,59 +458,26 @@ public class AdminPlaces extends JPanel {
 			}
 		});
 
-
 	}
 
-	
 	public void deleteTable() {
-		for(int i = 0 ; i <= model.getRowCount()+1; i++) {
+		for (int i = 0; i <= model.getRowCount() + 1; i++) {
 			model.removeRow(0);
 		}
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*		select * from places
- 			try {
-					if (model.getRowCount()!=0) {
-						return;
-					} else {
-						Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "c##team2", "1111");
-			            PreparedStatement pstm = con.prepareStatement("SELECT * FROM place_all");
-			            ResultSet Rs = pstm.executeQuery();
-			            
-			            while(Rs.next()){
-			                model.addRow(new Object[]{Rs.getString(2), Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"});
-					}
-					
-		            }
-				} catch (Exception e2) {
-				}
-  
- * */
- 
+/*
+ * select * from places try { if (model.getRowCount()!=0) { return; } else {
+ * Connection con =
+ * DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe",
+ * "c##team2", "1111"); PreparedStatement pstm =
+ * con.prepareStatement("SELECT * FROM place_all"); ResultSet Rs =
+ * pstm.executeQuery();
+ * 
+ * while(Rs.next()){ model.addRow(new Object[]{Rs.getString(2),
+ * Rs.getString(3),Rs.getString(4),Rs.getString(5),"수정","삭제"}); }
+ * 
+ * } } catch (Exception e2) { }
+ * 
+ */

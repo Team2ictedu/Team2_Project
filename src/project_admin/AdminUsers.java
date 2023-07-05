@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,6 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -49,7 +53,15 @@ public class AdminUsers extends JPanel{
 	/*jpEastJTA*/ JTextArea jta;
 	public DefaultTableModel model = new DefaultTableModel();
 	/*jpEastFootTable*/ JTable placeTable = new JTable(model);
- 	/*jpEastFoot Buttons*/ 
+	
+ 	/* jpEastFoot Buttons */ JButton addPlaceBtn;
+	/* jPop panel */ JPanel jPop;
+	/* jPop JTextField */ JTextField popPlaceName, popPlaceLocation, popPlaceCon, popPlacePrice;
+	/* jPop Button */ JButton popAddBtn, popCancelBtn;
+	/* Popup */ Popup po;
+	/* PopupFactory */ PopupFactory pf;
+	
+	public JLabel adminLabel ;// 양동근
 	
 
 	
@@ -167,7 +179,7 @@ public class AdminUsers extends JPanel{
 		Image newimg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_DEFAULT);
 		icon = new ImageIcon(newimg);
 		AdminHome home = new AdminHome(main);
-		JLabel adminLabel = new JLabel(home.adminName);
+		adminLabel = new JLabel(home.adminName);
 		adminLabel.setFont(new Font("Jalnan",Font.PLAIN,20));
 		adminLabel.setForeground(Color.decode("#dbd8cc"));
 		jpWestHeader.setLayout(new GridBagLayout());
@@ -285,11 +297,10 @@ public class AdminUsers extends JPanel{
 		Action delete = new AbstractAction() 
 				{
 					public void actionPerformed(ActionEvent e) {
-						/////////////////////MAKE DELETE JDBC
 						JTable table = (JTable)e.getSource();
 				        int modelRow = Integer.valueOf( e.getActionCommand() );
 				        System.out.println("AdminUsers selected model row is :"+modelRow);
-				        UserVO vo = new UserVO();
+				        AdminUserVO vo = new AdminUserVO();
 				        vo.setM_id(table.getValueAt(modelRow, 0).toString());
 				        vo.setM_pw(table.getValueAt(modelRow, 1).toString());
 				        System.out.println(vo.getM_id());
@@ -326,12 +337,75 @@ public class AdminUsers extends JPanel{
 		jpEastFootCenter.add(placeTableSP);
 		
 		
+		addPlaceBtn = new JButton("관광지 추가");
+		
+		//pop
+				popPlaceName = new JTextField(20);
+				popPlaceName.setEditable(true);
+				popPlaceLocation = new JTextField(20);
+				popPlaceCon = new JTextField(20);
+				popPlacePrice = new JTextField(20);
+				JLabel popPlaceNameLabel = new JLabel("관광지 이름");
+				JLabel popPlaceLocationLabel = new JLabel("위치");
+				JLabel popPlaceConLabel = new JLabel("설명");
+				JLabel popPlacePriceLabel = new JLabel("가격");
+				popAddBtn = new JButton("추가");
+				popCancelBtn = new JButton("취소");
+				jPop = new JPanel();
+				
+				jPop.setLayout(new GridLayout(0,2));
+				
+				pf = new PopupFactory();
+				pf = pf.getSharedInstance();
+				Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+				int x = (int) ((dimension.getWidth() / 2));
+				int y = (int) ((dimension.getHeight() / 2));
+
+				po = pf.getPopup(jpWest, jPop, x-100, y-100);
+				
+				
+				addPlaceBtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String d = e.getActionCommand();
+						jPop.add(popPlaceNameLabel);
+						jPop.add(popPlaceName);
+						jPop.add(popPlaceLocationLabel);
+						jPop.add(popPlaceLocation);
+						jPop.add(popPlaceConLabel);
+						jPop.add(popPlaceCon);
+						jPop.add(popPlacePriceLabel);
+						jPop.add(popPlacePrice);
+						JLabel test1 = new JLabel("test1");
+						JTextField test2 = new JTextField(20);
+						test2.setEditable(true);
+						jPop.add(popAddBtn);
+						jPop.add(popCancelBtn);
+
+						
+						
+						po.show();
+					}
+				});
+				popCancelBtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						po.hide();
+						po = pf.getPopup(jpEast, jPop, x-100, y-100);
+					}
+				});
+		
+		
+		
 		//jpEastFootSouth btns
 		
 		
 		//jpEastFootMain.add()
 		jpEastFootMain.setPreferredSize(new Dimension(700,500));
 		jpEastFootMain.add(jpEastFootCenter);
+		jpEastFootMain.add(addPlaceBtn);
 		
 		//jpEast.add(panels)
 		jpEast.add(jpEastHeadMain);

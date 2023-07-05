@@ -13,9 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -33,10 +30,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import project_admin.UserVO;
-import project_admin.UsersDAO;
-import project_server.ProjectProtocol;
-
+import Server.Protocol;
+import UserDB.UserVO;
 
 public class Login_Register extends JPanel implements ActionListener {
 
@@ -55,11 +50,6 @@ public class Login_Register extends JPanel implements ActionListener {
 	JPanel lb_jp, jp_center, id_jp, pw_jp, pwcheck_jp, mail_jp, name_jp, birth_jp, phone_jp, Termsofuse_jp, under_bt_jp,
 			terms_jp;
 	JLabel lb;
-	Socket s;
-	ObjectOutputStream out;
-	ObjectInputStream in;
-	int result;
-	boolean idCheck;
 
 	public Login_Register(Main main) {
 		this.main = main;
@@ -351,8 +341,6 @@ public class Login_Register extends JPanel implements ActionListener {
 		}
 		join_bt.addActionListener(this);
 		cancel_bt.addActionListener(this);
-		// 접속
-
 	}
 
 	public Login_Register() {
@@ -438,23 +426,22 @@ public class Login_Register extends JPanel implements ActionListener {
 				cb_TermsofUse.requestFocus();
 			} else {
 				try {
-					ProjectProtocol p = new ProjectProtocol();
+					Protocol p = new Protocol();
 					UserVO vo = new UserVO();
-	                vo.setM_id(tf_id.getText().trim());
-	                vo.setM_pw(pass1.trim());
-	                vo.setM_email(tf_mail.getText().trim());
-	                vo.setM_name(tf_name.getText().trim());
-	                vo.setM_birth(tf_birth.getText().trim());
-	                vo.setM_phone(tf_phone.getText().trim());
-	                vo.setM_terms("동의");
-	                vo.setM_class("1");
-					p.setCmd(3);
-					p.setUservo(vo);
-					p.setMsg(tf_id.getText().strip());
+					vo.setM_ID(tf_id.getText().trim());
+					vo.setM_PW(pass1.trim());
+					vo.setM_EMAIL(tf_mail.getText().trim());
+					vo.setM_NAME(tf_name.getText().trim());
+					vo.setM_BIRTH(tf_birth.getText().trim());
+					vo.setM_PHONE(tf_phone.getText().trim());
+					vo.setM_TERMS("동의");
+					vo.setM_CLASS("1");
+					p.setVo(vo);
+					p.setCmd(1);
 					main.out.writeObject(p);
 					main.out.flush();
-				} catch (Exception e2) {
-					e2.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -464,7 +451,4 @@ public class Login_Register extends JPanel implements ActionListener {
 		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 		return email.matches(emailRegex);
 	}
-
-
-
 }

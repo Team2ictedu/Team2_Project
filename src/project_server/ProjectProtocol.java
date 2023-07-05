@@ -3,10 +3,11 @@ package project_server;
 import java.io.Serializable;
 import java.util.List;
 
-import adminOld_dontuse.PlaceVO;
-import project_admin.UserVO;
+import Server.Protocol;
+import project_admin.AdminPlaceVO;
+import project_admin.AdminUserVO;
 
-public class ProjectProtocol implements Serializable {
+public class ProjectProtocol extends Protocol implements Serializable {
 	/*	0: 종료
 	 * 	1: 
 	 * 	2:
@@ -23,18 +24,17 @@ public class ProjectProtocol implements Serializable {
 
 	int row;
 	
-	UserVO uservo;
-	PlaceVO placevo;
+	AdminUserVO uservo;
+	AdminPlaceVO placevo;
 //	ReviewVO reviewvo;
 
 	String name;
 	String msg;
 	String msg2;
 	
-
 	
-	List<UserVO> userList;
-	List<PlaceVO> placeList;
+	List<AdminUserVO> userList;
+	List<AdminPlaceVO> placeList;
 	
 	
 	public String getMsg() {
@@ -50,16 +50,16 @@ public class ProjectProtocol implements Serializable {
 	public void setMsg2(String msg2) {
 		this.msg2 = msg2;
 	}
-	public UserVO getUservo() {
+	public AdminUserVO getUservo() {
 		return uservo;
 	}
-	public void setUservo(UserVO uservo) {
+	public void setUservo(AdminUserVO uservo) {
 		this.uservo = uservo;
 	}
-	public PlaceVO getPlacevo() {
+	public AdminPlaceVO getPlacevo() {
 		return placevo;
 	}
-	public void setPlacevo(PlaceVO placevo) {
+	public void setPlacevo(AdminPlaceVO placevo) {
 		this.placevo = placevo;
 	}
 	public int getRow() {
@@ -81,16 +81,16 @@ public class ProjectProtocol implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<UserVO> getUserList() {
+	public List<AdminUserVO> getUserList() {
 		return userList;
 	}
-	public void setUserList(List<UserVO> userList) {
+	public void setUserList(List<AdminUserVO> userList) {
 		this.userList = userList;
 	}
-	public List<PlaceVO> getPlaceList() {
+	public List<AdminPlaceVO> getPlaceList() {
 		return placeList;
 	}
-	public void setPlaceList(List<PlaceVO> placeList) {
+	public void setPlaceList(List<AdminPlaceVO> placeList) {
 		this.placeList = placeList;
 	}
 	

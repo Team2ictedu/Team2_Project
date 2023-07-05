@@ -5,8 +5,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import project_admin.UserVO;
-import project_admin.UsersDAO;
+import project_admin.AdminPlaceVO;
+import project_admin.AdminPlacesDAO;
+import project_admin.AdminUserVO;
+import project_admin.AdminUsersDAO;
 
 public class ProjectCopyClient extends Thread{
 	Socket s;
@@ -64,10 +66,10 @@ public class ProjectCopyClient extends Thread{
 							
 						case 3:  // 회원가입
 							ProjectProtocol p3_1 = p;
-							boolean idchk = UsersDAO.getIdChk(p.getMsg());
+							boolean idchk = AdminUsersDAO.getIdChk(p.getMsg());
 							if(idchk) {
 								System.out.println("m_id 존재하지 않습니다");
-								UsersDAO.getInsert(p3_1.getUservo());
+								AdminUsersDAO.getInsert(p3_1.getUservo());
 								p3_1.setCmd(5);
 								out.writeObject(p3_1);
 								out.flush();
@@ -81,7 +83,87 @@ public class ProjectCopyClient extends Thread{
 							}
 							
 							break;
-						case 71: // ProjectCopyClient authencity check : is username == "root"? 
+							
+							
+						case 51: //AdminPlaces SELECT * FROM place_all
+							System.out.println("ProjectCopyClient running CMD:51 :" + ip);
+							ProjectProtocol p51 = new ProjectProtocol();
+							List<AdminPlaceVO> list51 = AdminPlacesDAO.getList();
+							p51.setCmd(52);
+							p51.setPlaceList(list51);
+							out.writeObject(p51);
+							out.flush();							
+							break;
+							
+						case 53: //AdminPlaces select * from place_all where var = var
+							ProjectProtocol p53 = p;
+							System.out.println("ProjectCopyClient running CMD:53 :" + ip);
+							String str53 = p53.getMsg2();
+							if (p53.getMsg().equalsIgnoreCase("관광지이름")) {
+								System.out.println("place location check");
+								List<AdminPlaceVO> list53 = AdminPlacesDAO.getListName(str53);
+								if (list53 != null) {
+									System.out.println("VO SELECTED. VO EMAIL IS : " + p53.getMsg2());
+									p53.setPlaceList(list53);
+									p53.setCmd(52);
+									out.writeObject(p53);
+									out.flush();
+								}
+							}
+							if (p53.getMsg().equalsIgnoreCase("위치")) {
+								System.out.println("place location check");
+								List<AdminPlaceVO> list53 = AdminPlacesDAO.getListLocation(str53);
+								if (list53 != null) {
+									System.out.println("VO SELECTED. VO EMAIL IS : " + p53.getMsg2());
+									p53.setPlaceList(list53);
+									p53.setCmd(52);
+									out.writeObject(p53);
+									out.flush();
+								}
+							}
+							if (p53.getMsg().equalsIgnoreCase("설명")) {
+								System.out.println("place desc check");
+								List<AdminPlaceVO> list53 = AdminPlacesDAO.getListCon(str53);
+								if (list53 != null) {
+									System.out.println("VO SELECTED. VO EMAIL IS : " + p53.getMsg2());
+									p53.setPlaceList(list53);
+									p53.setCmd(52);
+									out.writeObject(p53);
+									out.flush();
+								}
+							}
+							if (p53.getMsg().equalsIgnoreCase("금액")) {
+								System.out.println("place price check");
+								List<AdminPlaceVO> list53 = AdminPlacesDAO.getListPrice(str53);
+								if (list53 != null) {
+									System.out.println("VO SELECTED. VO EMAIL IS : " + p53.getMsg2());
+									p53.setPlaceList(list53);
+									p53.setCmd(52);
+									out.writeObject(p53);
+									out.flush();
+								}
+							}
+							
+							break;
+						case 54: //AdminUsers DELETE row at button
+							
+							ProjectProtocol p54 = p;
+							System.out.println("CASe 83 DELETING");
+							AdminPlaceVO vo54 = p54.getPlacevo();
+							int result54 = AdminPlacesDAO.getDelete(vo54);
+							
+							if(result54>0) {
+								System.out.println("DELETE COMPLETEEE");
+								List<AdminPlaceVO> list54 = AdminPlacesDAO.getList();
+								p54.setCmd(52);
+								p54.setPlaceList(list54);
+								out.writeObject(p54);
+								out.flush();
+							}
+							break;
+							
+							
+						case 71: //authencity check : is username == "root"? 
 							System.out.println("ProjectCopyClient running CMD:71 :: " + ip);
 							username = p.getName();
 							if(username.equals("root")) {
@@ -93,13 +175,13 @@ public class ProjectCopyClient extends Thread{
 							}
 								break;
 								
-						case 73: // select * from MEMEBER WHERE M_ID = $M_ID
+						case 73: //adminUsers select * from MEMEBER WHERE M_ID = $M_ID
 							ProjectProtocol p73 = p;
 							System.out.println("ProjectCopyClient running CMD:73 :" + ip);
 							String str73 = p73.getMsg2();
 							if (p73.getMsg().equalsIgnoreCase("id")) {
 								System.out.println("id check");
-								UserVO vo73 = UsersDAO.getOneId(str73);
+								AdminUserVO vo73 = AdminUsersDAO.getOneId(str73);
 								if (vo73 != null) {
 									System.out.println("VO SELECTED. VO EMAIL IS : " + vo73.getM_email());
 									p73.setUservo(vo73);
@@ -110,10 +192,10 @@ public class ProjectCopyClient extends Thread{
 							}
 							if (p73.getMsg().equalsIgnoreCase("name")) {
 								System.out.println("name check");
-								List<UserVO> list = UsersDAO.getOneName(str73);
-								if (list != null) {
+								List<AdminUserVO> list73 = AdminUsersDAO.getOneName(str73);
+								if (list73 != null) {
 									System.out.println("VO SELECTED. VO EMAIL IS : " + p73.getMsg2());
-									p73.setUserList(list);
+									p73.setUserList(list73);
 									p73.setCmd(82);
 									out.writeObject(p73);
 									out.flush();
@@ -121,10 +203,10 @@ public class ProjectCopyClient extends Thread{
 							}
 							if (p73.getMsg().equalsIgnoreCase("email")) {
 								System.out.println("email check");
-								List<UserVO> list = UsersDAO.getOneEmail(str73);
-								if (list != null) {
+								List<AdminUserVO> list73 = AdminUsersDAO.getOneEmail(str73);
+								if (list73 != null) {
 									System.out.println("VO SELECTED. VO EMAIL IS : " + p73.getMsg2());
-									p73.setUserList(list);
+									p73.setUserList(list73);
 									p73.setCmd(82);
 									out.writeObject(p73);
 									out.flush();
@@ -132,31 +214,32 @@ public class ProjectCopyClient extends Thread{
 							}
 							
 							break;
-						case 81: // SELECT * FROM MEMBER
+						case 81: // AdminUsers SELECT * FROM MEMBER
 							System.out.println("ProjectCopyClient running CMD:81 :" + ip);
 							ProjectProtocol p81 = new ProjectProtocol();
-							List<UserVO> list = UsersDAO.getList();
+							List<AdminUserVO> list = AdminUsersDAO.getList();
 							p81.setCmd(82);
 							p81.setUserList(list);
 							out.writeObject(p81);
 							out.flush();							
 							break;
 							
-						case 83: // DELETE row at button
+						case 83: // AdminUsers DELETE row at button
 							ProjectProtocol p83 = p;
 							System.out.println("CASe 83 DELETING");
-							UserVO vo = p83.getUservo();
-							int result = UsersDAO.getDelete(vo);
+							AdminUserVO vo = p83.getUservo();
+							int result = AdminUsersDAO.getDelete(vo);
 							
 							if(result>0) {
 								System.out.println("DELETE COMPLETEEE");
-								list = UsersDAO.getList();
+								list = AdminUsersDAO.getList();
 								p83.setCmd(82);
 								p83.setUserList(list);
 								out.writeObject(p83);
 								out.flush();
 							}
 							break;
+
 					}
 				}
 			}catch (Exception e) {

@@ -61,8 +61,6 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 	public Planner_Select(Main main) {
 		this.main = main;
-		
-		repaint();
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -96,7 +94,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 			jb4 = new JButton("마이페이지");
 			jb4.setPreferredSize(new Dimension(120, 30));
 //		jb4.setPreferredSize(new Dimension(80, 40));
-			jbName = new JButton(main.user);
+			jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 			jbMyInfo = new JButton("내 정보");
 			jbLogOut = new JButton("로그아웃");
 		}
@@ -350,9 +348,9 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// SNB
 		jp_SNB = new JPanel();
-		jb_title = new JButton[3];
+		jb_title = new JButton[4];
 		jp.setBackground(Color.decode("#D4B8E8"));
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			jb_title[i] = new JButton("일정 제목");
 			jp_SNB.add(jb_title[i]);
 			jb_title[i].setPreferredSize(new Dimension(200, 50));
@@ -429,7 +427,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 		// 선택한 일정에 상세일정 정보
 		JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
 		jp_select_text.setBackground(Color.WHITE);
-		int r = 3;
+		int r = 5;
 		JTextArea[] textAreas = new JTextArea[r];
 		JScrollPane[] scrollPanes = new JScrollPane[r];
 

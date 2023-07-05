@@ -83,7 +83,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jb4 = new JButton("마이페이지");
 			jb4.setPreferredSize(new Dimension(120, 30));
 //		jb4.setPreferredSize(new Dimension(80, 40));
-			jbName = new JButton("이름");
+			jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 			jbMyInfo = new JButton("내 정보");
 			jbLogOut = new JButton("로그아웃");
 		}

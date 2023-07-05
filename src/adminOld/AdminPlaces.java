@@ -256,7 +256,7 @@ public class AdminPlaces extends JPanel{
 		jpEastFootMain.setBackground(Color.decode("#2e2e2e"));
 		
 		//jpEastFootCenter table
-		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
+		Object[][] list = AdminPlacesDAO.getInstance().getSelectAll(); 
 		
 		/*PlaceTableModel model = new PlaceTableModel(list);*/
 		String[] columnNames = { "관광지 이름", "위치","설명","금액","수정","삭제"};

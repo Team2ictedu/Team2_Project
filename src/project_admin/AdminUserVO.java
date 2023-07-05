@@ -2,8 +2,8 @@ package project_admin;
 
 import java.io.Serializable;
 
-public class UserVO implements Serializable{
-	private String m_id, m_pw, m_name, m_birth, m_email, m_phone, m_terms, m_class;
+public class AdminUserVO implements Serializable{
+	private String m_id, m_pw,  m_email,m_name,m_birth, m_phone, m_terms, m_class;
 
 	public String getM_id() {
 		return m_id;

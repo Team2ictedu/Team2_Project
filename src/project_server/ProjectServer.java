@@ -17,6 +17,7 @@ public class ProjectServer implements Runnable{
 	ObjectInputStream in;
 	
 	
+	
 	//현재접속자의 정보
 //	ArrayList<CopyClient> c_list;
 //	
