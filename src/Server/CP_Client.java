@@ -59,9 +59,8 @@ public class CP_Client extends Thread {
 						out.flush();
 						break;
 					case 202: // 비밀번호 변경
-						System.out.println(2);
 						UserDAO.getPWUpdate(vo);
-						System.out.println(3);
+						p.setVo(UserDAO.getUser(vo));
 						p.setCmd(203);
 						out.writeObject(p);
 						out.flush();

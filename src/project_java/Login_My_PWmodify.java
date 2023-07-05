@@ -280,7 +280,6 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		main.Main2();
 		JButton obj = (JButton) e.getSource();
 		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
 			main.cardLayout.show(main.cardJPanel, "planner_Create");
@@ -319,17 +318,16 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 					JOptionPane.showMessageDialog(null, "새 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				} else {
 					try {
-						Protocol p = new Protocol();
-						UserVO vo = new UserVO();
+						Protocol p = new Protocol();		
+						UserVO vo = new UserVO();				
 						vo.setM_ID(main.p.getVo().getM_ID());
 						vo.setM_PW(newPass1);
 						p.setVo(vo);
-						p.setCmd(203);
-						System.out.println(1);
-						out.writeObject(p);
-						out.flush();
+						p.setCmd(202);
+						main.out.writeObject(p);
+						main.out.flush();
 					} catch (Exception e2) {
-						// TODO: handle exception
+						System.out.println(e2);
 					}
 				}
 			} 
