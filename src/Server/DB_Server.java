@@ -12,7 +12,7 @@ public class DB_Server implements Runnable{
 	public DB_Server() {
 		try {
 			ss = new ServerSocket(7780);
-			System.out.println("서버 대기 중 ...");
+			System.out.println("아이피 변경하세요.");
 					
 			new Thread(this).start();
 		} catch (IOException e) {
