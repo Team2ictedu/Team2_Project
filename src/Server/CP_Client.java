@@ -52,18 +52,24 @@ public class CP_Client extends Thread {
 							out.flush();
 						}
 						break;
-					case 4:
+					case 4: // 유저 로그인
 						p.setVo(UserDAO.getUser(vo));
 						p.setCmd(5);
 						out.writeObject(p);
 						out.flush();
 						break;
-					case 6:
+					case 6: // 유저 정보변경
 						UserDAO.getUserUpdate(vo);
 						p.setVo(UserDAO.getUser(vo));
 						p.setCmd(7);
 						out.writeObject(p);
 						out.flush();
+						break;
+					case 8: // 유저 회원탈퇴
+						UserDAO.getUserDelete(vo);
+						break;
+					case 9: // 마지막 로그인
+						UserDAO.getUserLastLogin(vo);
 						break;
 					case 202: // 비밀번호 변경
 						UserDAO.getPWUpdate(vo);

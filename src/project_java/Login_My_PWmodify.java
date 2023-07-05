@@ -48,10 +48,6 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 	JPasswordField jpf_pw, jpf_newPw1, jpf_newPw2;
 	Main main;
 
-	Socket s;
-	ObjectOutputStream out;
-	ObjectInputStream in;
-
 	public Login_My_PWmodify(Main main) {
 
 		this.main = main;
@@ -331,6 +327,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 					}
 			} else {
 				JOptionPane.showMessageDialog(null, "현재 비밀번호가 틀렸습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);	
+				jpf_pw.requestFocus();
 			}
 		} else if (obj == cancel_bt) {
 			if (jpf_pw.getPassword().length > 0 || jpf_newPw1.getPassword().length > 0

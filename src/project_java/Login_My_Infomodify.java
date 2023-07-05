@@ -331,15 +331,13 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 					vo.setM_NAME(tf_name.getText());
 					vo.setM_PHONE(tf_phone.getText());
 					vo.setM_ID(main.p.getVo().getM_ID());
+					vo.setM_PW(main.p.getVo().getM_PW());
 					p.setVo(vo);
 					p.setCmd(6);
 					main.out.writeObject(p);
 					main.out.flush();
-					main.Main2();
-					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
-					main.cardLayout.show(main.cardJPanel, "planner_Select");
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				} catch (Exception e1) {
+					System.out.println(e1);
 				}
 			}
 		} else if (obj == jb6) {
