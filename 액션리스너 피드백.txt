@@ -1,5 +1,0 @@
-planner_Create 구현x
-
-Login_My_Infomodify snb, 내정보, 로그아웃, 회원탈퇴 버튼 안먹음
-
-Login_My_PWmodify snb, 내정보, 로그아웃, 회원탈퇴 버튼 안먹음
