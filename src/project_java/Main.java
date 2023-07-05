@@ -29,7 +29,7 @@ public class Main extends JFrame implements Runnable {
 	Login_My_PWmodify login_My_PWmodify;
 	Login_Withdrawal login_Withdrawal;
 	AllReview allReview;
-	MyReview myReview ;
+	MyReview myReview;
 	Planner_Create planner_Create;
 	Planner_InsertSpot planner_InsertSpot;
 	Planner_Select planner_Select;
@@ -38,6 +38,7 @@ public class Main extends JFrame implements Runnable {
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	Protocol p;
+	
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -85,7 +86,7 @@ public class Main extends JFrame implements Runnable {
 		planner_Select = new Planner_Select(this);
 
 		// 관리자 객체 선언
-		AdminMain adminMain = new AdminMain(this);
+		adminMain = new AdminMain(this);
 
 		// 카드 패널 추가
 
@@ -139,12 +140,14 @@ public class Main extends JFrame implements Runnable {
 					case 0:
 						break esc;
 					case 2:
-						JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "같은 아이디가 존재합니다.", " Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
 						out.writeObject(p);
 						out.flush();
 						break;
 					case 3:
-						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", " Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "login_Main");
 						login_Register.tf_id.setText("");
 						login_Register.jpf_pw.setText("");
@@ -156,7 +159,7 @@ public class Main extends JFrame implements Runnable {
 						login_Register.cb_TermsofUse.setSelected(false);
 						break;
 					case 5:
-						if(p.getVo() == null) {
+						if (p.getVo() == null) {
 							JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 						} else {
 							if (p.getVo().getM_CLASS().equals("0")) {
@@ -164,24 +167,48 @@ public class Main extends JFrame implements Runnable {
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								cardLayout.show(cardJPanel, "admin_greeting");
+								p.setCmd(9);
+								out.writeObject(p);
+								out.flush();
 							} else if (p.getVo().getM_CLASS().equals("1")) {
 								Main2();
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								cardLayout.show(cardJPanel, "planner_Select");
+								p.setCmd(9);
+								out.writeObject(p);
+								out.flush();
 							} else if (p.getVo().getM_CLASS().equals("4")) {
 								JOptionPane.showMessageDialog(null, p.getVo().getM_ID() + "님은 탈퇴한 계정입니다.", "Confirm",
 										JOptionPane.ERROR_MESSAGE);
 							}
+							login_Main.jtf_id.setText("");
+							login_Main.jtf_pw.setText("");
 						}
+						break;
+					case 7:
+						Main2();
+						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+						cardLayout.show(cardJPanel, "planner_Select");
+						break;
+					case 203:
+						Main2();
+						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
+						cardLayout.show(cardJPanel, "planner_Select");
+						login_My_PWmodify.jpf_pw.setText("");
+						login_My_PWmodify.jpf_newPw1.setText("");
+						login_My_PWmodify.jpf_newPw2.setText("");
+						break;
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println(e);
 			}
+
 		}
 
-	closed();
+		closed();
 
 	}
 

@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -28,8 +31,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
+import Server.Protocol;
+import UserDB.UserDAO;
+import UserDB.UserVO;
 
 public class Login_My_PWmodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
@@ -272,7 +276,6 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		main.Main2();
 		JButton obj = (JButton) e.getSource();
 		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
 			main.cardLayout.show(main.cardJPanel, "planner_Create");
@@ -309,25 +312,22 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 				} else if (!newPass1.equals(newPass2)) {
 					JOptionPane.showMessageDialog(null, "새 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				} else {
-					UserVO vo = new UserVO();
-					vo.setM_PW(newPass1);
-					vo.setM_ID(main.p.getVo().getM_ID());
-					int result = UserDAO.getInstance().getUserPwChange(vo);
-					if (result == 0) {
-						JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
-					} else {
-						// main.vo = Login_My_PWmodifyDAO.getInstance().getLogin(main.vo.getM_ID());
-						main.Main2();
-						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
-								JOptionPane.INFORMATION_MESSAGE);
-						main.cardLayout.show(main.cardJPanel, "planner_Select");
-						jpf_pw.setText("");
-						jpf_newPw1.setText("");
-						jpf_newPw2.setText("");
+						try {
+							Protocol p = new Protocol();
+							UserVO vo = new UserVO();
+							vo.setM_ID(main.p.getVo().getM_ID());
+							vo.setM_PW(newPass1);
+							p.setVo(vo);
+							p.setCmd(202);
+							main.out.writeObject(p);
+							main.out.flush();
+						} catch (Exception e2) {
+							System.out.println(e2);
+						}
 					}
-				}
 			} else {
-				JOptionPane.showMessageDialog(null, "현재 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "현재 비밀번호가 틀렸습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);	
+				jpf_pw.requestFocus();
 			}
 		} else if (obj == cancel_bt) {
 			if (jpf_pw.getPassword().length > 0 || jpf_newPw1.getPassword().length > 0
@@ -348,30 +348,5 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 
 	public Login_My_PWmodify() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public static void main(String[] args) {
-
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-////                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//                    app.setSize(800, 600);
-//                    app.setLocationRelativeTo(null);
-//                    app.setVisible(true);
-					new Login_My_PWmodify();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 }
