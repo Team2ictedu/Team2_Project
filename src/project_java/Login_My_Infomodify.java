@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
+import Server.Protocol;
+import UserDB.UserVO;
 
 public class Login_My_Infomodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
@@ -324,23 +324,24 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_phone.requestFocus();
 			} else {
-				UserVO vo = new UserVO();
-				vo.setM_EMAIL(tf_email.getText());
-				vo.setM_NAME(tf_name.getText());
-				vo.setM_PHONE(tf_phone.getText());
-				vo.setM_ID(main.p.getVo().getM_ID());
-				int result = UserDAO.getInstance().getUserUpdate(vo);
-				if (result == 0) {
-					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
-				} else {
-					//main.vo = UserDAO.getInstance().getLogin(main.vo.getM_ID());
+				try {
+					Protocol p = new Protocol();
+					UserVO vo = new UserVO();
+					vo.setM_EMAIL(tf_email.getText());
+					vo.setM_NAME(tf_name.getText());
+					vo.setM_PHONE(tf_phone.getText());
+					vo.setM_ID(main.p.getVo().getM_ID());
+					p.setVo(vo);
+					p.setCmd(6);
+					main.out.writeObject(p);
+					main.out.flush();
 					main.Main2();
-					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
-						JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
 					main.cardLayout.show(main.cardJPanel, "planner_Select");
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 			}
-
 		} else if (obj == jb6) {
 			if (tf_email.getText().length() > 0 || tf_birth.getText().length() > 0 || tf_phone.getText().length() > 0) {
 				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm",
@@ -360,30 +361,4 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 	public Login_My_Infomodify() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public static void main(String[] args) {
-
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-////                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//                    app.setSize(800, 600);
-//                    app.setLocationRelativeTo(null);
-//                    app.setVisible(true);
-					new Login_My_Infomodify();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 }

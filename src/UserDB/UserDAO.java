@@ -13,11 +13,15 @@ public class UserDAO {
 		}
 		return ss;
 	}
+	
+	// 회원가입
 	public static int getInsert(UserVO vo) {
 		int result = getSession().insert("userIns", vo);
 		ss.commit();
 		return result;
 	}
+	
+	// 회원가입 - 아이디 중복체크
 	public static int getChk(String M_ID) {
 		int result = 0; //중복일때
 		UserVO vo = getSession().selectOne("Chk", M_ID);
@@ -26,13 +30,22 @@ public class UserDAO {
 		}
 		return result;
 	}
+	// 유저정보 저장
 	public static UserVO getUser(UserVO vo) {
 		UserVO vo2 = getSession().selectOne("userInfo", vo);
 		return vo2;
 	}
 	
+	// 로그인 후 - 비밀번호 변경
 	public static int getPWUpdate(UserVO vo) {
 		int result = getSession().update("pwUpdate", vo);
+		ss.commit();
+		return result;
+	}
+	
+	// 로그인 후 - 유저정보 변경
+	public static int getUserUpdate(UserVO vo) {
+		int result = getSession().update("userUpdate", vo);
 		ss.commit();
 		return result;
 	}

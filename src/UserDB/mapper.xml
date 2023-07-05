@@ -19,6 +19,10 @@
 	<update id="pwUpdate" parameterType="UserDB.UserVO">
 		update member set M_PW=#{M_PW} where M_ID=#{M_ID}
 	</update>
+	
+	<update id="userUpdate" parameterType="UserDB.UserVO">
+		update member set M_NAME=#{M_NAME}, M_EMAIL=#{M_EMAIL}, M_PHONE=#{M_PHONE} where M_ID=#{M_ID}
+	</update>
 </mapper>
 
 

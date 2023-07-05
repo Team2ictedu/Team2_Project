@@ -47,11 +47,11 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 	JTextField tf_phone, tf_pwchk, tf_birth;
 	JPasswordField jpf_pw, jpf_newPw1, jpf_newPw2;
 	Main main;
-	
+
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-	
+
 	public Login_My_PWmodify(Main main) {
 
 		this.main = main;
@@ -300,7 +300,6 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 		} else if (obj == withdraw_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_Withdrawal");
 		} else if (obj == ok_bt) {
-			System.out.println(main.p.getVo().getM_PW());
 			String pass = new String(jpf_pw.getPassword());
 			String newPass1 = new String(jpf_newPw1.getPassword());
 			String newPass2 = new String(jpf_newPw2.getPassword());
@@ -317,20 +316,22 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 				} else if (!newPass1.equals(newPass2)) {
 					JOptionPane.showMessageDialog(null, "새 비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				} else {
-					try {
-						Protocol p = new Protocol();		
-						UserVO vo = new UserVO();				
-						vo.setM_ID(main.p.getVo().getM_ID());
-						vo.setM_PW(newPass1);
-						p.setVo(vo);
-						p.setCmd(202);
-						main.out.writeObject(p);
-						main.out.flush();
-					} catch (Exception e2) {
-						System.out.println(e2);
+						try {
+							Protocol p = new Protocol();
+							UserVO vo = new UserVO();
+							vo.setM_ID(main.p.getVo().getM_ID());
+							vo.setM_PW(newPass1);
+							p.setVo(vo);
+							p.setCmd(202);
+							main.out.writeObject(p);
+							main.out.flush();
+						} catch (Exception e2) {
+							System.out.println(e2);
+						}
 					}
-				}
-			} 
+			} else {
+				JOptionPane.showMessageDialog(null, "현재 비밀번호가 틀렸습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);	
+			}
 		} else if (obj == cancel_bt) {
 			if (jpf_pw.getPassword().length > 0 || jpf_newPw1.getPassword().length > 0
 					|| jpf_newPw2.getPassword().length > 0) {
