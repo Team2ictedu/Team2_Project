@@ -1,4 +1,4 @@
-package UserDB;
+package DB_User;
 
 import java.io.InputStream;
 
@@ -11,7 +11,7 @@ public class DBService {
 	// SqlSessionFactory클래스를 가지고  SqlSession 클래스를 만든다.
 	private static SqlSessionFactory factory;
 	// config.xml 파일 위치
-	static String resource = "UserDB/config.xml";
+	static String resource = "DB_User/config.xml";
 	
 	// static 초기화
 	static {

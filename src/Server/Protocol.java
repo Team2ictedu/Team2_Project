@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import UserDB.UserVO;
+import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
 
 public class Protocol implements Serializable{

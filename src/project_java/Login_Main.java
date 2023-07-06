@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 
 public class Login_Main extends JPanel implements ActionListener {
 	Main main;

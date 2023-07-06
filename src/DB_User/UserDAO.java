@@ -1,4 +1,4 @@
-package UserDB;
+package DB_User;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -30,7 +30,25 @@ public class UserDAO {
 		}
 		return result;
 	}
+	
+	// 로그인 전 - 아이디찾기
+	public static UserVO getidChk(UserVO vo) {
+		UserVO vo3 = getSession().selectOne("idChk", vo);
+		return vo3;
+	}
+	
+	// 로그인 전 - 비밀번호 찾기-1(유효성검사)
+	public static UserVO getPwFind(UserVO vo) {
+		UserVO vo3 = getSession().selectOne("pwfind1", vo);
+		return vo3;
+	}
 
+	// 로그인 전 - 비밀번호 찾기-2(비밀번호 재설정)
+	public static int getPWChange(UserVO vo) {
+		int result = getSession().update("pwChg", vo);
+		ss.commit();
+		return result;
+	}
 	// 유저정보 저장
 	public static UserVO getUser(UserVO vo) {
 		UserVO vo2 = getSession().selectOne("userInfo", vo);
@@ -66,19 +84,6 @@ public class UserDAO {
 	// 로그인 후 - 회원탈퇴
 	public static int getUserDelete(UserVO vo) {
 		int result = getSession().update("userDelete", vo);
-		ss.commit();
-		return result;
-	}
-
-	// 비밀번호 찾기
-	public static UserVO getPwFind(UserVO vo) {
-		UserVO vo3 = getSession().selectOne("pwfind1", vo);
-		return vo3;
-	}
-
-	// 비밀번호 재설정
-	public static int getPWChange(UserVO vo) {
-		int result = getSession().update("pwChg", vo);
 		ss.commit();
 		return result;
 	}

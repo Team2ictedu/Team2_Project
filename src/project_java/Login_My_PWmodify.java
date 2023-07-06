@@ -31,9 +31,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import DB_User.UserDAO;
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserDAO;
-import UserDB.UserVO;
 
 public class Login_My_PWmodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,

@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 import project_admin.AdminMain;
 import project_admin.AdminPlaceVO;
 import project_server.ProjectProtocol;
@@ -240,6 +240,23 @@ public class Main extends JFrame implements Runnable {
 						login_My_PWmodify.jpf_pw.setText("");
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
+						break;
+
+					case 205: // 아이디 찾기
+						if (p.getVo() == null) {
+							JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						} else {
+							int result = JOptionPane.showConfirmDialog(null, id_Search.jtf_name.getText() + "님의 아이디는 "
+									+ p.getVo().getM_ID() + "입니다.\n비밀번호도 찾으시겠습니까?", "Confirm",
+									JOptionPane.YES_NO_OPTION);
+							if (result == JOptionPane.YES_OPTION) {
+								cardLayout.show(cardJPanel, "pw_Search");
+							} else {
+								cardLayout.show(cardJPanel, "login_Main");
+								id_Search.jtf_name.setText("");
+								id_Search.jtf_em.setText("");
+							}
+						}
 						break;
 					case 403:
 						if (p.getVo() == null) {

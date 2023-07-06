@@ -5,8 +5,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import UserDB.UserDAO;
-import UserDB.UserVO;
+import DB_User.UserDAO;
+import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
 import project_admin.AdminPlacesDAO;
 import project_admin.AdminUsersDAO;
@@ -76,18 +76,18 @@ public class CP_Client extends Thread {
 					case 9: // 마지막 로그인
 						UserDAO.getUserLastLogin(vo.getM_ID());
 						break;
-						
-					case 51: //AdminPlaces SELECT * FROM place_all
+
+					case 51: // AdminPlaces SELECT * FROM place_all
 						System.out.println("ProjectCopyClient running CMD:51 :" + ip);
 						ProjectProtocol p51 = new ProjectProtocol();
 						List<AdminPlaceVO> list51 = AdminPlacesDAO.getList();
 						p51.setCmd(52);
 						p51.setPlaceList(list51);
 						out.writeObject(p51);
-						out.flush();							
+						out.flush();
 						break;
-						
-					case 53: //AdminPlaces select * from place_all where var = var
+
+					case 53: // AdminPlaces select * from place_all where var = var
 						ProjectProtocol p53 = (ProjectProtocol) p;
 						System.out.println("ProjectCopyClient running CMD:53 :" + ip);
 						String str53 = p53.getMsg2();
@@ -135,16 +135,16 @@ public class CP_Client extends Thread {
 								out.flush();
 							}
 						}
-						
+
 						break;
-					case 54: //AdminUsers DELETE row at button
-						
+					case 54: // AdminUsers DELETE row at button
+
 						ProjectProtocol p54 = (ProjectProtocol) p;
 						System.out.println("CASe 83 DELETING");
 						AdminPlaceVO vo54 = p54.getPlacevo();
 						int result54 = AdminPlacesDAO.getDelete(vo54);
-						
-						if(result54>0) {
+
+						if (result54 > 0) {
 							System.out.println("DELETE COMPLETEEE");
 							List<AdminPlaceVO> list54 = AdminPlacesDAO.getList();
 							p54.setCmd(52);
@@ -153,21 +153,20 @@ public class CP_Client extends Thread {
 							out.flush();
 						}
 						break;
-						
-						
-					case 71: //authencity check : is username == "root"? 
+
+					case 71: // authencity check : is username == "root"?
 						System.out.println("ProjectCopyClient running CMD:71 :: " + ip);
 						username = p.getName();
-						if(username.equals("root")) {
+						if (username.equals("root")) {
 							ProjectProtocol p3 = new ProjectProtocol();
 							p3.setCmd(72);
 							p3.setName(username);
 							out.writeObject(p3);
 							out.flush();
 						}
-							break;
-							
-					case 73: //adminUsers select * from MEMEBER WHERE M_ID = $M_ID
+						break;
+
+					case 73: // adminUsers select * from MEMEBER WHERE M_ID = $M_ID
 						ProjectProtocol p73 = (ProjectProtocol) p;
 						System.out.println("ProjectCopyClient running CMD:73 :" + ip);
 						String str73 = p73.getMsg2();
@@ -204,7 +203,7 @@ public class CP_Client extends Thread {
 								out.flush();
 							}
 						}
-						
+
 						break;
 					case 81: // AdminUsers SELECT * FROM MEMBER
 						System.out.println("ProjectCopyClient running CMD:81 :" + ip);
@@ -213,16 +212,16 @@ public class CP_Client extends Thread {
 						p81.setCmd(82);
 						p81.setUserList(list);
 						out.writeObject(p81);
-						out.flush();							
+						out.flush();
 						break;
-						
+
 					case 83: // AdminUsers DELETE row at button
 						ProjectProtocol p83 = (ProjectProtocol) p;
 						System.out.println("CASe 83 DELETING");
 						project_admin.AdminUserVO vo83 = p83.getUservo();
 						int result83 = AdminUsersDAO.getDelete(vo83);
-						
-						if(result83>0) {
+
+						if (result83 > 0) {
 							System.out.println("DELETE COMPLETEEE");
 							list = AdminUsersDAO.getList();
 							p83.setCmd(82);
@@ -233,20 +232,26 @@ public class CP_Client extends Thread {
 						break;
 					case 202: // 비밀번호 변경
 						UserDAO.getPWUpdate(vo);
-							p.setVo(UserDAO.getUser(vo));
-							p.setCmd(203);
-							out.writeObject(p);
-							out.flush();
+						p.setVo(UserDAO.getUser(vo));
+						p.setCmd(203);
+						out.writeObject(p);
+						out.flush();
 						break;
-					case 402: //비밀번호 찾기
+					case 204: // 아이디 찾기
+						p.setVo(UserDAO.getidChk(vo));
+						p.setCmd(205);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 402: // 비밀번호 찾기
 						System.out.println(4);
 						p.setVo(UserDAO.getPwFind(vo));
 						p.setCmd(403);
 						out.writeObject(p);
 						out.flush();
 						break;
-						
-					case 404:  //비밀번호 재설정
+
+					case 404: // 비밀번호 재설정
 						System.out.println(5);
 						UserDAO.getPWChange(vo);
 						p.setCmd(405);

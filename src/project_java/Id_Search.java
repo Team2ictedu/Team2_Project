@@ -26,10 +26,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
-
-
+import DB_User.UserDAO;
+import DB_User.UserVO;
+import Server.Protocol;
 
 public class Id_Search extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
@@ -42,7 +41,6 @@ public class Id_Search extends JPanel implements ActionListener {
 	JPanel im_jp, log_im, lb_jp, name_jp, pw_jp, logMv_jp, btBt_jp, add_jp;
 	JTextField jtf_name, jtf_em;
 	JButton logMv_bt, join_bt, pwFin_bt, idCk_bt;
-	UserVO vo;
 
 	public Id_Search(Main main) {
 		this.main = main;
@@ -254,44 +252,24 @@ public class Id_Search extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_em.requestFocus();
 			} else {
-				this.vo = UserDAO.getInstance().getIdFind(jtf_name.getText(), jtf_em.getText());
-				if (jtf_name.getText().equals(vo.getM_NAME()) && jtf_em.getText().equals(vo.getM_EMAIL())) { // 입력정보 일치
-					jtf_name.setText("");
-					jtf_em.setText("");
-					int result = JOptionPane.showConfirmDialog(null,
-							vo.getM_NAME() + "님의 아이디는 " + vo.getM_ID() + "입니다.\n비밀번호도 찾으시겠습니까?", "Confirm",
-							JOptionPane.YES_NO_OPTION);
-					if (result == JOptionPane.YES_OPTION) {
-						main.cardLayout.show(main.cardJPanel, "pw_Search");
-					} else {
-						main.cardLayout.show(main.cardJPanel, "login_Main");
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+					try {
+						Protocol p = new Protocol();
+						UserVO vo = new UserVO();
+						vo.setM_NAME(jtf_name.getText().trim());
+						vo.setM_EMAIL(jtf_em.getText().trim());
+						p.setVo(vo);
+						p.setCmd(204);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}	
 				}
 			}
 		}
-	}
+	
 
 	public Id_Search() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public static void main(String[] args) {
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					new Id_Search();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 }

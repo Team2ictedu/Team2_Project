@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+	<!-- 로그인 - 유저정보 -->
+	<select id="userInfo" parameterType="String"
+		resultType="DB_User.UserVO">
+		select * from member where M_ID= #{M_ID} and M_PW=#{M_PW}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="userIns" parameterType="DB_User.UserVO">
+		insert into MEMBER(M_ID,
+		M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS,
+		M_CLASS)
+		values(#{M_ID},#{M_PW},#{M_EMAIL},#{M_NAME},#{M_BIRTH},#{M_PHONE},#{M_TERMS},#{M_CLASS})
+	</insert>
+
+	<!-- 회원가입 - 아이디중복체크 -->
+	<select id="Chk" parameterType="String"
+		resultType="DB_User.UserVO">
+		select M_ID from member where M_ID= #{M_ID}
+	</select>
+
+	<!-- 로그인 전 - 아이디 찾기 -->
+	<select id="idChk" parameterType="String"
+		resultType="DB_User.UserVO">
+		select M_ID from member where M_NAME= #{M_NAME} AND M_EMAIL
+		= #{M_EMAIL}
+	</select>
+
+	<!-- 로그인 전 - 비밀번호 찾기(유효성검사) -->
+	<select id="pwfind1" parameterType="String"
+		resultType="DB_User.UserVO">
+		select * from member where M_ID= #{M_ID} AND M_EMAIL
+		=#{M_EMAIL} AND M_NAME = #{M_NAME}
+	</select>
+
+	<!-- 로그인 전 - 비밀번호 찾기(비밀번호 재설정) -->
+	<update id="pwChg" parameterType="DB_User.UserVO">
+		update member set
+		M_PW= #{M_PW}
+		where
+		M_ID=#{M_ID}
+	</update>
+
+	<!-- 로그인 후 - 비밀번호 재설정 -->
+	<update id="pwUpdate" parameterType="DB_User.UserVO">
+		update member set
+		M_PW=#{M_PW} where M_ID=#{M_ID}
+	</update>
+
+	<!-- 로그인 후 - 유저정보 변경 -->
+	<update id="userUpdate" parameterType="DB_User.UserVO">
+		update member set
+		M_NAME=#{M_NAME}, M_EMAIL=#{M_EMAIL}, M_PHONE=#{M_PHONE} where
+		M_ID=#{M_ID}
+	</update>
+
+	<!-- 로그인 후 - 회원탈퇴 -->
+	<update id="userDelete" parameterType="DB_User.UserVO">
+		update member set
+		M_CLASS=4, DELETE_CON=#{DELETE_CON}, DELETE_TIME=sysdate where
+		M_ID=#{M_ID}
+	</update>
+	
+	<!-- 최근접속 -->
+	<update id="userLastLogin" parameterType="DB_User.UserVO">
+		update member set
+		M_LASTLOGIN = sysdate where
+		M_ID=#{M_ID}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+

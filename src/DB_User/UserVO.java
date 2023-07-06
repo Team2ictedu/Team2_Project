@@ -1,8 +1,8 @@
-package Server;
+package DB_User;
 
 import java.io.Serializable;
 
-public class VO implements Serializable {
+public class UserVO implements Serializable {
 	private String M_ID, M_PW, M_NAME, M_BIRTH, M_EMAIL, M_PHONE, M_TERMS, M_CLASS, M_LASTLOGIN, DELETE_CON,
 			DELETE_TIME;
 

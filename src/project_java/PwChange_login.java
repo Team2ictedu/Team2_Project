@@ -21,8 +21,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 
 public class PwChange_login extends JFrame implements ActionListener {
 	JPanel pwCh_jp, add_jp, lb_jp, pw1_jp, pw2_jp, ok_jp;
