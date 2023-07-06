@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 package project_java;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+=======
+package adminOld_dontuse;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,15 +24,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+<<<<<<< HEAD
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+=======
+
+import javax.swing.BorderFactory;
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+<<<<<<< HEAD
 import javax.swing.JFrame;
+=======
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,18 +49,30 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+<<<<<<< HEAD
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+=======
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Server.Protocol;
+<<<<<<< HEAD
 import UserDB.DAO;
 import UserDB.VO;
 import dontUse.UserDAO;
 import dontUse.UserVO;
 
 public class Login_Register extends JPanel implements ActionListener, Runnable {
+=======
+import Server.VO;
+import UserDB.DAO;
+import project_java.Main;
+import project_java.TextPrompt;
+
+public class asdf extends JPanel implements ActionListener, Runnable {
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton join_bt, cancel_bt;
@@ -68,7 +95,11 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 	int result;
 	boolean idCheck;
 
+<<<<<<< HEAD
 	public Login_Register(Main main) {
+=======
+	public asdf(Main main) {
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 		this.main = main;
 //		FONT
 // 		민지
@@ -363,7 +394,11 @@ public class Login_Register extends JPanel implements ActionListener, Runnable {
 
 	}
 
+<<<<<<< HEAD
 	public Login_Register() {
+=======
+	public asdf() {
+>>>>>>> a56ae3cd91e59f6178c2495b585c20bb062595cc
 	}
 
 	@Override
