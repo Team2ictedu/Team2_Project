@@ -34,11 +34,12 @@ public class Main extends JFrame implements Runnable {
 	Planner_InsertSpot planner_InsertSpot;
 	Planner_Select planner_Select;
 	AdminMain adminMain;
+	PwChange_login pw_ck;
 	Socket s;
 	public ObjectOutputStream out;
 	ObjectInputStream in;
 	Protocol p;
-	
+
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -167,9 +168,10 @@ public class Main extends JFrame implements Runnable {
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								System.out.println("Main run() received Protocol CMD : 72");
-								System.out.println("Main CMD:72 = LogIn as Admin"+ p.getVo().getM_NAME());
+								System.out.println("Main CMD:72 = LogIn as Admin" + p.getVo().getM_NAME());
 								adminMain.adminHome.adminLabel.setText(p.getVo().getM_NAME() + "");
-								adminMain.adminHome.welcomeLabel.setText(String.format("어서오세요, %s님!      %s", p.getVo().getM_NAME(), adminMain.adminHome.todayDate));
+								adminMain.adminHome.welcomeLabel.setText(String.format("어서오세요, %s님!      %s",
+										p.getVo().getM_NAME(), adminMain.adminHome.todayDate));
 								adminMain.adminUsers.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								adminMain.adminPlaces.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								adminMain.adminReview.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
@@ -189,19 +191,19 @@ public class Main extends JFrame implements Runnable {
 						break;
 					case 7:
 						Main2();
-						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
 						break;
-						
-						
+
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;
 						List<AdminPlaceVO> list52 = p52.getPlaceList();
 						adminMain.adminPlaces.model.setRowCount(0);
 						for (AdminPlaceVO p521 : list52) {
-							adminMain.adminPlaces.model.addRow(new String[] {p521.getPa_name(),p521.getPa_location(), p521.getPa_con(), 
-									p521.getPa_price(),  "수정" , "삭제"});
-							}
+							adminMain.adminPlaces.model.addRow(new String[] { p521.getPa_name(), p521.getPa_location(),
+									p521.getPa_con(), p521.getPa_price(), "수정", "삭제" });
+						}
 						break;
 //					case 72: // login as Admin
 //						System.out.println("Main run() received Protocol CMD : 72");
@@ -216,21 +218,20 @@ public class Main extends JFrame implements Runnable {
 						ProjectProtocol p74 = (ProjectProtocol) obj;
 						adminMain.adminUsers.model.setRowCount(0);
 						project_admin.AdminUserVO vo74 = p74.getUservo();
-						adminMain.adminUsers.model.addRow(new String[] {vo74.getM_id(),vo74.getM_pw(), vo74.getM_name(), 
-								vo74.getM_birth(), vo74.getM_email(), "수정" , "삭제"});
-						
+						adminMain.adminUsers.model.addRow(new String[] { vo74.getM_id(), vo74.getM_pw(),
+								vo74.getM_name(), vo74.getM_birth(), vo74.getM_email(), "수정", "삭제" });
+
 						break;
 					case 82: // (SELECT * FROM MEMBER)
 						ProjectProtocol p82 = (ProjectProtocol) p;
 						List<project_admin.AdminUserVO> list82 = p82.getUserList();
 						adminMain.adminUsers.model.setRowCount(0);
 						for (project_admin.AdminUserVO p821 : list82) {
-							adminMain.adminUsers.model.addRow(new String[] {p821.getM_id(),p821.getM_pw(), p821.getM_name(), 
-									p821.getM_birth(), p821.getM_email(), "수정" , "삭제"});
-							}
+							adminMain.adminUsers.model.addRow(new String[] { p821.getM_id(), p821.getM_pw(),
+									p821.getM_name(), p821.getM_birth(), p821.getM_email(), "수정", "삭제" });
+						}
 						break;
-						
-						
+
 					case 203:
 						Main2();
 						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
@@ -239,6 +240,28 @@ public class Main extends JFrame implements Runnable {
 						login_My_PWmodify.jpf_pw.setText("");
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
+						break;
+					case 403:
+						if (p.getVo() == null) {
+							JOptionPane.showMessageDialog(null, "일치한 정보가 존재하지 않습니다.", " Confirm",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							pw_ck = new PwChange_login(pw_Search);
+							pw_ck.setVisible(true);
+							pw_ck.vo.setM_ID(p.getVo().getM_ID());
+							pw_Search.idCg_jtf.setText("");
+							pw_Search.name_jtf.setText("");
+							pw_Search.em_jtf.setText("");
+						}
+						break;
+					case 405:
+						JOptionPane.showMessageDialog(null, "비밀번호 설정이 완료되었습니다.", "Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
+						pw_ck = new PwChange_login(pw_Search);
+						pw_ck.setVisible(false);
+						pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
+						pw_ck.pwck1_jtf.setText("");
+						pw_ck.pwck2_jtf.setText("");
 						break;
 					}
 				}

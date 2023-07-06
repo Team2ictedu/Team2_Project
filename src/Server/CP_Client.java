@@ -231,10 +231,6 @@ public class CP_Client extends Thread {
 							out.flush();
 						}
 						break;
-						
-						
-						
-						
 					case 202: // 비밀번호 변경
 						UserDAO.getPWUpdate(vo);
 							p.setVo(UserDAO.getUser(vo));
@@ -242,8 +238,21 @@ public class CP_Client extends Thread {
 							out.writeObject(p);
 							out.flush();
 						break;
-					
+					case 402: //비밀번호 찾기
+						System.out.println(4);
+						p.setVo(UserDAO.getPwFind(vo));
+						p.setCmd(403);
+						out.writeObject(p);
+						out.flush();
+						break;
 						
+					case 404:  //비밀번호 재설정
+						System.out.println(5);
+						UserDAO.getPWChange(vo);
+						p.setCmd(405);
+						out.writeObject(p);
+						out.flush();
+						break;
 					}
 				}
 			} catch (Exception e) {

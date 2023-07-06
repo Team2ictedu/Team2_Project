@@ -41,7 +41,7 @@ public class UserDAO {
 	public static int getUserLastLogin(String M_ID) {
 		try {
 			int result = getSession().selectOne("userLastLogin", M_ID);
-			return result;			
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,7 +58,7 @@ public class UserDAO {
 	// 로그인 후 - 유저정보 변경
 	public static int getUserUpdate(UserVO vo) {
 		int result = getSession().update("userUpdate", vo);
-		
+
 		ss.commit();
 		return result;
 	}
@@ -66,6 +66,19 @@ public class UserDAO {
 	// 로그인 후 - 회원탈퇴
 	public static int getUserDelete(UserVO vo) {
 		int result = getSession().update("userDelete", vo);
+		ss.commit();
+		return result;
+	}
+
+	// 비밀번호 찾기
+	public static UserVO getPwFind(UserVO vo) {
+		UserVO vo3 = getSession().selectOne("pwfind1", vo);
+		return vo3;
+	}
+
+	// 비밀번호 재설정
+	public static int getPWChange(UserVO vo) {
+		int result = getSession().update("pwChg", vo);
 		ss.commit();
 		return result;
 	}
