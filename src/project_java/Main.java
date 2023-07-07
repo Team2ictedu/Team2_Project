@@ -45,7 +45,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel = new JPanel();
 		cardLayout = new CardLayout();
 		cardJPanel.setLayout(cardLayout);
-
+		
 		// 로그인 후
 		// 객체 선언
 		// 로그인 전

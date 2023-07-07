@@ -1,6 +1,7 @@
 package project_java;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -11,9 +12,10 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
-
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -36,13 +38,13 @@ public class Planner_Create extends JPanel implements ActionListener {
 	Font customFont;
 	JLabel jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel_new;
 	JTextField jtf_name, jtf_date, jtf_days;
-	JButton jb_create, jb_back;
+	JButton jb_create, jb_back, jb_calc;
 	String[] city = { "City" }; // 시
 	JComboBox<String> jcom = new JComboBox<>(city);
 	String[] town = { "Town" }; // 동읍리
 	JComboBox<String> jcom2 = new JComboBox<>(town);
 	JPanel jp_main, jp_checkbox;
-
+	String a;
 	public Planner_Create(Main main) {
 		this.main = main;
 //		FONT
@@ -177,6 +179,16 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jp_main = new JPanel();
 			jtf_name = new JTextField();
 			jtf_date = new JTextField();
+			jtf_date.setEditable(false);
+			jb_calc = new JButton("SELECT DATE");
+			jb_calc.setFont(new Font("Jalnan", Font.PLAIN, 10));
+			JPanel jp_date = new JPanel();
+			jp_date.setLayout(new GridLayout(0, 2));
+			jp_date.setBackground(Color.WHITE);
+			jp_date.add(jtf_date);
+			jp_date.add(jb_calc);
+			jb_calc.setBackground(Color.decode("#F083BA"));
+			jb_calc.setForeground(Color.white);
 			jtf_days = new JTextField();
 			jb_create = new JButton("CREATE");
 			jb_back = new JButton("CANCLE");
@@ -208,7 +220,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jp_main.add(jLabel3);
 			jp_main.add(jp_checkbox);
 			jp_main.add(jLabel4);
-			jp_main.add(jtf_date);
+			jp_main.add(jp_date);
 			jp_main.add(jLabel5);
 			jp_main.add(jtf_days);
 			jp_main.add(new JLabel(""));
@@ -252,6 +264,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 		jb2.addActionListener(this);
 		jb3.addActionListener(this);
 		jb4.addActionListener(this);
+		jb_calc.addActionListener(this);
 		jbMyInfo.addActionListener(this);
 		jbLogOut.addActionListener(this);
 		jb_create.addActionListener(this);
@@ -276,11 +289,10 @@ public class Planner_Create extends JPanel implements ActionListener {
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == jb_create) {
 			if (jtf_name.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_name.requestFocus(); // 커서위치 조절
 			} else if (jtf_date.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "시작날짜를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
-				jtf_date.requestFocus();
 			} else if (jtf_days.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_days.requestFocus();
@@ -292,46 +304,27 @@ public class Planner_Create extends JPanel implements ActionListener {
 			}
 		} else if (obj == jb_back) {
 			// 취소할때 문자에 길이가 있으면 페이지 이동할건지 여부 확인
-			if(jtf_name.getText().length() > 0 || jtf_date.getText().length() > 0 || jtf_days.getText().length() > 0) {			
-				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+			if (jtf_name.getText().length() > 0 || jtf_date.getText().length() > 0 || jtf_days.getText().length() > 0) {
+				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm",
+						JOptionPane.YES_NO_OPTION);
 				// 예 클릭시, 내용 초기화하고 이동시켜주고 아니오 클릭시, 이동취소
-				if(result==JOptionPane.YES_OPTION) {
+				if (result == JOptionPane.YES_OPTION) {
 					jtf_name.setText("");
 					jtf_date.setText("");
 					jtf_days.setText("");
-				    main.cardLayout.show(main.cardJPanel, "planner_Select");
-				} 
+					main.cardLayout.show(main.cardJPanel, "planner_Select");
+				}
 			} else { // 취소할때 문자길이가 없으면 바로 이동
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			}
+		} else if(obj==jb_calc) {
+			Calendarmain calendarmain = new Calendarmain(Planner_Create.this);
+			calendarmain.setVisible(true);
 		}
 	}
 
 	public Planner_Create() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public static void main(String[] args) {
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-////	                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//	                    app.setSize(800, 600);
-//	                    app.setLocationRelativeTo(null);
-//	                    app.setVisible(true);
-					new Planner_Create();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 }
