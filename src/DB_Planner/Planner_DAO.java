@@ -1,5 +1,7 @@
 package DB_Planner;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
@@ -21,10 +23,22 @@ public class Planner_DAO {
 			int result = getSession().insert("createplan", vo);
 			ss.commit();
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.pr0intln(e);
 		}
 		return 0;
-		
 	}
+	
+	public static List<Planner_VO> getList(){
+		List<Planner_VO> list = null;
+		// selectList() : 결과가 하나이상일때 
+		// selectOne()  : 반드시 결과가 하나일때
+		// 파라미터가 있는 메서드와 파라미터가 없는메서드로 나눈다.
+		// 파라미터가 있는 메서드 : selectList("mepper의 id",파라미터);
+		// 파라미터가 없는 메서드  : selectList("mepper의 id")
+		list = getSession().selectList("plannerList");
+		return list;
+	}
+	
+	
 	
 }

@@ -126,17 +126,4 @@ VALUES('princess','1111', '소앵', '19910405','soangrybird@gmail.com',01032313257
 INSERT INTO MEMBER
 VALUES('del','1111', '탈퇴유저', '19910405','soangrybird@gmail.com',01032313257,'yes',4,'20230623',null,null);
 
-INSERT INTO PLACE_ALL
-VALUES(1,'두물머리해수욕장','서귀포','군부대옆에있는해수욕장',20000);
-INSERT INTO PLACE_ALL
-VALUES(2,'중국성','휘포리','자장면이 맛있는 중국집',10000);
-INSERT INTO PLACE_ALL
-VALUES(3,'과테말라카페','서귀포','과테말라 안티구아 커피가 맛있는 카페',2000);
-
-INSERT INTO PLACE_REVIEW
-VALUES(5,'진짜 너무너무 좋네요!!!', 'shlee8405',3);
-INSERT INTO PLACE_REVIEW
-VALUES(1,'별루', 'shlee8405',1);
-INSERT INTO PLACE_REVIEW
-VALUES(2,'커피가 비림; 가지마셈', 'kjs0000',3);
 commit;

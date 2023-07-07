@@ -8,7 +8,7 @@
 		resultType="DB_User.UserVO">
 		select * from member where M_ID= #{M_ID}
 	</select>
-	
+
 	<!-- 로그인 -->
 	<select id="userLogin" parameterType="String"
 		resultType="DB_User.UserVO">
@@ -77,13 +77,18 @@
 		M_LASTLOGIN = sysdate where
 		M_ID=#{M_ID}
 	</update>
-	
+
 	<!-- 새일정만들기 -->
 	<insert id="createplan" parameterType="DB_Planner.Planner_VO">
 		insert into
 		PLANNER(PLAN_NUM, PLAN_TITLE, PLAN_DATE, PLAN_DAYS, M_ID, TL_NUM)
-		values(PLAN_NUM_SEQ.NEXTVAL, #{PLAN_TITLE},#{PLAN_DATE},#{PLAN_DAYS},#{M_ID},#{TL_NUM})
+		values(PLAN_NUM_SEQ.NEXTVAL,
+		#{PLAN_TITLE},#{PLAN_DATE},#{PLAN_DAYS},#{M_ID},#{TL_NUM})
 	</insert>
+
+	<select id="plannerList" resultType="DB_Planner.Planner_VO">
+		select * from member order by m_id
+	</select>
 </mapper>
 
 

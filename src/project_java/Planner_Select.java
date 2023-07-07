@@ -427,7 +427,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 		// 선택한 일정에 상세일정 정보
 		JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
 		jp_select_text.setBackground(Color.WHITE);
-		int r = 5;
+		int r = 7;
 		JTextArea[] textAreas = new JTextArea[r];
 		JScrollPane[] scrollPanes = new JScrollPane[r];
 
@@ -444,9 +444,31 @@ public class Planner_Select extends JPanel implements ActionListener {
 			// Assign different values to each JTextArea
 			switch (i) {
 			case 0:
-				textAreas[i].append("Value for JTextArea 1\n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
 				break;
 			case 1:
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
 				textAreas[i].append("Value for JTextArea 2");
 				break;
 			case 2:
