@@ -283,21 +283,22 @@ public class Main extends JFrame implements Runnable {
 						pw_ck.pwck2_jtf.setText("");
 						break;
 						
-//					case 410:
-//						/*
-//						List<AdminPlaceVO> list52 = p52.getPlaceList();
-//						adminMain.adminPlaces.model.setRowCount(0);
-//						for (AdminPlaceVO p521 : list52) {
-//							adminMain.adminPlaces.model.addRow(new String[] { p521.getPa_name(), p521.getPa_location(),
-//									p521.getPa_con(), p521.getPa_price(), "수정", "삭제" });
-//						}*/
-//						List<Place_All_VO> list410 = p.getPlaceAll();
-//						allReview.model.setRowCount(0);
-//						for (Place_All_VO p410 : list410) {
-//							//allReview.model.addRow(new Object[] {allReview.index, p.g);
-//							allReview.model.addRow(new String[] { p40. );
-//						}
-//					break;
+					case 410:
+						/*
+						List<AdminPlaceVO> list52 = p52.getPlaceList();
+						adminMain.adminPlaces.model.setRowCount(0);
+						for (AdminPlaceVO p521 : list52) {
+							adminMain.adminPlaces.model.addRow(new String[] { p521.getPa_name(), p521.getPa_location(),
+							p521.getPa_con(), p521.getPa_price(), "수정", "삭제" });
+						}*/
+						
+						List<Place_All_VO> list410 = p.getPlaceAll();
+						allReview.model.setRowCount(0);
+						for (Place_All_VO p410 : list410) {
+							//allReview.model.addRow(new Object[] {allReview.index, p.g);
+							allReview.model.addRow(new String[] { p. );
+						}
+					break;
 					}
 				}
 			} catch (Exception e) {

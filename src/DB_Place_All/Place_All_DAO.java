@@ -32,4 +32,6 @@ public class Place_All_DAO {
 		list = getSession().selectList("combo1");
 		return list;
 	}
+	
+	
 }

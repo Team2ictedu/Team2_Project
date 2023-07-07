@@ -34,6 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import DB_Place_All.Place_All_VO;
 import Server.Protocol;
@@ -216,6 +217,14 @@ public class AllReview extends JPanel implements ActionListener{
 			model.addColumn("후기 내용");
 			model.addColumn("작성자");
 			
+			/*review_jtb.setShowGrid(false);
+			review_jtb.setShowHorizontalLines(false);
+			review_jtb.setShowVerticalLines(false);
+			review_jtb.setRowMargin(0);
+			review_jtb.setIntercellSpacing(new Dimension(0, 0));
+			review_jtb.setFillsViewportHeight(true);*/
+			TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+			review_jtb.setRowSorter(sorter);
 			
 			review_jtb = new JTable(model);
 			review_jsp = new JScrollPane(review_jtb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,

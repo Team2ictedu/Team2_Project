@@ -134,9 +134,9 @@ INSERT INTO PLACE_ALL
 VALUES(3,'과테말라카페','서귀포','과테말라 안티구아 커피가 맛있는 카페',2000);
 
 INSERT INTO PLACE_REVIEW
-VALUES(5,'진짜 너무너무 좋네요!!!', 'shlee8405',3);
+VALUES('진짜 너무너무 좋네요!!!', 'shl',3);
 INSERT INTO PLACE_REVIEW
-VALUES(1,'별루', 'shlee8405',1);
+VALUES('별루', 'shl',1);
 INSERT INTO PLACE_REVIEW
-VALUES(2,'커피가 비림; 가지마셈', 'kjs0000',3);
+VALUES('커피가 비림; 가지마셈', 'kjun',3);
 commit;

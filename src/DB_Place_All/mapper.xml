@@ -16,6 +16,30 @@
 		join place_all t2 on t1.pa_num = t2.pa_num
 		where t2.pa_num = #{pa_num}
 	</select>
+	<!-- jtable에 담기위해서는 cloum별로 추출해서 foreach문을 이용해 넣어준다. --> 
+	  <resultMap id="placeReviewResultMap" type="DB_Place_All.Place_All_VO">
+        <result property="con" column="PR_CON"/>
+        <result property="memberId" column="M_ID"/>
+        <result property="placeNumber" column="PA_NUM"/>
+    </resultMap>
+
+    <select id="getPlaceReviewData" resultMap="placeReviewResultMap">
+        SELECT PR_CON, M_ID, PA_NUM
+        FROM PLACE_REVIEW
+    </select>
+
+    <resultMap id="placeAllResultMap" type="com.example.PlaceAll">
+        <result property="name" column="PA_NAME"/>
+        <result property="reviewContent" column="PR_CON"/>
+        <result property="memberId" column="M_ID"/>
+    </resultMap>
+
+    <select id="getPlaceAllData" resultMap="placeAllResultMap">
+        SELECT PA_NAME, PR_CON, M_ID
+        FROM PLACE_ALL
+        INNER JOIN PLACE_REVIEW ON PLACE_ALL.PA_NUM = PLACE_REVIEW.PA_NUM
+    </select>
+	
 </mapper>
 
 
