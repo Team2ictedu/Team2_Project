@@ -31,6 +31,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import DB_Planner.Planner_VO;
+import Server.Protocol;
+
 public class Planner_Create extends JPanel implements ActionListener {
 	Main main;
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
@@ -297,10 +300,22 @@ public class Planner_Create extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_days.requestFocus();
 			} else { // 성공시
-				jtf_name.setText("");
-				jtf_date.setText("");
-				jtf_days.setText("");
-				main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
+				try {
+					Protocol p1 = new Protocol();
+					Planner_VO planVo = new Planner_VO();
+					planVo.setPLAN_TITLE(jtf_name.getText());
+					planVo.setPLAN_DATE(jtf_date.getText());
+					planVo.setPLAN_DAYS(jtf_days.getText());
+					planVo.setM_ID(main.p.getVo().getM_ID());
+					planVo.setTL_NUM("1"); // 임시로 한거임
+					p1.setPlanvo(planVo);
+					p1.setCmd(100);
+					main.out.writeObject(p1);
+					main.out.flush();
+				} catch (IOException e1) {
+					
+					//e1.printStackTrace();
+				}
 			}
 		} else if (obj == jb_back) {
 			// 취소할때 문자에 길이가 있으면 페이지 이동할건지 여부 확인

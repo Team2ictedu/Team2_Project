@@ -49,9 +49,16 @@ public class UserDAO {
 		ss.commit();
 		return result;
 	}
+	
+	// 로그인
+	public static UserVO getLogin(UserVO vo) {
+		UserVO vo2 = getSession().selectOne("userLogin", vo);
+		return vo2;
+	}
+	
 	// 유저정보 저장
-	public static UserVO getUser(UserVO vo) {
-		UserVO vo2 = getSession().selectOne("userInfo", vo);
+	public static UserVO getUser(String M_ID) {
+		UserVO vo2 = getSession().selectOne("userInfo", M_ID);
 		return vo2;
 	}
 

@@ -60,7 +60,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel.add("id_Search", id_Search);
 		cardJPanel.add("pw_Search", pw_Search);
 		// cardJPanel.add("pwChange_login", pwChange_login);
-
+		getRootPane().setDefaultButton(login_Main.log_bt);
 		add(cardJPanel);
 
 		cardLayout.show(cardJPanel, "login_Main");
@@ -231,7 +231,13 @@ public class Main extends JFrame implements Runnable {
 									p821.getM_name(), p821.getM_birth(), p821.getM_email(), "수정", "삭제" });
 						}
 						break;
-
+					case 101:
+						Main2();
+						cardLayout.show(cardJPanel, "planner_Select");
+						planner_Create.jtf_name.setText("");
+						planner_Create.jtf_date.setText("");
+						planner_Create.jtf_days.setText("");
+						break;
 					case 203:
 						Main2();
 						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
