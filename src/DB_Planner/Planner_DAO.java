@@ -15,5 +15,16 @@ public class Planner_DAO {
 		}
 		return ss;
 	}
-
+	// 새 일정 만들기
+	public static int getInsert(Planner_VO vo) {
+		try {
+			int result = getSession().insert("createplan", vo);
+			ss.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return 0;
+		
+	}
+	
 }

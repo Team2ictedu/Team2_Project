@@ -3,12 +3,18 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mybatis.example.BlogMapper">
-	<!-- 로그인 - 유저정보 -->
+	<!-- 정보 -->
 	<select id="userInfo" parameterType="String"
+		resultType="DB_User.UserVO">
+		select * from member where M_ID= #{M_ID}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="userLogin" parameterType="String"
 		resultType="DB_User.UserVO">
 		select * from member where M_ID= #{M_ID} and M_PW=#{M_PW}
 	</select>
-	
+
 	<!-- 회원가입 -->
 	<insert id="userIns" parameterType="DB_User.UserVO">
 		insert into MEMBER(M_ID,
@@ -64,14 +70,20 @@
 		M_CLASS=4, DELETE_CON=#{DELETE_CON}, DELETE_TIME=sysdate where
 		M_ID=#{M_ID}
 	</update>
-	
+
 	<!-- 최근접속 -->
 	<update id="userLastLogin" parameterType="DB_User.UserVO">
 		update member set
 		M_LASTLOGIN = sysdate where
 		M_ID=#{M_ID}
 	</update>
-
+	
+	<!-- 새일정만들기 -->
+	<insert id="createplan" parameterType="DB_Planner.Planner_VO">
+		insert into
+		PLANNER(PLAN_NUM, PLAN_TITLE, PLAN_DATE, PLAN_DAYS, M_ID, TL_NUM)
+		values(PLAN_NUM_SEQ.NEXTVAL, #{PLAN_TITLE},#{PLAN_DATE},#{PLAN_DAYS},#{M_ID},#{TL_NUM})
+	</insert>
 </mapper>
 
 
