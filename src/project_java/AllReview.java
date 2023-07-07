@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -31,6 +33,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import DB_Place_All.Place_All_VO;
+import Server.Protocol;
+
 import java.awt.Component;
 import javax.swing.SwingConstants;
 
@@ -43,15 +50,20 @@ public class AllReview extends JPanel implements ActionListener{
 
 	JPanel review_bt_jp, left_review_jp, select_addr_jp, review2_jp, viewlb_jp, view_jp, jtf1_jp, jtf2_jp, center_add_jp, jp_center, center_jp;
 	JLabel review_lb, look_lb;
-	JTextArea review_jta;
+	DefaultTableModel model;
+	JTable review_jtb;
 	JScrollPane review_jsp;
 	JButton left_allreview_bt, left_myreview_bt, search_bt;
 	JComboBox<String> search1, search2;
-
+	
 	String[] ser1 = { "::시/도::", "전체", "제주시", "서귀포시" };
-	String[] ser2 = { "::선택::", "전체", "~동", "~읍", "~면" };
+	String[] ser2; // = { "::선택::", "전체", "~동", "~읍", "~면" };
 	Border newBorder;
 	Main main;
+	
+	
+	//Object [][] datas;
+	int index = 1;
 	
 	public AllReview(Main main) {
 
@@ -187,18 +199,27 @@ public class AllReview extends JPanel implements ActionListener{
 
 			select_addr_jp = new JPanel();
 			select_addr_jp.setOpaque(false);
-
+			
+			// 콤보박스 연결
+			
 			search1 = new JComboBox<>(ser1);
 			search2 = new JComboBox<>(ser2);
 			search_bt = new JButton("검색");
 			search1.setSelectedIndex(0);
 			search2.setSelectedIndex(0);
 		
-			review_jta = new JTextArea();
-			review_jsp = new JScrollPane(review_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+			//테이블을 담자
+			model = new DefaultTableModel();
+			//Object[] colNames = {"글번호","관광지 이름","후기 내용","작성자"};
+			model.addColumn("글번호");
+			model.addColumn("관광지 이름");
+			model.addColumn("후기 내용");
+			model.addColumn("작성자");
+			
+			
+			review_jtb = new JTable(model);
+			review_jsp = new JScrollPane(review_jtb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			review_jta.setLineWrap(true);
-			review_jta.setEditable(false);
 			review_jsp.setPreferredSize(new Dimension(0, 30));
 			
 			// 센터에 붙이기
@@ -284,8 +305,26 @@ public class AllReview extends JPanel implements ActionListener{
 		} else if(obj==search_bt) {
 			if(search1.getSelectedIndex() == 0 || search2.getSelectedIndex() == 0) {
 				JOptionPane.showMessageDialog(null, "지역을 선택하세요", "Confirm", JOptionPane.ERROR_MESSAGE);
-			} 
-			// 데이터베이스 추가하고 버튼 기능 추가하기
+			} else if((search1.getSelectedItem().toString()).equals("전체")){
+				try {
+					// 데이터베이스 전체테이블 보기 추가하기 
+					Protocol p = new Protocol();
+					p.setCmd(410);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e2) {
+					System.out.println(e2);
+				}
+			} else {  // 콤보박스에 선택된 값에 대한 내용만 보기
+				try {
+					
+				} catch (Exception e2) {
+					System.out.println(e2);
+				}
+				
+			}
+			
+			
 		} 
 		search1.setSelectedIndex(0);
 		search2.setSelectedIndex(0);

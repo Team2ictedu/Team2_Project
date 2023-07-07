@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import DB_Place_All.Place_All_VO;
 import DB_User.UserVO;
 import Server.Protocol;
 import project_admin.AdminMain;
@@ -271,6 +272,7 @@ public class Main extends JFrame implements Runnable {
 							pw_Search.em_jtf.setText("");
 						}
 						break;
+						
 					case 405:
 						JOptionPane.showMessageDialog(null, "비밀번호 설정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -280,6 +282,22 @@ public class Main extends JFrame implements Runnable {
 						pw_ck.pwck1_jtf.setText("");
 						pw_ck.pwck2_jtf.setText("");
 						break;
+						
+//					case 410:
+//						/*
+//						List<AdminPlaceVO> list52 = p52.getPlaceList();
+//						adminMain.adminPlaces.model.setRowCount(0);
+//						for (AdminPlaceVO p521 : list52) {
+//							adminMain.adminPlaces.model.addRow(new String[] { p521.getPa_name(), p521.getPa_location(),
+//									p521.getPa_con(), p521.getPa_price(), "수정", "삭제" });
+//						}*/
+//						List<Place_All_VO> list410 = p.getPlaceAll();
+//						allReview.model.setRowCount(0);
+//						for (Place_All_VO p410 : list410) {
+//							//allReview.model.addRow(new Object[] {allReview.index, p.g);
+//							allReview.model.addRow(new String[] { p40. );
+//						}
+//					break;
 					}
 				}
 			} catch (Exception e) {
@@ -295,7 +313,7 @@ public class Main extends JFrame implements Runnable {
 	// 접속
 	public void connected() {
 		try {
-			s = new Socket("192.168.0.44", 7780);
+			s = new Socket("192.168.0.65", 7780);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 			new Thread(this).start();

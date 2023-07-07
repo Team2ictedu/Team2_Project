@@ -5,6 +5,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
+import DB_Place_All.Place_All_DAO;
+import DB_Place_All.Place_All_VO;
 import DB_User.UserDAO;
 import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
@@ -255,6 +257,20 @@ public class CP_Client extends Thread {
 						System.out.println(5);
 						UserDAO.getPWChange(vo);
 						p.setCmd(405);
+						out.writeObject(p);
+						out.flush();
+						break;
+					
+					case 410: //전체후기보기(전체콤보버튼)
+						List<Place_All_VO> list410 = Place_All_DAO.getAllRev();
+						p.setCmd(411);
+						out.writeObject(p);
+						out.flush();
+						break;
+					
+					case 420:  //콤보박스 ~시 선택
+						List<Place_All_VO> list420 = Place_All_DAO.getCity();
+						p.setCmd(421);
 						out.writeObject(p);
 						out.flush();
 						break;

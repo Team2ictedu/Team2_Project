@@ -1,8 +1,11 @@
 package DB_Place_All;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
+import DB_User.UserVO;
 
 public class Place_All_DAO {
 	// 실제 사용하는 클래스 : SqlSession
@@ -15,5 +18,18 @@ public class Place_All_DAO {
 		}
 		return ss;
 	}
-
+	
+	// 리뷰 전체 보기
+	public static List<Place_All_VO> getAllRev() {
+		List<Place_All_VO> list = null;
+		list = getSession().selectList("allReview");
+		return list;
+	}
+	
+	// 콤보 박스에 db값 넣기
+	public static List<Place_All_VO> getCity() {
+		List<Place_All_VO> list = null;
+		list = getSession().selectList("combo1");
+		return list;
+	}
 }

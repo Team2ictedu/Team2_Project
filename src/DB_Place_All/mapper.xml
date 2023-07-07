@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+	<!-- 콤보박스(지역1) -->
+	<select id="combo1" resultType="DB_Place_All.Place_All_VO">
+		select distinct city form travel_location oder by city asc
+	</select>
+	<!-- 콤보박스(지역2) -->
+	
+		<!-- 전체후기 보기 -->
+	<select id="allReview" parameterType="DB_Place_All.Place_All_VO">
+		select t2.pa_name, t1.pr_con, t1.m_id
+		from place_review t1
+		join place_all t2 on t1.pa_num = t2.pa_num
+		where t2.pa_num = #{pa_num}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+

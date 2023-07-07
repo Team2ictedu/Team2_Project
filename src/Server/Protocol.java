@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import DB_Place_All.Place_All_VO;
 import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
 
@@ -23,7 +24,15 @@ public class Protocol implements Serializable{
 	
 	List<UserVO> list;
 	List<AdminPlaceVO> placeList;
+	List<Place_All_VO> placeAll;
 	
+
+	public List<Place_All_VO> getPlaceAll() {
+		return placeAll;
+	}
+	public void setPlaceAll(List<Place_All_VO> placeAll) {
+		this.placeAll = placeAll;
+	}
 	public int getRow() {
 		return row;
 	}
