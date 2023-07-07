@@ -23,7 +23,7 @@ public class Planner_DAO {
 			int result = getSession().insert("createplan", vo);
 			ss.commit();
 		} catch (Exception e) {
-			System.out.pr0intln(e);
+			System.out.println(e);
 		}
 		return 0;
 	}
