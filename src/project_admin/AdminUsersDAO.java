@@ -52,6 +52,17 @@ public class AdminUsersDAO {
 		return list;
 	}
 	
+	public static List<AdminUserVO> getOneBirth(String m_Email) {
+		List<AdminUserVO> list =null;
+		list = getSession().selectList("memberBirth", m_Email);
+		return list;
+	}
+	public static List<AdminUserVO> getOnePhone(String m_Email) {
+		List<AdminUserVO> list =null;
+		list = getSession().selectList("memberPhone", m_Email);
+		return list;
+	}
+	
 	public static int getDelete(AdminUserVO vo) {
 		int result = getSession().delete("memberDel", vo);
 		ss.commit();
@@ -75,6 +86,11 @@ public class AdminUsersDAO {
         return result;
     }
 	
+	public static int getUpdate(AdminUserVO vo) {
+		int result = getSession().update("memberUpdate", vo);
+		ss.commit();
+		return result;
+	}
 }
 
 

@@ -4,40 +4,15 @@
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mybatis.example.BlogMapper">
 
-
 	<insert id="userIns" parameterType="project_admin.AdminUserVO">
-    insert into MEMBER(m_id, m_pw, m_email, m_name, m_birth, m_phone, m_terms, m_class)values(#{m_id},#{m_pw},#{m_email},#{m_name},#{m_birth},#{m_phone},#{m_terms},#{m_class})
+    insert into MEMBER
+    values(#{m_id},#{m_pw},#{m_name},#{m_birth},#{m_email},#{m_phone},#{m_terms},#{m_class},null,null,null)
     </insert>
 
-	
 	<select id="membersList" resultType="project_admin.AdminUserVO">
 	    select * from member order by m_id
 	</select> 
-	
-	<select id="placesList" resultType="project_admin.AdminPlaceVO">
-	    select * from place_all order by pa_num
-	</select>
-	
-	<select id="placesListName" parameterType="String" resultType="project_admin.AdminPlaceVO" >
-	    select * from place_all where pa_name = #{pa_name}
-	</select>
-	
-	<select id="placesListLocation" parameterType="String" resultType="project_admin.AdminPlaceVO" >
-	    select * from place_all where pa_location = #{pa_location}
-	</select>
-	
-	<select id="placesListCon" parameterType="String" resultType="project_admin.AdminPlaceVO" >
-	    select * from place_all where pa_con = #{pa_con}
-	</select>
-	
-	<select id="placesListPrice" parameterType="String" resultType="project_admin.AdminPlaceVO" >
-	    select * from place_all  where pa_price = #{pa_price}
-	</select>
-	
-	<delete id="placeDel" parameterType="project_admin.AdminPlaceVO">
-		delete from place_all where pa_name = #{pa_name} and pa_location = #{pa_location} and pa_con = #{pa_con} 
-	</delete>
-	
+
 	<delete id="memberDel" parameterType="project_admin.AdminUserVO">
 		delete from member where m_id = #{m_id}
 	</delete>
@@ -53,11 +28,100 @@
 	<select id="memberEmail" parameterType="String" resultType="project_admin.AdminUserVO">
 		select * from member where m_email= #{m_email}
 	</select>
-	
+	<select id="memberBirth" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_birth= #{m_birth}
+	</select>
+	<select id="memberPhone" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_phone= #{m_phone}
+	</select>
 	
 	<select id="idChk" parameterType="String" resultType="project_admin.AdminUserVO">
 		select m_id from member where m_id= #{m_id}
 	</select>
+	
+	<update id="memberUpdate" parameterType="project_admin.AdminUserVO" >
+		update member
+		set m_pw = #{m_pw}, m_name = #{m_name}, m_birth = #{m_birth}, m_email = #{m_email}, m_phone = #{m_phone}
+		where m_id = #{m_id}
+	</update>
+	
+	
+	
+		
+	<select id="placesList" resultType="project_admin.AdminPlaceVO">
+	    select * from place_all order by pa_num
+	</select>
+	
+	<select id="placesListCon" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_con like #{pa_con}
+	</select>
+	
+	<select id="placesListPrice" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all  where pa_price like #{pa_price}
+	</select>
+	
+	<delete id="placeDelVo" parameterType="project_admin.AdminPlaceVO">
+		delete from place_all where pa_name = #{pa_name} and pa_location = #{pa_location} and pa_con = #{pa_con} 
+	</delete>
+	
+	<delete id="placeDelNum" parameterType="String">
+		delete from place_all where pa_num = #{pa_num} 
+	</delete>
+	
+	<select id="placesListName" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_name like #{pa_name}
+	</select>
+	
+	<select id="placesListLocation" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_location like #{pa_location}
+	</select>
+	
+	<select id="placeNum" parameterType="project_admin.AdminPlaceVO" resultType="String" >
+		select pa_num from place_all where  pa_name = #{pa_name} and pa_location = #{pa_location} and pa_con = #{pa_con} 
+	</select>
+	
+	<insert id="placeInsert" parameterType="project_admin.AdminPlaceVO">
+		insert into place_all 
+		values (PA_NUM_SEQ.nextval, #{pa_name} , #{pa_location}, #{pa_con}, #{pa_price})
+	</insert>
+	
+	<update id="placeUpdate" parameterType="project_admin.AdminPlaceVO" >
+		update place_all
+		set pa_name = #{pa_name}, pa_location = #{pa_location}, pa_con = #{pa_con}, pa_price = #{pa_price}
+		where pa_num = #{pa_num}
+	</update>
+	
+	<select id="getPlaceName" parameterType="String" resultType="String" >
+		select pa_name from place_all where pa_num = #{pa_num}
+	</select>
+	
+	<select id="getPlacesNum" parameterType="String" resultType="String" >
+		select pa_num from place_all where pa_name = #{pa_name}
+	</select>
+
+
+
+	<delete id="reviewDelVo" parameterType="project_admin.AdminReviewVO">
+		delete from place_review where m_id = #{m_id} and pr_con = #{pr_con}
+	</delete>
+	
+	<delete id="reviewDelNum" parameterType="String">
+		delete from place_review where pa_num = #{pa_num} 
+	</delete>
+	
+	<select id="reviewList"  resultType="project_admin.AdminReviewVO" >
+		select * from place_review 
+	</select>
+	
+	<select id="reviewListId" parameterType="String" resultType="project_admin.AdminReviewVO" >
+	    select * from place_review where m_id = #{m_id}
+	</select>
+	
+	<select id="reviewListNum" parameterType="String" resultType="project_admin.AdminReviewVO" >
+	    select * from place_review where pa_num = #{pa_num}
+	</select>
+	
+	
 	
 </mapper>
 

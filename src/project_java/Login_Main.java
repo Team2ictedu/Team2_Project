@@ -247,9 +247,9 @@ public class Login_Main extends JPanel implements ActionListener {
 		join_bt.addActionListener(this);
 		idFin_bt.addActionListener(this);
 		pwFin_bt.addActionListener(this);
-
+	
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// DB에 있는 정보 나중에는 등급 0은 관리자, 1은 유저, 4는 탈퇴유저 구분할것

@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -54,10 +55,12 @@ public class AdminUsers extends JPanel{
 	public DefaultTableModel model = new DefaultTableModel();
 	/*jpEastFootTable*/ JTable placeTable = new JTable(model);
 	
- 	/* jpEastFoot Buttons */ JButton addPlaceBtn;
+ 	/* jpEastFoot Buttons */ JButton addUserBtn, addAdminUserBtn;
 	/* jPop panel */ JPanel jPop;
-	/* jPop JTextField */ JTextField popPlaceName, popPlaceLocation, popPlaceCon, popPlacePrice;
-	/* jPop Button */ JButton popAddBtn, popCancelBtn;
+	/* jPop JTextField */ JTextField popUserId, popUserPwd, popUserEmail, popUserName, popUserBirth, popUserPhone, popUserClass;
+	
+	//m_birth, m_phone, m_terms, m_class
+	/* jPop Button */ JButton popAddBtn, popCancelBtn, popAddAdminBtn;
 	/* Popup */ Popup po;
 	/* PopupFactory */ PopupFactory pf;
 	
@@ -233,9 +236,12 @@ public class AdminUsers extends JPanel{
 		//jpEastHead comboBox & textField
 		selectionList = new ArrayList<String>();
 		selectionList.add("전체보기");
-		selectionList.add("ID");
-		selectionList.add("NAME");
-		selectionList.add("EMAIL");
+		selectionList.add("아이디");
+		selectionList.add("이름");
+		selectionList.add("이메일");
+		selectionList.add("생년월일");
+		selectionList.add("전화번호");
+		
 		eastHeadComboBox = new JComboBox<String>(selectionList.toArray(new String[0]));
 		eastHeadTextField = new JTextField(20);
 		
@@ -275,9 +281,10 @@ public class AdminUsers extends JPanel{
 
 		model.addColumn("ID");
 		model.addColumn("PW");
-		model.addColumn("NAME");
-		model.addColumn("BIRTH");
-		model.addColumn("EMAIL");
+		model.addColumn("이름");
+		model.addColumn("생년월일");
+		model.addColumn("이메일");
+		model.addColumn("전화번호");
 		model.addColumn("수정");
 		model.addColumn("삭제");
 		
@@ -288,8 +295,8 @@ public class AdminUsers extends JPanel{
 		placeTable.setRowMargin(0);
 		placeTable.setIntercellSpacing(new Dimension(0, 0));
 		placeTable.setFillsViewportHeight(true);
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-		placeTable.setRowSorter(sorter);
+//		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+//		placeTable.setRowSorter(sorter);
 		
 		
 		
@@ -297,6 +304,7 @@ public class AdminUsers extends JPanel{
 		Action delete = new AbstractAction() 
 				{
 					public void actionPerformed(ActionEvent e) {
+						//유저 삭제하기
 						JTable table = (JTable)e.getSource();
 				        int modelRow = Integer.valueOf( e.getActionCommand() );
 				        System.out.println("AdminUsers selected model row is :"+modelRow);
@@ -320,15 +328,37 @@ public class AdminUsers extends JPanel{
 				};
 		Action edit = new AbstractAction()
 				{
-						/////////////////////MAKE EDIT JDBC
+					//유저 수정하기
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						
+						JTable table = (JTable)e.getSource();
+				        int modelRow = Integer.valueOf( e.getActionCommand() );
+				        System.out.println("AdminUsers selected model row is :"+modelRow);
+				        AdminUserVO vo = new AdminUserVO();
+				        vo.setM_id(table.getValueAt(modelRow, 0).toString());
+				        vo.setM_pw(table.getValueAt(modelRow, 1).toString());
+				        vo.setM_name(table.getValueAt(modelRow, 2).toString());
+				        vo.setM_birth(table.getValueAt(modelRow, 3).toString().substring(0,10));
+				        vo.setM_email(table.getValueAt(modelRow, 4).toString());
+				        vo.setM_phone(table.getValueAt(modelRow, 5).toString());
+				        
+				        System.out.println(vo.getM_id());
+						try {
+							ProjectProtocol p = new ProjectProtocol();
+							p.setCmd(89);
+							p.setUservo(vo);
+							p.setRow(modelRow);
+							main.main.out.writeObject(p);
+							main.main.out.flush();
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
 					}
 			
 				};
-		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 6);
-		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 5);
+				ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 6);
+		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 7);
 
 		
 		
@@ -337,67 +367,188 @@ public class AdminUsers extends JPanel{
 		jpEastFootCenter.add(placeTableSP);
 		
 		
-		addPlaceBtn = new JButton("관광지 추가");
-		
+		addUserBtn = new JButton("유저 추가");
+		addAdminUserBtn = new JButton("관리자 추가");
 		//pop
-				popPlaceName = new JTextField(20);
-				popPlaceName.setEditable(true);
-				popPlaceLocation = new JTextField(20);
-				popPlaceCon = new JTextField(20);
-				popPlacePrice = new JTextField(20);
-				JLabel popPlaceNameLabel = new JLabel("관광지 이름");
-				JLabel popPlaceLocationLabel = new JLabel("위치");
-				JLabel popPlaceConLabel = new JLabel("설명");
-				JLabel popPlacePriceLabel = new JLabel("가격");
-				popAddBtn = new JButton("추가");
+				popUserId = new JTextField(20);
+				popUserPwd = new JTextField(20);
+				popUserEmail = new JTextField(20);
+				popUserName = new JTextField(20);
+				popUserBirth = new JTextField(20);
+				popUserPhone = new JTextField(20);
+				JLabel popUserIdLabel = new JLabel("아이디");
+				JLabel popUserPwdLabel = new JLabel("비밀번호");
+				JLabel popUserEmailLabel = new JLabel("이메일");
+				JLabel popUserNameLabel = new JLabel("이름");
+				JLabel popUserBirthLabel = new JLabel("생년월일");
+				JLabel popUserPhoneLabel = new JLabel("전화번호");
+				popAddAdminBtn = new JButton("관리자 추가");
+				popAddBtn = new JButton("유저 추가");
 				popCancelBtn = new JButton("취소");
 				jPop = new JPanel();
 				
 				jPop.setLayout(new GridLayout(0,2));
 				
 				pf = new PopupFactory();
-				pf = pf.getSharedInstance();
 				Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 				int x = (int) ((dimension.getWidth() / 2));
 				int y = (int) ((dimension.getHeight() / 2));
 
-				po = pf.getPopup(jpWest, jPop, x-100, y-100);
+				jPop.add(popUserIdLabel);
+				jPop.add(popUserId);
+				jPop.add(popUserPwdLabel);
+				jPop.add(popUserPwd);
+				jPop.add(popUserEmailLabel);
+				jPop.add(popUserEmail);
+				jPop.add(popUserNameLabel);
+				jPop.add(popUserName);
+				jPop.add(popUserBirthLabel);
+				jPop.add(popUserBirth);
+				jPop.add(popUserPhoneLabel);
+				jPop.add(popUserPhone);
+				JLabel test1 = new JLabel("test1");
+				JTextField test2 = new JTextField(20);
+				test2.setEditable(true);
+			
 				
-				
-				addPlaceBtn.addActionListener(new ActionListener() {
+				addUserBtn.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						String d = e.getActionCommand();
-						jPop.add(popPlaceNameLabel);
-						jPop.add(popPlaceName);
-						jPop.add(popPlaceLocationLabel);
-						jPop.add(popPlaceLocation);
-						jPop.add(popPlaceConLabel);
-						jPop.add(popPlaceCon);
-						jPop.add(popPlacePriceLabel);
-						jPop.add(popPlacePrice);
-						JLabel test1 = new JLabel("test1");
-						JTextField test2 = new JTextField(20);
-						test2.setEditable(true);
+						if (po==null) {
+							po = pf.getPopup(jpWest, jPop, x-100, y-100);
+						}
+						try {
+							jPop.remove(popAddAdminBtn);
+						} catch (Exception e1) {
+						} 
 						jPop.add(popAddBtn);
 						jPop.add(popCancelBtn);
-
-						
 						
 						po.show();
 					}
 				});
+				
+				addAdminUserBtn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String d = e.getActionCommand();
+						if (po==null) {
+							po = pf.getPopup(jpWest, jPop, x-100, y-100);
+						}
+						try {
+							jPop.remove(popAddBtn);
+						} catch (Exception e2) {
+						}
+						
+						jPop.add(popAddAdminBtn);
+						jPop.add(popCancelBtn);
+						
+						po.show();
+						
+						
+					}
+				});
+				
+		
+				
 				popCancelBtn.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						
+						popUserId.setText("");
+						popUserPwd.setText("");
+						popUserEmail.setText("");
+						popUserName.setText("");
+						popUserBirth.setText("");
+						popUserPhone.setText("");
 						po.hide();
-						po = pf.getPopup(jpEast, jPop, x-100, y-100);
+						po = pf.getPopup(jpWest, jPop, x-100, y-100);
 					}
 				});
 		
-		
+				popAddAdminBtn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						String id = popUserId.getText();
+						String pwd = popUserPwd.getText();
+						String email = popUserEmail.getText();
+						String name = popUserName.getText();
+						String birth = popUserBirth.getText();
+						String phone = popUserPhone.getText();
+						
+						if(id.equals("") && pwd.equals("")) {
+							JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인하세요", "ERROR",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							ProjectProtocol p = new ProjectProtocol();
+							AdminUserVO vo = new AdminUserVO();
+							vo.setM_id(id);
+							vo.setM_birth(birth);
+							vo.setM_class("0");
+							vo.setM_email(email);
+							vo.setM_pw(pwd);
+							vo.setM_name(name);
+							vo.setM_phone(phone);
+							vo.setM_terms("yes");
+							p.setCmd(87);
+							p.setUservo(vo);
+							try {
+								System.out.println("sending to cmd 87");
+								main.main.out.writeObject(p);
+								main.main.out.flush();								
+							} catch (Exception e2) {
+							}
+						}
+						
+					}
+				});
+				
+				
+				popAddBtn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+			
+						String id = popUserId.getText();
+						System.out.println(id);
+						String pwd = popUserPwd.getText();
+						String email = popUserEmail.getText();
+						String name = popUserName.getText();
+						String birth = popUserBirth.getText();
+						String phone = popUserPhone.getText();
+						
+						if(id.equals("") && pwd.equals("")) {
+							JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인하세요", "ERROR",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							ProjectProtocol p = new ProjectProtocol();
+							AdminUserVO vo = new AdminUserVO();
+							vo.setM_id(id);
+							vo.setM_birth(birth);
+							vo.setM_class("1");
+							vo.setM_email(email);
+							vo.setM_pw(pwd);
+							vo.setM_name(name);
+							vo.setM_phone(phone);
+							vo.setM_terms("yes");
+							p.setCmd(87);
+							p.setUservo(vo);
+							try {
+								
+								main.main.out.writeObject(p);
+								main.main.out.flush();								
+							} catch (Exception e2) {
+							}
+						}
+					}
+					
+				});
 		
 		//jpEastFootSouth btns
 		
@@ -405,7 +556,8 @@ public class AdminUsers extends JPanel{
 		//jpEastFootMain.add()
 		jpEastFootMain.setPreferredSize(new Dimension(700,500));
 		jpEastFootMain.add(jpEastFootCenter);
-		jpEastFootMain.add(addPlaceBtn);
+		jpEastFootMain.add(addUserBtn);
+		jpEastFootMain.add(addAdminUserBtn);
 		
 		//jpEast.add(panels)
 		jpEast.add(jpEastHeadMain);
@@ -457,6 +609,15 @@ public class AdminUsers extends JPanel{
 				}
 			}
 		});
+		
+		searchClearBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				model.setRowCount(0);				
+			}
+		});
+		
 		placeEditBtn.addActionListener(new ActionListener() {
 			
 			@Override

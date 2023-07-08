@@ -5,6 +5,7 @@ import java.util.List;
 
 import Server.Protocol;
 import project_admin.AdminPlaceVO;
+import project_admin.AdminReviewVO;
 import project_admin.AdminUserVO;
 
 public class ProjectProtocol extends Protocol implements Serializable {
@@ -22,10 +23,12 @@ public class ProjectProtocol extends Protocol implements Serializable {
 	
 	int cmd;
 
+
 	int row;
 	
 	AdminUserVO uservo;
 	AdminPlaceVO placevo;
+	AdminReviewVO reviewvo;
 //	ReviewVO reviewvo;
 
 	String name;
@@ -35,7 +38,22 @@ public class ProjectProtocol extends Protocol implements Serializable {
 	
 	List<AdminUserVO> userList;
 	List<AdminPlaceVO> placeList;
+	List<AdminReviewVO> reviewList;
 	
+	
+	
+	public AdminReviewVO getReviewvo() {
+		return reviewvo;
+	}
+	public void setReviewvo(AdminReviewVO reviewvo) {
+		this.reviewvo = reviewvo;
+	}
+	public List<AdminReviewVO> getReviewList() {
+		return reviewList;
+	}
+	public void setReviewList(List<AdminReviewVO> reviewList) {
+		this.reviewList = reviewList;
+	}
 	
 	public String getMsg() {
 		return msg;
