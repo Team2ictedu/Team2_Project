@@ -277,6 +277,8 @@ public class Planner_Create extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String days = jtf_days.getText();
+		int days2 = Integer.parseInt(days);
 		JButton obj = (JButton) e.getSource();
 		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
 			main.cardLayout.show(main.cardJPanel, "planner_Create");
@@ -299,13 +301,15 @@ public class Planner_Create extends JPanel implements ActionListener {
 			} else if (jtf_days.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_days.requestFocus();
+			} else if (days2 > 7 || days2 < 1) {
+				JOptionPane.showMessageDialog(null, "여행기간은 1~7일 입력가능합니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 			} else { // 성공시
 				try {
 					Protocol p1 = new Protocol();
 					Planner_VO planVo = new Planner_VO();
 					planVo.setPLAN_TITLE(jtf_name.getText());
 					planVo.setPLAN_DATE(jtf_date.getText());
-					planVo.setPLAN_DAYS(jtf_days.getText());
+					planVo.setPLAN_DAYS(days2);
 					planVo.setM_ID(main.p.getVo().getM_ID());
 					planVo.setTL_NUM("1"); // 임시로 한거임
 					p1.setPlanvo(planVo);

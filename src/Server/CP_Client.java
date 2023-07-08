@@ -236,6 +236,7 @@ public class CP_Client extends Thread {
 					case 100 : // 새일정만들기
 						Planner_DAO.getInsert(planvo);
 						p.setVo(UserDAO.getUser(planvo.getM_ID()));
+						p.setPlannerList(Planner_DAO.getPlannerList(planvo.getM_ID()));
 						p.setCmd(101);
 						out.writeObject(p);
 						out.flush();
