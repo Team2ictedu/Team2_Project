@@ -61,6 +61,7 @@ public class CP_Client extends Thread {
 						break;
 					case 4: // 유저 로그인
 						p.setVo(UserDAO.getLogin(vo));
+						p.setPlannerList(Planner_DAO.getPlannerList(vo.getM_ID()));
 						p.setCmd(5);
 						out.writeObject(p);
 						out.flush();
@@ -68,6 +69,7 @@ public class CP_Client extends Thread {
 					case 6: // 유저 정보변경
 						UserDAO.getUserUpdate(vo);
 						p.setVo(UserDAO.getLogin(vo));
+						p.setPlannerList(Planner_DAO.getPlannerList(vo.getM_ID()));
 						p.setCmd(7);
 						out.writeObject(p);
 						out.flush();
@@ -78,7 +80,6 @@ public class CP_Client extends Thread {
 					case 9: // 마지막 로그인
 						UserDAO.getUserLastLogin(vo.getM_ID());
 						break;
-
 					case 51: // AdminPlaces SELECT * FROM place_all
 						System.out.println("ProjectCopyClient running CMD:51 :" + ip);
 						ProjectProtocol p51 = new ProjectProtocol();

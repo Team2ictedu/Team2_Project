@@ -28,17 +28,11 @@ public class Planner_DAO {
 		return 0;
 	}
 	
-	public static List<Planner_VO> getList(){
+	// 플래너 조회
+	public static List<Planner_VO> getPlannerList(String M_ID){
 		List<Planner_VO> list = null;
-		// selectList() : 결과가 하나이상일때 
-		// selectOne()  : 반드시 결과가 하나일때
-		// 파라미터가 있는 메서드와 파라미터가 없는메서드로 나눈다.
-		// 파라미터가 있는 메서드 : selectList("mepper의 id",파라미터);
-		// 파라미터가 없는 메서드  : selectList("mepper의 id")
-		list = getSession().selectList("plannerList");
+		list = getSession().selectList("plannerList", M_ID);
 		return list;
 	}
-	
-	
 	
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import DB_Planner.Planner_VO;
 import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
 
@@ -30,7 +31,17 @@ public class Protocol implements Serializable {
 	String msg;
 	String msg2;
 
-	List<UserVO> list;
+	List<UserVO> list;	
+	List<Planner_VO> plannerList;
+	
+	public List<Planner_VO> getPlannerList() {
+		return plannerList;
+	}
+
+	public void setPlannerList(List<Planner_VO> plannerList) {
+		this.plannerList = plannerList;
+	}
+
 	List<AdminPlaceVO> placeList;
 
 	public int getRow() {

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import DB_Planner.Planner_VO;
 import DB_User.UserVO;
 import Server.Protocol;
 import project_admin.AdminMain;
@@ -39,7 +40,8 @@ public class Main extends JFrame implements Runnable {
 	public ObjectOutputStream out;
 	ObjectInputStream in;
 	Protocol p;
-
+	Planner_VO vo;
+	
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
@@ -164,6 +166,7 @@ public class Main extends JFrame implements Runnable {
 							JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 						} else {
 							if (p.getVo().getM_CLASS().equals("0")) {
+								this.p.setVo(p.getVo());
 								Main2();
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
@@ -177,6 +180,7 @@ public class Main extends JFrame implements Runnable {
 								adminMain.adminReview.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								cardLayout.show(cardJPanel, "admin_greeting");
 							} else if (p.getVo().getM_CLASS().equals("1")) {
+								this.p.setVo(p.getVo());
 								Main2();
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
@@ -190,12 +194,12 @@ public class Main extends JFrame implements Runnable {
 						}
 						break;
 					case 7:
+						this.p.setVo(p.getVo());
 						Main2();
 						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
 						break;
-
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;
 						List<AdminPlaceVO> list52 = p52.getPlaceList();

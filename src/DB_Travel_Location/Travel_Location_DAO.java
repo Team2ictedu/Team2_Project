@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
 
-public class PlannerDAO {
+public class Travel_Location_DAO {
 	// 실제 사용하는 클래스 : SqlSession
 	private static SqlSession ss;
 
