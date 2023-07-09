@@ -55,7 +55,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 	JLabel title, city, select_title;
 	JPanel jp_SNB, jp_planner, jp_plan_left, jp_plan_right, jp_select, jp_sel, jp_comcan, jp_card_insert, jp_plan_bt,
-			jp_card_select, jp_select_title, jp_select_text;
+			jp_card_select, jp_select_title;
 	JButton jb_delete_spot, jb_select, jb_add_spot, bt_Cancel, bt_Complete, bt_plan_del, bt_plan_edit;
 	JButton[] jb_day, jb_title;
 	JTextField jtf_select;
@@ -387,62 +387,6 @@ public class Planner_Select extends JPanel implements ActionListener {
 					// 선택한 버튼의 배경색
 					jb_title[index].setBackground(Color.decode("#B19CCB"));
 					select_title.setText(" 여행지: " + main.p.getPlannerList().get(index).getTL_NUM() + "  |  날짜: "  + main.p.getPlannerList().get(index).getPLAN_DATE() + "~" + main.p.getPlannerList().get(index).getPLAN_LASTDATE() + "(" + main.p.getPlannerList().get(index).getPLAN_DAYS() + "일)" );
-				
-					// 선택한 일정에 상세일정 정보
-					jp_select_text = new JPanel(new GridLayout(0, 1));
-					jp_select_text.setBackground(Color.WHITE);
-					int r = main.p.getPlannerList().get(index).getPLAN_DAYS();
-					JTextArea[] textAreas = new JTextArea[r];
-					JScrollPane[] scrollPanes = new JScrollPane[r];
-
-					for (int i = 0; i < r; i++) {
-						textAreas[i] = new JTextArea();
-						textAreas[i].append("Day" + (i + 1) + "\n");
-
-						scrollPanes[i] = new JScrollPane(textAreas[i], ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-								ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-						textAreas[i].setLineWrap(true);
-						textAreas[i].setEditable(false);
-						textAreas[i].setBackground(Color.WHITE);
-
-						// Assign different values to each JTextArea
-						switch (i) {
-						case 0:
-							textAreas[i].append("Value for JTextArea 2 \n");
-							textAreas[i].append("Value for JTextArea 2 \n");
-							textAreas[i].append("Value for JTextArea 2 \n");
-							textAreas[i].append("Value for JTextArea 2 \n");
-							textAreas[i].append("Value for JTextArea 2 \n");
-							textAreas[i].append("Value for JTextArea 2 \n");
-							break;
-						case 1:
-							textAreas[i].append("Value for JTextArea 2");
-							textAreas[i].append("Value for JTextArea 2");
-							textAreas[i].append("Value for JTextArea 2");
-							textAreas[i].append("Value for JTextArea 2");
-							textAreas[i].append("Value for JTextArea 2");
-							textAreas[i].append("Value for JTextArea 2");
-							textAreas[i].append("Value for JTextArea 2");
-							break;
-						case 2:
-							textAreas[i].append("Value for JTextArea 3");
-							break;
-						case 3:
-							textAreas[i].append("Value for JTextArea 3");
-							break;
-						case 4:
-							textAreas[i].append("Value for JTextArea 3");
-							break;
-						case 5:
-							textAreas[i].append("Value for JTextArea 3");
-							break;
-						case 6:
-							textAreas[i].append("Value for JTextArea 3");
-							break;
-						}
-
-						jp_select_text.add(scrollPanes[i]);
-					}
 				}
 			});
 		}
@@ -489,6 +433,62 @@ public class Planner_Select extends JPanel implements ActionListener {
 		jp_select_title.add(select_title, BorderLayout.WEST);
 		jp_select_title.add(jp_plan_bt, BorderLayout.EAST);
 		jp_select_title.setBackground(Color.decode("#B19CCB"));
+
+		// 선택한 일정에 상세일정 정보
+		JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
+		jp_select_text.setBackground(Color.WHITE);
+		int r = 7;
+		JTextArea[] textAreas = new JTextArea[r];
+		JScrollPane[] scrollPanes = new JScrollPane[r];
+
+		for (int i = 0; i < r; i++) {
+			textAreas[i] = new JTextArea();
+			textAreas[i].append("Day" + (i + 1) + "\n");
+
+			scrollPanes[i] = new JScrollPane(textAreas[i], ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			textAreas[i].setLineWrap(true);
+			textAreas[i].setEditable(false);
+			textAreas[i].setBackground(Color.WHITE);
+
+			// Assign different values to each JTextArea
+			switch (i) {
+			case 0:
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				textAreas[i].append("Value for JTextArea 2 \n");
+				break;
+			case 1:
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				textAreas[i].append("Value for JTextArea 2");
+				break;
+			case 2:
+				textAreas[i].append("Value for JTextArea 3");
+				break;
+			case 3:
+				textAreas[i].append("Value for JTextArea 3");
+				break;
+			case 4:
+				textAreas[i].append("Value for JTextArea 3");
+				break;
+			case 5:
+				textAreas[i].append("Value for JTextArea 3");
+				break;
+			case 6:
+				textAreas[i].append("Value for JTextArea 3");
+				break;
+			}
+
+			jp_select_text.add(scrollPanes[i]);
+		}
 
 		jp_select.add(jp_select_title, BorderLayout.NORTH);
 		jp_select.add(jp_select_text, BorderLayout.CENTER);
