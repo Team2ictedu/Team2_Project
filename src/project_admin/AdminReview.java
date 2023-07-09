@@ -267,7 +267,7 @@ public class AdminReview extends JPanel {
 
 		Action delete = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				// 유저 삭제하기
+				// 리뷰 삭제
 				JTable table = (JTable)e.getSource();
 		        int modelRow = Integer.valueOf( e.getActionCommand() );
 		        System.out.println("AdminReview selected model row is :"+modelRow);

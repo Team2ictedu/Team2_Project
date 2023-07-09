@@ -37,6 +37,7 @@ public class Main extends JFrame implements Runnable {
 	AdminMain adminMain;
 	Socket s;
 	public ObjectOutputStream out;
+	
 	ObjectInputStream in;
 	Protocol p;
 	public List<AdminPlaceVO> list52;
@@ -46,7 +47,6 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel = new JPanel();
 		cardLayout = new CardLayout();
 		cardJPanel.setLayout(cardLayout);
-
 		// 로그인 후
 		// 객체 선언
 		// 로그인 전
@@ -315,6 +315,22 @@ public class Main extends JFrame implements Runnable {
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
 						break;
+						
+						
+						
+						
+						
+						
+					case 701 : 
+						ProjectProtocol p701 = (ProjectProtocol) p;
+						List<AdminReviewVO> list701 = p701.getReviewList();
+						myReview.dtm.setRowCount(0);
+						for (AdminReviewVO k : list701) {
+							myReview.dtm.addRow(new String[] {k.getPa_name(),k.getPr_con(),"수정","삭제"});
+						}
+						
+						break;
+						
 					}
 				}
 			} catch (Exception e) {

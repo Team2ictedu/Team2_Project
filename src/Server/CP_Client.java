@@ -397,7 +397,7 @@ public class CP_Client extends Thread {
 						}
 					break;
 					
-					case 94: // AdminUsers DELETE row at button
+					case 94: // AdminReviewss DELETE row at button
 
 						ProjectProtocol p94 = (ProjectProtocol) p;
 						System.out.println("CASe 94 DELETING");
@@ -422,6 +422,45 @@ public class CP_Client extends Thread {
 						p.setCmd(203);
 						out.writeObject(p);
 						out.flush();
+						break;
+						
+						
+					case 700: //후기 불러오기
+						Protocol p700 = (Protocol) p;
+						UserVO vo700 = p700.getVo();
+						System.out.println(vo700.getM_ID());
+						List<AdminReviewVO> list700 = AdminReviewsDAO.getListId(vo700.getM_ID());
+						for (AdminReviewVO k : list700) {
+							k.setPa_name(AdminPlacesDAO.getPlaceName(k.getPa_num()));
+						}
+						ProjectProtocol p700x = new ProjectProtocol();
+						p700x.setReviewList(list700);
+						p700x.setCmd(701);
+						out.writeObject(p700x);
+						out.flush();
+						
+						break;
+						
+					case 702:
+						ProjectProtocol p702 = (ProjectProtocol) p;
+						System.out.println("CASe 94 DELETING");
+						AdminReviewVO vo702 = p702.getReviewvo();
+						System.out.println(vo702.getM_id());
+						System.out.println(vo702.getPr_con());
+						
+						int result702 = AdminReviewsDAO.getDelete(vo702);
+					
+							if (result702 > 0) {
+								List<AdminReviewVO> list702 = AdminReviewsDAO.getListId(vo702.getM_id());
+								for (AdminReviewVO k : list702) {
+									k.setPa_name(AdminPlacesDAO.getPlaceName(k.getPa_num()));
+								}
+								System.out.println("PLACE DELETE COMPLETEEE CMD 702");
+								p702.setReviewList(list702);
+								p702.setCmd(701);
+								out.writeObject(p702);
+								out.flush();
+							}
 						break;
 
 					}
