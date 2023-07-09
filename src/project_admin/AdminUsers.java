@@ -38,6 +38,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import project_java.TextPrompt;
 import project_server.ProjectProtocol;
 
 
@@ -371,11 +372,47 @@ public class AdminUsers extends JPanel{
 		addAdminUserBtn = new JButton("관리자 추가");
 		//pop
 				popUserId = new JTextField(20);
+				TextPrompt usertp = new TextPrompt("아이디 입력", popUserId);
+				usertp.setForeground(Color.gray);
+				usertp.changeAlpha(0.5f);
+				usertp.changeStyle(Font.ITALIC);
+				usertp.setHorizontalAlignment(JTextField.CENTER);
+				
 				popUserPwd = new JTextField(20);
+				TextPrompt pwdtp = new TextPrompt("비밀번호", popUserPwd);
+				pwdtp.setForeground(Color.gray);
+				pwdtp.changeAlpha(0.5f);
+				pwdtp.changeStyle(Font.ITALIC);
+				pwdtp.setHorizontalAlignment(JTextField.CENTER);
+				
 				popUserEmail = new JTextField(20);
+				TextPrompt emailtp = new TextPrompt("javaswing@java.com", popUserEmail);
+				emailtp.setForeground(Color.gray);
+				emailtp.changeAlpha(0.5f);
+				emailtp.changeStyle(Font.ITALIC);
+				emailtp.setHorizontalAlignment(JTextField.CENTER);
+				
 				popUserName = new JTextField(20);
+				TextPrompt idtp = new TextPrompt("선마칩", popUserName);
+				idtp.setForeground(Color.gray);
+				idtp.changeAlpha(0.5f);
+				idtp.changeStyle(Font.ITALIC);
+				idtp.setHorizontalAlignment(JTextField.CENTER);
+				
 				popUserBirth = new JTextField(20);
+				TextPrompt bdtp = new TextPrompt("19950101", popUserBirth);
+				bdtp.setForeground(Color.gray);
+				bdtp.changeAlpha(0.5f);
+				bdtp.changeStyle(Font.ITALIC);
+				bdtp.setHorizontalAlignment(JTextField.CENTER);
+				
 				popUserPhone = new JTextField(20);
+				TextPrompt phonetp = new TextPrompt("01012345678", popUserPhone);
+				phonetp.setForeground(Color.gray);
+				phonetp.changeAlpha(0.5f);
+				phonetp.changeStyle(Font.ITALIC);
+				phonetp.setHorizontalAlignment(JTextField.CENTER);
+				
 				JLabel popUserIdLabel = new JLabel("아이디");
 				JLabel popUserPwdLabel = new JLabel("비밀번호");
 				JLabel popUserEmailLabel = new JLabel("이메일");
@@ -416,6 +453,8 @@ public class AdminUsers extends JPanel{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						String d = e.getActionCommand();
+						usertp.setText("유저 아이디");
+						
 						if (po==null) {
 							po = pf.getPopup(jpWest, jPop, x-100, y-100);
 						}
@@ -435,6 +474,8 @@ public class AdminUsers extends JPanel{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						String d = e.getActionCommand();
+						usertp.setText("관리자 아이디");
+						
 						if (po==null) {
 							po = pf.getPopup(jpWest, jPop, x-100, y-100);
 						}
@@ -482,7 +523,7 @@ public class AdminUsers extends JPanel{
 						String birth = popUserBirth.getText();
 						String phone = popUserPhone.getText();
 						
-						if(id.equals("") && pwd.equals("")) {
+						if(id.equals("") || pwd.equals("")) {
 							JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인하세요", "ERROR",
 									JOptionPane.ERROR_MESSAGE);
 						} else {
@@ -516,14 +557,13 @@ public class AdminUsers extends JPanel{
 					public void actionPerformed(ActionEvent e) {
 			
 						String id = popUserId.getText();
-						System.out.println(id);
 						String pwd = popUserPwd.getText();
 						String email = popUserEmail.getText();
 						String name = popUserName.getText();
 						String birth = popUserBirth.getText();
 						String phone = popUserPhone.getText();
 						
-						if(id.equals("") && pwd.equals("")) {
+						if(id.equals("") || pwd.equals("")) {
 							JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인하세요", "ERROR",
 									JOptionPane.ERROR_MESSAGE);
 						} else {

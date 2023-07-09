@@ -228,6 +228,18 @@ public class Main extends JFrame implements Runnable {
 						List<project_admin.AdminUserVO> list82 = p82.getUserList();
 						adminMain.adminUsers.model.setRowCount(0);
 						for (project_admin.AdminUserVO p821 : list82) {
+							String pwd = p821.getM_pw();
+							StringBuilder pwd2 = new StringBuilder(pwd);
+							if(pwd!=null) {
+								if (pwd.length()>2) {
+									for(int i = 1 ; i < pwd.length()-1; i++) {
+										pwd2.setCharAt(i, '*');
+									}
+									pwd = pwd2.toString();
+								}
+							}
+							
+							
 							adminMain.adminUsers.model.addRow(new String[] {p821.getM_id(),p821.getM_pw(), p821.getM_name(), 
 									p821.getM_birth(), p821.getM_email(),p821.getM_phone(), "수정" , "삭제"});
 							}

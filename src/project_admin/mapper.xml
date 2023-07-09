@@ -122,6 +122,11 @@
 	</select>
 	
 	
+	<select id="connectionList" parameterType="String" resultType="project_admin.AdminConnectionVO">
+	SELECT * FROM (SELECT * FROM p_connect ORDER BY p_date DESC fetch first 8 rows only) ORDER BY p_date ASC
+	</select>
+	
+	
 	
 </mapper>
 
