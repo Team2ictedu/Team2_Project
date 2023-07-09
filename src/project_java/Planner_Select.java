@@ -62,16 +62,17 @@ public class Planner_Select extends JPanel implements ActionListener {
 	JTextArea add_jta, select_jta;
 	JScrollPane add_jsp, select_jsp;
 	CardLayout cardlayout;
-
+	String TL;
 	JTextArea[] textAreas;
 	JScrollPane[] scrollPane;
-	Planner_VO vo = new Planner_VO();
-	Protocol p = new Protocol();
 	int title_su;
+	Protocol p = new Protocol();
+	Travel_Location_VO vo = new Travel_Location_VO();
 
 	public Planner_Select(Main main) {
 		this.main = main;
 		p.setPlannerList(main.p.getPlannerList());
+		p.setLocation_VO(main.p.getLocation_VO());
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -175,36 +176,6 @@ public class Planner_Select extends JPanel implements ActionListener {
 		jp_SNB = new JPanel();
 		jb_day = new JButton[3];
 		jp.setBackground(Color.decode("#D4B8E8"));
-		for (int i = 0; i < 3; i++) {
-			jb_day[i] = new JButton("Day " + (i + 1) + " (23.06." + (25 + i) + ")");
-			jp_SNB.add(jb_day[i]);
-			jb_day[i].setPreferredSize(new Dimension(150, 50));
-			jp.add(jp_SNB, BorderLayout.WEST);
-			// 폰트흰색
-			jb_day[i].setForeground(Color.white);
-			jb_day[i].setFont(new Font("Aharoni", Font.BOLD, 15));
-			jb_day[i].setBorderPainted(false);
-
-			// 기본 DAY1은 보라색, 나머지는 분홍
-			if (i == 0) {
-				jb_day[i].setBackground(Color.decode("#B19CCB"));
-			} else
-				jb_day[i].setBackground(Color.decode("#F083BA"));
-
-			int index = i;
-			jb_day[i].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// 전체 버튼의 변경색
-					for (int j = 0; j < jb_day.length; j++) {
-						// 나머지 버튼의 배경색
-						jb_day[j].setBackground(Color.decode("#F083BA"));
-					}
-					// 선택한 버튼의 배경색
-					jb_day[index].setBackground(Color.decode("#B19CCB"));
-				}
-			});
-		}
 
 		jp_SNB.setPreferredSize(new Dimension(150, 600));
 		jp_SNB.setBackground(Color.decode("#F083BA"));
@@ -384,18 +355,29 @@ public class Planner_Select extends JPanel implements ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
 					jp_select_text.setBackground(Color.WHITE);
-
 					// 전체 버튼의 변경색
 					for (int j = 0; j < jb_title.length; j++) {
 						// 나머지 버튼의 배경색
 						jb_title[j].setBackground(Color.decode("#F083BA"));
 					}
 					// 선택한 버튼의 배경색
+					try {
+						Protocol p2 = new Protocol();
+						Travel_Location_VO vo2 = new Travel_Location_VO();
+						vo2.setTL_NUM(p.getPlannerList().get(index).getTL_NUM());
+						p2.setLocation_VO(vo2);
+						p2.setCmd(22);
+						main.out.writeObject(p2);
+						main.out.flush();
+					} catch (Exception e2) {
+						System.out.println(e2);
+					}
+
 					jb_title[index].setBackground(Color.decode("#B19CCB"));
-					select_title.setText(" 여행지: " + "dasdasd"+ "  |  날짜: "
-							+ p.getPlannerList().get(index).getPLAN_DATE() + "~"
-							+ p.getPlannerList().get(index).getPLAN_LASTDATE() + "("
-							+ p.getPlannerList().get(index).getPLAN_DAYS() + "일)");
+					select_title
+							.setText(" 여행지: " + "dasdasd" + "  |  날짜: " + p.getPlannerList().get(index).getPLAN_DATE()
+									+ "~" + p.getPlannerList().get(index).getPLAN_LASTDATE() + "("
+									+ p.getPlannerList().get(index).getPLAN_DAYS() + "일)");
 					textAreas = new JTextArea[p.getPlannerList().get(index).getPLAN_DAYS()];
 					scrollPane = new JScrollPane[p.getPlannerList().get(index).getPLAN_DAYS()];
 					for (int k = 0; k < p.getPlannerList().get(index).getPLAN_DAYS(); k++) {
@@ -452,9 +434,8 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// 선택한 일정에 제목, 날짜 정보제공
 		jp_select_title = new JPanel();
-		select_title = new JLabel(" 여행지: " + "  |  날짜: "
-				+ p.getPlannerList().get(0).getPLAN_DATE() + "~" + p.getPlannerList().get(0).getPLAN_LASTDATE() + "("
-				+ p.getPlannerList().get(0).getPLAN_DAYS() + "일)");
+		select_title = new JLabel(" 여행지: " + "  |  날짜: " + p.getPlannerList().get(0).getPLAN_DATE() + "~"
+				+ p.getPlannerList().get(0).getPLAN_LASTDATE() + "(" + p.getPlannerList().get(0).getPLAN_DAYS() + "일)");
 		select_title.setFont(new Font("Aharoni", Font.BOLD, 18));
 		select_title.setPreferredSize(new Dimension(800, 30));
 		select_title.setForeground(Color.WHITE);

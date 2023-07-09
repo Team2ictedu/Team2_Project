@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_VO;
 import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
 
@@ -17,7 +18,16 @@ public class Protocol implements Serializable {
 	project_admin.AdminUserVO uservo;
 	AdminPlaceVO placevo;
 	DB_Planner.Planner_VO planvo;
+	Travel_Location_VO location_VO;
 //	ReviewVO reviewvo;
+
+	public Travel_Location_VO getLocation_VO() {
+		return location_VO;
+	}
+
+	public void setLocation_VO(Travel_Location_VO location_VO) {
+		this.location_VO = location_VO;
+	}
 
 	public DB_Planner.Planner_VO getPlanvo() {
 		return planvo;

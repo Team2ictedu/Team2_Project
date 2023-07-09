@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_VO;
 import DB_User.UserVO;
 import Server.Protocol;
 import project_admin.AdminMain;
@@ -42,13 +43,13 @@ public class Main extends JFrame implements Runnable {
 	Protocol p;
 	Planner_VO planvo;
 	Planner_Select selectvo;
-	
+
 	public Main() {
 		super("PERSONAL PLANNER");
 		cardJPanel = new JPanel();
 		cardLayout = new CardLayout();
 		cardJPanel.setLayout(cardLayout);
-		
+
 		// 로그인 후
 		// 객체 선언
 		// 로그인 전
@@ -200,6 +201,11 @@ public class Main extends JFrame implements Runnable {
 						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
+						break;
+					case 23:
+						planner_Select.p.setLocation_VO(p.getLocation_VO());
+						System.out.println(p.getLocation_VO().getCITY());
+						System.out.println(p.getLocation_VO().getTOWN());
 						break;
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;

@@ -7,6 +7,7 @@ import java.util.List;
 
 import DB_Planner.Planner_DAO;
 import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_DAO;
 import DB_User.UserDAO;
 import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
@@ -79,6 +80,13 @@ public class CP_Client extends Thread {
 						break;
 					case 9: // 마지막 로그인
 						UserDAO.getUserLastLogin(vo.getM_ID());
+						break;
+					case 22:
+						System.out.println(p.getLocation_VO().getTL_NUM());
+						p.setLocation_VO(Travel_Location_DAO.getLocation(p.getLocation_VO().getTL_NUM()));
+						p.setCmd(23);
+						out.writeObject(p);
+						out.flush();
 						break;
 					case 51: // AdminPlaces SELECT * FROM place_all
 						System.out.println("ProjectCopyClient running CMD:51 :" + ip);
