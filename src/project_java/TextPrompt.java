@@ -219,4 +219,3 @@ package project_java;
 
 		public void changedUpdate(DocumentEvent e) {}
 	}
-

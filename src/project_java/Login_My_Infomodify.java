@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
+import DB_User.UserVO;
+import Server.Protocol;
 
 public class Login_My_Infomodify extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
@@ -117,22 +117,22 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jp_name.add(jl_name);
 				jl_name.setFont(new Font("Jalnan", Font.BOLD, 15));
 				jp_name.add(tf_name);
-				tf_name.setText(main.vo.getM_NAME());
+				tf_name.setText(main.p.getVo().getM_NAME());
 
 				jp_email.add(jl_email);
 				jl_email.setFont(new Font("Jalnan", Font.BOLD, 15));
-				tf_email.setText(main.vo.getM_EMAIL());
+				tf_email.setText(main.p.getVo().getM_EMAIL());
 				jp_email.add(tf_email);
 
 				jp_birth.add(jl_birth);
 				jl_birth.setFont(new Font("Jalnan", Font.BOLD, 15));
-				tf_birth.setText(main.vo.getM_BIRTH());
+				tf_birth.setText(main.p.getVo().getM_BIRTH());
 				jp_birth.add(tf_birth);
 				tf_birth.setEditable(false);
 
 				jp_phone.add(jl_phone);
 				jl_phone.setFont(new Font("Jalnan", Font.BOLD, 15));
-				tf_phone.setText(main.vo.getM_PHONE());
+				tf_phone.setText(main.p.getVo().getM_PHONE());
 				jp_phone.add(tf_phone);
 
 				jp_center.add(jp_name);
@@ -155,7 +155,7 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				jp_center2.add(jp_south2, BorderLayout.SOUTH);
 
 //	jb4.setPreferredSize(new Dimension(80, 40));
-				jbName = new JButton(main.vo.getM_NAME() + "님");
+				jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 				jbMyInfo = new JButton("내 정보");
 				jbLogOut = new JButton("로그아웃");
 				mypage_bt = new JButton("마이페이지");
@@ -324,23 +324,22 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_phone.requestFocus();
 			} else {
-				UserVO vo = new UserVO();
-				vo.setM_EMAIL(tf_email.getText());
-				vo.setM_NAME(tf_name.getText());
-				vo.setM_PHONE(tf_phone.getText());
-				vo.setM_ID(main.vo.getM_ID());
-				int result = UserDAO.getInstance().getUserUpdate(vo);
-				if (result == 0) {
-					JOptionPane.showMessageDialog(null, "수정오류발생", "Confirm", JOptionPane.ERROR_MESSAGE);
-				} else {
-					main.vo = UserDAO.getInstance().getLogin(main.vo.getM_ID());
-					main.Main2();
-					JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
-						JOptionPane.INFORMATION_MESSAGE);
-					main.cardLayout.show(main.cardJPanel, "planner_Select");
+				try {
+					Protocol p = new Protocol();
+					UserVO vo = new UserVO();
+					vo.setM_EMAIL(tf_email.getText());
+					vo.setM_NAME(tf_name.getText());
+					vo.setM_PHONE(tf_phone.getText());
+					vo.setM_ID(main.p.getVo().getM_ID());
+					vo.setM_PW(main.p.getVo().getM_PW());
+					p.setVo(vo);
+					p.setCmd(6);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e1) {
+					System.out.println(e1);
 				}
 			}
-
 		} else if (obj == jb6) {
 			if (tf_email.getText().length() > 0 || tf_birth.getText().length() > 0 || tf_phone.getText().length() > 0) {
 				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm",
@@ -360,30 +359,4 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 	public Login_My_Infomodify() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public static void main(String[] args) {
-
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-////                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//                    app.setSize(800, 600);
-//                    app.setLocationRelativeTo(null);
-//                    app.setVisible(true);
-					new Login_My_Infomodify();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 }

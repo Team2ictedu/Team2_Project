@@ -24,32 +24,41 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
+
+import project_server.ProjectProtocol;
 
 
 
 public class AdminHome extends JPanel{
 	AdminMain main;
 	JPanel jpWest, jpEast;
-	/*jpWest Panels*/ JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut, jpWestHeader;
+	/*jpWest Panels*/public  JPanel jpAdminHome, jpPlaceEdit, jpUserEdit, jpReviewEdit, jpWestTop, jpLogOut, jpWestHeader;
 	/*jpWest Buttons */ JButton adminHomeBtn,placeEditBtn , userEditBtn, reviewEditBtn, logOutBtn ;
 	/*jpEast Panels*/ JPanel jpEastHeadMain, jpEastHeadNorth, jpEastHeadSouth, jpEastFootMain, jpEastFootNorth, jpEastFootCenter;
 	/*jpEastJTA*/ JTextArea jta;
 	/*jpEastJSP*/ JScrollPane jsp;
-	/*jpEastJLABEL*/ JLabel welcomeLabel;
-	
+	/*jpEastJLABEL*/ public JLabel welcomeLabel;
+	public JLabel adminLabel;
 	
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
 	LocalDateTime now = LocalDateTime.now();  
-	String todayDate = dtf.format(now);
-	String adminName = "양동근";
-	String welcome = String.format("어서오세요, %s님!      %s", adminName, todayDate);
+	public String todayDate = dtf.format(now);
+	public String adminName;
+	public String welcome = String.format("어서오세요, %s님!      %s", adminName, todayDate);
 	
 	
 	
 	public AdminHome(AdminMain main) {
 		this.main = main;
+		
+		adminName ="양동근";
+		
+		
+		
+		
 		//font 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
@@ -163,7 +172,7 @@ public class AdminHome extends JPanel{
 		Image image = icon.getImage();
 		Image newimg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_DEFAULT);
 		icon = new ImageIcon(newimg);
-		JLabel adminLabel = new JLabel(adminName);
+		adminLabel = new JLabel(adminName);
 		adminLabel.setFont(new Font("Jalnan",Font.PLAIN,20));
 		adminLabel.setForeground(Color.decode("#dbd8cc"));
 		jpWestHeader.setLayout(new GridBagLayout());

@@ -18,12 +18,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import DB_User.UserVO;
+import Server.Protocol;
 
 import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
@@ -67,7 +71,7 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 			jp_headerSubLeft = new JPanel();
 			jp_headerSubRight = new JPanel();
 			jp_center = new JPanel();
-			jbName = new JButton("이름");
+			jbName = new JButton(main.p.getVo().getM_NAME() + "님");
 			jbMyInfo = new JButton("내 정보");
 			jbLogOut = new JButton("로그아웃");
 			newBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
@@ -230,7 +234,37 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 		} else if (obj == jbLogOut) { // 로그아웃
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == withdraw_bt) {
-			main.cardLayout.show(main.cardJPanel, "login_Main");
+			System.out.println(main.p.getVo().getM_PW());
+			String pass = new String(tf_pw.getText());
+			if (pass.equals(main.p.getVo().getM_PW())) {
+				if (tf_withdraw.getText() != null) {
+					int result = JOptionPane.showConfirmDialog(null, "정말로 회원탈퇴 하시겠습니까?", "Confirm",
+							JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						try {
+							Protocol p = new Protocol();
+							UserVO vo = new UserVO();
+							vo.setM_ID(main.p.getVo().getM_ID());
+							vo.setDELETE_CON(tf_withdraw.getText());
+							p.setVo(vo);
+							p.setCmd(8);
+							main.out.writeObject(p);
+							main.out.flush();
+							JOptionPane.showMessageDialog(null, "회원탈퇴가 완료되었습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+							main.cardLayout.show(main.cardJPanel, "login_Main");
+						} catch (Exception e2) {
+							System.out.println(e2);
+						}
+					} else {
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "탈퇴 사유를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+					tf_withdraw.requestFocus();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				tf_pw.requestFocus();
+			}
 		} else if (obj == cancel_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
 		}
@@ -238,27 +272,5 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 
 	public Login_Withdrawal() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public static void main(String[] args) {
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					// Start the application
-//	                    BaseSampleFrame app = new BaseSampleFrame("BaseSampleFrame");
-//	                    app.setSize(800, 600);
-//	                    app.setLocationRelativeTo(null);
-//	                    app.setVisible(true);
-					new Login_Withdrawal();
-				}
-			});
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 }

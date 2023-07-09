@@ -50,6 +50,7 @@ public class AdminReview extends JPanel{
 	/*jpEastJTA*/ JTextArea jta;
 	/*jpEastFootTable*/ JTable placeTable; 
  	/*jpEastFoot Buttons*/ 
+	public JLabel adminLabel ; // 양동근
 	
 	
 	
@@ -165,7 +166,7 @@ public class AdminReview extends JPanel{
 		Image newimg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_DEFAULT);
 		icon = new ImageIcon(newimg);
 		AdminHome home = new AdminHome(main);
-		JLabel adminLabel = new JLabel(home.adminName);
+		adminLabel = new JLabel(home.adminName);
 		adminLabel.setFont(new Font("Jalnan",Font.PLAIN,20));
 		adminLabel.setForeground(Color.decode("#dbd8cc"));
 		jpWestHeader.setLayout(new GridBagLayout());
@@ -253,7 +254,6 @@ public class AdminReview extends JPanel{
 		
 		//jpEastFootCenter table
 //		ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll(); 
-		Object[][] list = PlacesDAO.getInstance().getSelectAll(); 
 		
 //		PlaceTableModel model = new PlaceTableModel(list);
 		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정"};
@@ -264,7 +264,7 @@ public class AdminReview extends JPanel{
 //					{"Bart",  "Simpson", "delete Bart"},
 //					{"Lisa",  "Simpson", "delete Lisa"},
 //			};
-		DefaultTableModel model = new DefaultTableModel(list,columnNames);
+		DefaultTableModel model = new DefaultTableModel();
 		
 		placeTable = new JTable(model);
 		placeTable.setShowGrid(false);
@@ -285,11 +285,10 @@ public class AdminReview extends JPanel{
 						JTable table = (JTable)e.getSource();
 				        int modelRow = Integer.valueOf( e.getActionCommand() );
 				        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-				        System.out.println("ss");
 					}
 			
 				};
-		ButtonColumn buttonColumn = new ButtonColumn(placeTable, delet2e, 6);
+//		ButtonColumn buttonColumn = new ButtonColumn(placeTable, delet2e, 6);
 		
 
 		
@@ -338,7 +337,6 @@ public class AdminReview extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("S");
 			}
 		});
 		placeEditBtn.addActionListener(new ActionListener() {

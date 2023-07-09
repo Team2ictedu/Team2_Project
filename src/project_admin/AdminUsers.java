@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -22,19 +24,20 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
+import project_server.ProjectProtocol;
 
 
 
@@ -48,8 +51,19 @@ public class AdminUsers extends JPanel{
 	/*jpEastHead ArrayList*/ List<String> selectionList;
 	/*jpEastHead ComboBox & TextField*/ JComboBox<String> eastHeadComboBox; JTextField eastHeadTextField;
 	/*jpEastJTA*/ JTextArea jta;
-	/*jpEastFootTable*/ JTable placeTable; 
- 	/*jpEastFoot Buttons*/ 
+	public DefaultTableModel model = new DefaultTableModel();
+	/*jpEastFootTable*/ JTable placeTable = new JTable(model);
+	
+ 	/* jpEastFoot Buttons */ JButton addPlaceBtn;
+	/* jPop panel */ JPanel jPop;
+	/* jPop JTextField */ JTextField popPlaceName, popPlaceLocation, popPlaceCon, popPlacePrice;
+	/* jPop Button */ JButton popAddBtn, popCancelBtn;
+	/* Popup */ Popup po;
+	/* PopupFactory */ PopupFactory pf;
+	
+	public JLabel adminLabel ;// 양동근
+	
+
 	
 	
 	
@@ -165,7 +179,7 @@ public class AdminUsers extends JPanel{
 		Image newimg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_DEFAULT);
 		icon = new ImageIcon(newimg);
 		AdminHome home = new AdminHome(main);
-		JLabel adminLabel = new JLabel(home.adminName);
+		adminLabel = new JLabel(home.adminName);
 		adminLabel.setFont(new Font("Jalnan",Font.PLAIN,20));
 		adminLabel.setForeground(Color.decode("#dbd8cc"));
 		jpWestHeader.setLayout(new GridBagLayout());
@@ -219,7 +233,9 @@ public class AdminUsers extends JPanel{
 		//jpEastHead comboBox & textField
 		selectionList = new ArrayList<String>();
 		selectionList.add("전체보기");
-		selectionList.add("World");
+		selectionList.add("ID");
+		selectionList.add("NAME");
+		selectionList.add("EMAIL");
 		eastHeadComboBox = new JComboBox<String>(selectionList.toArray(new String[0]));
 		eastHeadTextField = new JTextField(20);
 		
@@ -253,13 +269,17 @@ public class AdminUsers extends JPanel{
 		
 		//jpEastFootCenter table
 		/*ArrayList<PlaceVO> list = PlacesDAO.getInstance().getSelectAll();*/ 
-		Object[][] list = UsersDAO.getInstance().getSelectAll(); 
-		System.out.println("users list :"+list.length);
+		
 		
 		/*PlaceTableModel model = new PlaceTableModel(list);*/
-		String[] columnNames = {"PK", "Place Name", "Location","etc","price","review","수정","삭제"};
 
-		DefaultTableModel model = new DefaultTableModel(list,columnNames);
+		model.addColumn("ID");
+		model.addColumn("PW");
+		model.addColumn("NAME");
+		model.addColumn("BIRTH");
+		model.addColumn("EMAIL");
+		model.addColumn("수정");
+		model.addColumn("삭제");
 		
 		placeTable = new JTable(model);
 		placeTable.setShowGrid(false);
@@ -277,11 +297,24 @@ public class AdminUsers extends JPanel{
 		Action delete = new AbstractAction() 
 				{
 					public void actionPerformed(ActionEvent e) {
-						/////////////////////MAKE DELETE JDBC
 						JTable table = (JTable)e.getSource();
 				        int modelRow = Integer.valueOf( e.getActionCommand() );
-				        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-				        System.out.println("ss");
+				        System.out.println("AdminUsers selected model row is :"+modelRow);
+				        AdminUserVO vo = new AdminUserVO();
+				        vo.setM_id(table.getValueAt(modelRow, 0).toString());
+				        vo.setM_pw(table.getValueAt(modelRow, 1).toString());
+				        System.out.println(vo.getM_id());
+						try {
+							ProjectProtocol p = new ProjectProtocol();
+							p.setCmd(83);
+							p.setRow(modelRow);
+							p.setUservo(vo);
+							main.main.out.writeObject(p);
+							main.main.out.flush();
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
+				        
 					}
 			
 				};
@@ -294,8 +327,8 @@ public class AdminUsers extends JPanel{
 					}
 			
 				};
-		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 7);
-		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 6);
+		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 6);
+		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 5);
 
 		
 		
@@ -304,12 +337,75 @@ public class AdminUsers extends JPanel{
 		jpEastFootCenter.add(placeTableSP);
 		
 		
+		addPlaceBtn = new JButton("관광지 추가");
+		
+		//pop
+				popPlaceName = new JTextField(20);
+				popPlaceName.setEditable(true);
+				popPlaceLocation = new JTextField(20);
+				popPlaceCon = new JTextField(20);
+				popPlacePrice = new JTextField(20);
+				JLabel popPlaceNameLabel = new JLabel("관광지 이름");
+				JLabel popPlaceLocationLabel = new JLabel("위치");
+				JLabel popPlaceConLabel = new JLabel("설명");
+				JLabel popPlacePriceLabel = new JLabel("가격");
+				popAddBtn = new JButton("추가");
+				popCancelBtn = new JButton("취소");
+				jPop = new JPanel();
+				
+				jPop.setLayout(new GridLayout(0,2));
+				
+				pf = new PopupFactory();
+				pf = pf.getSharedInstance();
+				Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+				int x = (int) ((dimension.getWidth() / 2));
+				int y = (int) ((dimension.getHeight() / 2));
+
+				po = pf.getPopup(jpWest, jPop, x-100, y-100);
+				
+				
+				addPlaceBtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String d = e.getActionCommand();
+						jPop.add(popPlaceNameLabel);
+						jPop.add(popPlaceName);
+						jPop.add(popPlaceLocationLabel);
+						jPop.add(popPlaceLocation);
+						jPop.add(popPlaceConLabel);
+						jPop.add(popPlaceCon);
+						jPop.add(popPlacePriceLabel);
+						jPop.add(popPlacePrice);
+						JLabel test1 = new JLabel("test1");
+						JTextField test2 = new JTextField(20);
+						test2.setEditable(true);
+						jPop.add(popAddBtn);
+						jPop.add(popCancelBtn);
+
+						
+						
+						po.show();
+					}
+				});
+				popCancelBtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						po.hide();
+						po = pf.getPopup(jpEast, jPop, x-100, y-100);
+					}
+				});
+		
+		
+		
 		//jpEastFootSouth btns
 		
 		
 		//jpEastFootMain.add()
 		jpEastFootMain.setPreferredSize(new Dimension(700,500));
 		jpEastFootMain.add(jpEastFootCenter);
+		jpEastFootMain.add(addPlaceBtn);
 		
 		//jpEast.add(panels)
 		jpEast.add(jpEastHeadMain);
@@ -338,7 +434,27 @@ public class AdminUsers extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("S");
+				if((eastHeadComboBox.getSelectedItem().toString()).equalsIgnoreCase("전체보기")){
+					try {
+						ProjectProtocol p = new ProjectProtocol();
+						p.setCmd(81);
+						main.main.out.writeObject(p);
+						main.main.out.flush();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				} else {
+					try {
+						ProjectProtocol p = new ProjectProtocol();
+						p.setCmd(73);
+						p.setMsg(eastHeadComboBox.getSelectedItem().toString());
+						p.setMsg2(eastHeadTextField.getText());
+						main.main.out.writeObject(p);
+						main.main.out.flush();
+					} catch (Exception e2) {
+					}
+					
+				}
 			}
 		});
 		placeEditBtn.addActionListener(new ActionListener() {
