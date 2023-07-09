@@ -90,7 +90,16 @@ public class Calendarmain extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof JButton) {
+        int gap = 0;
+        if (e.getSource() == buttonAfter) { // 1달 후
+            gap = 1;
+            cF.allInit(gap);
+            label.setText(cF.getCalText()); // 년월 글자 갱신
+        } else if (e.getSource() == buttonBefore) { // 1달 전
+            gap = -1;
+            cF.allInit(gap);
+            label.setText(cF.getCalText()); // 년월 글자 갱신
+        }  else if (e.getSource() instanceof JButton) {
             JButton clickedButton = (JButton) e.getSource();
             String date = clickedButton.getText();
             String yearMonth = label.getText();
@@ -99,14 +108,5 @@ public class Calendarmain extends JFrame implements ActionListener {
             planner_Create.jtf_date.setText(clickedDate);
             setVisible(false);
         }
-
-        int gap = 0;
-        if (e.getSource() == buttonAfter) { // 1달 후
-            gap = 1;
-        } else if (e.getSource() == buttonBefore) { // 1달 전
-            gap = -1;
-        }
-        cF.allInit(gap);
-        label.setText(cF.getCalText()); // 년월 글자 갱신
     }
 }

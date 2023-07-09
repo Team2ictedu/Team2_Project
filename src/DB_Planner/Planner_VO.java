@@ -3,7 +3,16 @@ package DB_Planner;
 import java.io.Serializable;
 
 public class Planner_VO implements Serializable {
-	private String PLAN_NUM, PLAN_TITLE, PLAN_DATE, PLAN_DAYS, M_ID, TL_NUM;
+	private String PLAN_NUM, PLAN_TITLE, PLAN_DATE, M_ID, TL_NUM, PLAN_LASTDATE;
+	int PLAN_DAYS;
+
+	public String getPLAN_LASTDATE() {
+		return PLAN_LASTDATE;
+	}
+
+	public void setPLAN_LASTDATE(String pLAN_LASTDATE) {
+		PLAN_LASTDATE = pLAN_LASTDATE;
+	}
 
 	public String getPLAN_NUM() {
 		return PLAN_NUM;
@@ -29,11 +38,11 @@ public class Planner_VO implements Serializable {
 		PLAN_DATE = pLAN_DATE;
 	}
 
-	public String getPLAN_DAYS() {
+	public int getPLAN_DAYS() {
 		return PLAN_DAYS;
 	}
 
-	public void setPLAN_DAYS(String pLAN_DAYS) {
+	public void setPLAN_DAYS(int pLAN_DAYS) {
 		PLAN_DAYS = pLAN_DAYS;
 	}
 

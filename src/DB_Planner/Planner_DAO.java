@@ -1,5 +1,7 @@
 package DB_Planner;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
@@ -24,7 +26,13 @@ public class Planner_DAO {
 			System.out.println(e);
 		}
 		return 0;
-		
+	}
+	
+	// 플래너 조회
+	public static List<Planner_VO> getPlannerList(String M_ID){
+		List<Planner_VO> list = null;
+		list = getSession().selectList("plannerList", M_ID);
+		return list;
 	}
 	
 }

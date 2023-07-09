@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
 
-public class PlannerDAO {
+public class Travel_Location_DAO {
 	// 실제 사용하는 클래스 : SqlSession
 	private static SqlSession ss;
 
@@ -14,6 +14,11 @@ public class PlannerDAO {
 			ss = DBService.getFactory().openSession();
 		}
 		return ss;
+	}
+	
+	public static Travel_Location_VO getLocation(String TL_NUM) {
+		Travel_Location_VO vo = getSession().selectOne("location", TL_NUM);
+		return vo;
 	}
 
 }

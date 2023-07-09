@@ -7,6 +7,8 @@ import java.util.List;
 
 import DB_Planner.Planner_DAO;
 import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_DAO;
+import DB_Travel_Location.Travel_Location_VO;
 import DB_User.UserDAO;
 import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
@@ -41,6 +43,7 @@ public class CP_Client extends Thread {
 					Protocol p = (Protocol) obj;
 					UserVO vo = p.getVo();
 					Planner_VO planvo = p.getPlanvo();// 새일정 만들기 VO
+					Travel_Location_VO travelVo = p.getTravelVo();
 					switch (p.getCmd()) {
 					case 0:
 						out.writeObject(p);
@@ -78,7 +81,12 @@ public class CP_Client extends Thread {
 					case 9: // 마지막 로그인
 						UserDAO.getUserLastLogin(vo.getM_ID());
 						break;
-
+					case 12:
+						p.setTravelVo(Travel_Location_DAO.getLocation(travelVo.getTL_NUM()));
+						p.setCmd(13);
+						out.writeObject(p);
+						out.flush();
+						break;
 					case 51: // AdminPlaces SELECT * FROM place_all
 						System.out.println("ProjectCopyClient running CMD:51 :" + ip);
 						ProjectProtocol p51 = new ProjectProtocol();
@@ -235,6 +243,7 @@ public class CP_Client extends Thread {
 					case 100 : // 새일정만들기
 						Planner_DAO.getInsert(planvo);
 						p.setVo(UserDAO.getUser(planvo.getM_ID()));
+						p.setPlannerList(Planner_DAO.getPlannerList(planvo.getM_ID()));
 						p.setCmd(101);
 						out.writeObject(p);
 						out.flush();

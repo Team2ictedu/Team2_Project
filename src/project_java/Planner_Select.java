@@ -39,6 +39,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
+import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_DAO;
+import DB_Travel_Location.Travel_Location_VO;
+import Server.Protocol;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -48,7 +53,6 @@ public class Planner_Select extends JPanel implements ActionListener {
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
 	JLabel jLabel1;
-
 	JLabel title, city, select_title;
 	JPanel jp_SNB, jp_planner, jp_plan_left, jp_plan_right, jp_select, jp_sel, jp_comcan, jp_card_insert, jp_plan_bt,
 			jp_card_select, jp_select_title;
@@ -59,8 +63,15 @@ public class Planner_Select extends JPanel implements ActionListener {
 	JScrollPane add_jsp, select_jsp;
 	CardLayout cardlayout;
 
+	JTextArea[] textAreas;
+	JScrollPane[] scrollPane;
+	Planner_VO vo = new Planner_VO();
+	Protocol p = new Protocol();
+	int title_su;
+
 	public Planner_Select(Main main) {
 		this.main = main;
+		p.setPlannerList(main.p.getPlannerList());
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -348,10 +359,11 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// SNB
 		jp_SNB = new JPanel();
-		jb_title = new JButton[4];
+		title_su = main.p.getPlannerList().size();
+		jb_title = new JButton[title_su];
 		jp.setBackground(Color.decode("#D4B8E8"));
-		for (int i = 0; i < 4; i++) {
-			jb_title[i] = new JButton("일정 제목");
+		for (int i = 0; i <= title_su - 1; i++) {
+			jb_title[i] = new JButton(main.p.getPlannerList().get(i).getPLAN_TITLE());
 			jp_SNB.add(jb_title[i]);
 			jb_title[i].setPreferredSize(new Dimension(200, 50));
 			jp.add(jp_SNB, BorderLayout.WEST);
@@ -359,24 +371,83 @@ public class Planner_Select extends JPanel implements ActionListener {
 			jb_title[i].setForeground(Color.white);
 			jb_title[i].setFont(new Font("Aharoni", Font.BOLD, 15));
 			jb_title[i].setBorderPainted(false);
+			jb_title[i].addActionListener(this);
 
 			// 첫번째 제목은 보라색
 			if (i == 0) {
 				jb_title[i].setBackground(Color.decode("#B19CCB"));
 			} else
 				jb_title[i].setBackground(Color.decode("#F083BA"));
-
 			int index = i;
 			jb_title[i].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					try {
+						Travel_Location_VO vo = new Travel_Location_VO();
+						vo.setTL_NUM(p.getPlannerList().get(index).getTL_NUM());
+						p.setTravelVo(vo);
+						p.setCmd(12);
+						main.out.writeObject(p);
+						main.out.flush();
+						p.setTravelVo(main.p.getTravelVo());
+					} catch (Exception e2) {
+						System.out.println(e2);
+					}
+					JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
+					jp_select_text.setBackground(Color.WHITE);
+
 					// 전체 버튼의 변경색
-					for (int j = 0; j < jb_day.length; j++) {
+					for (int j = 0; j < jb_title.length; j++) {
 						// 나머지 버튼의 배경색
 						jb_title[j].setBackground(Color.decode("#F083BA"));
 					}
 					// 선택한 버튼의 배경색
 					jb_title[index].setBackground(Color.decode("#B19CCB"));
+					select_title.setText(" 여행지: " + "dasdasd"+ "  |  날짜: "
+							+ p.getPlannerList().get(index).getPLAN_DATE() + "~"
+							+ p.getPlannerList().get(index).getPLAN_LASTDATE() + "("
+							+ p.getPlannerList().get(index).getPLAN_DAYS() + "일)");
+					System.out.println(p.getTravelVo().getTOWN());
+					textAreas = new JTextArea[p.getPlannerList().get(index).getPLAN_DAYS()];
+					scrollPane = new JScrollPane[p.getPlannerList().get(index).getPLAN_DAYS()];
+					for (int k = 0; k < p.getPlannerList().get(index).getPLAN_DAYS(); k++) {
+						textAreas[k] = new JTextArea();
+						textAreas[k].append("Day " + (k + 1) + "\n");
+
+						scrollPane[k] = new JScrollPane(textAreas[k], ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+								ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+						textAreas[k].setLineWrap(true);
+						textAreas[k].setEditable(false);
+						textAreas[k].setBackground(Color.WHITE);
+
+						// Assign different values to each JTextArea
+						switch (k) {
+						case 0:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						case 1:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						case 2:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						case 3:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						case 4:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						case 5:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						case 6:
+							textAreas[k].append("Value for JTextArea 3");
+							break;
+						}
+
+						jp_select_text.add(scrollPane[k]);
+						jp_select.add(jp_select_text, BorderLayout.CENTER);
+					}
 				}
 			});
 		}
@@ -393,7 +464,9 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// 선택한 일정에 제목, 날짜 정보제공
 		jp_select_title = new JPanel();
-		select_title = new JLabel("     여행지: 대한민국 서울  |  날짜: 23.06.25~23.06.27(3일)");
+		select_title = new JLabel(" 여행지: " + main.p.getTravelVo().getTOWN() + "  |  날짜: "
+				+ p.getPlannerList().get(0).getPLAN_DATE() + "~" + p.getPlannerList().get(0).getPLAN_LASTDATE() + "("
+				+ p.getPlannerList().get(0).getPLAN_DAYS() + "일)");
 		select_title.setFont(new Font("Aharoni", Font.BOLD, 18));
 		select_title.setPreferredSize(new Dimension(800, 30));
 		select_title.setForeground(Color.WHITE);
@@ -424,53 +497,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 		jp_select_title.add(jp_plan_bt, BorderLayout.EAST);
 		jp_select_title.setBackground(Color.decode("#B19CCB"));
 
-		// 선택한 일정에 상세일정 정보
-		JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
-		jp_select_text.setBackground(Color.WHITE);
-		int r = 5;
-		JTextArea[] textAreas = new JTextArea[r];
-		JScrollPane[] scrollPanes = new JScrollPane[r];
-
-		for (int i = 0; i < r; i++) {
-			textAreas[i] = new JTextArea();
-			textAreas[i].append("Day" + (i + 1) + "\n");
-
-			scrollPanes[i] = new JScrollPane(textAreas[i], ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			textAreas[i].setLineWrap(true);
-			textAreas[i].setEditable(false);
-			textAreas[i].setBackground(Color.WHITE);
-
-			// Assign different values to each JTextArea
-			switch (i) {
-			case 0:
-				textAreas[i].append("Value for JTextArea 1\n");
-				break;
-			case 1:
-				textAreas[i].append("Value for JTextArea 2");
-				break;
-			case 2:
-				textAreas[i].append("Value for JTextArea 3");
-				break;
-			case 3:
-				textAreas[i].append("Value for JTextArea 3");
-				break;
-			case 4:
-				textAreas[i].append("Value for JTextArea 3");
-				break;
-			case 5:
-				textAreas[i].append("Value for JTextArea 3");
-				break;
-			case 6:
-				textAreas[i].append("Value for JTextArea 3");
-				break;
-			}
-
-			jp_select_text.add(scrollPanes[i]);
-		}
-
 		jp_select.add(jp_select_title, BorderLayout.NORTH);
-		jp_select.add(jp_select_text, BorderLayout.CENTER);
 
 		// card에 담는구간
 		cardlayout = new CardLayout();
@@ -529,7 +556,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 			main.cardLayout.show(main.cardJPanel, "planner_InsertSpot");
 		} else if (obj == bt_plan_del) { // 플래너 삭제 후 새로고침
 			int result = JOptionPane.showConfirmDialog(null, "정말 플래너를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
-			if(result==JOptionPane.YES_OPTION) {
+			if (result == JOptionPane.YES_OPTION) {
 				JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "삭제가 취소되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
