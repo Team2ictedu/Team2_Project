@@ -48,6 +48,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 	JComboBox<String> jcom2 = new JComboBox<>(town);
 	JPanel jp_main, jp_checkbox;
 	String a;
+
 	public Planner_Create(Main main) {
 		this.main = main;
 //		FONT
@@ -317,8 +318,8 @@ public class Planner_Create extends JPanel implements ActionListener {
 					main.out.writeObject(p1);
 					main.out.flush();
 				} catch (IOException e1) {
-					
-					//e1.printStackTrace();
+
+					// e1.printStackTrace();
 				}
 			}
 		} else if (obj == jb_back) {
@@ -336,7 +337,7 @@ public class Planner_Create extends JPanel implements ActionListener {
 			} else { // 취소할때 문자길이가 없으면 바로 이동
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			}
-		} else if(obj==jb_calc) {
+		} else if (obj == jb_calc) {
 			Calendarmain calendarmain = new Calendarmain(Planner_Create.this);
 			calendarmain.setVisible(true);
 		}

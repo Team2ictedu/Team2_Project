@@ -195,11 +195,12 @@ public class Main extends JFrame implements Runnable {
 						}
 						break;
 					case 7:
-						this.p.setVo(p.getVo());
-						Main2();
 						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
+						break;
+					case 13: 
+						planner_Select.p.setTravelVo(p.getTravelVo());
 						break;
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;

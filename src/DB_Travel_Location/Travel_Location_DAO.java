@@ -15,5 +15,10 @@ public class Travel_Location_DAO {
 		}
 		return ss;
 	}
+	
+	public static Travel_Location_VO getLocation(String TL_NUM) {
+		Travel_Location_VO vo = getSession().selectOne("location", TL_NUM);
+		return vo;
+	}
 
 }

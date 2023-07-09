@@ -40,7 +40,8 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import DB_Planner.Planner_VO;
-import DB_User.UserVO;
+import DB_Travel_Location.Travel_Location_DAO;
+import DB_Travel_Location.Travel_Location_VO;
 import Server.Protocol;
 
 import java.awt.event.ActionEvent;
@@ -381,8 +382,20 @@ public class Planner_Select extends JPanel implements ActionListener {
 			jb_title[i].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					try {
+						Travel_Location_VO vo = new Travel_Location_VO();
+						vo.setTL_NUM(p.getPlannerList().get(index).getTL_NUM());
+						p.setTravelVo(vo);
+						p.setCmd(12);
+						main.out.writeObject(p);
+						main.out.flush();
+						p.setTravelVo(main.p.getTravelVo());
+					} catch (Exception e2) {
+						System.out.println(e2);
+					}
 					JPanel jp_select_text = new JPanel(new GridLayout(0, 1));
 					jp_select_text.setBackground(Color.WHITE);
+
 					// 전체 버튼의 변경색
 					for (int j = 0; j < jb_title.length; j++) {
 						// 나머지 버튼의 배경색
@@ -390,13 +403,16 @@ public class Planner_Select extends JPanel implements ActionListener {
 					}
 					// 선택한 버튼의 배경색
 					jb_title[index].setBackground(Color.decode("#B19CCB"));
-					select_title.setText(" 여행지: " + p.getPlannerList().get(index).getTL_NUM() + "  |  날짜: "  + p.getPlannerList().get(index).getPLAN_DATE() + "~" + p.getPlannerList().get(index).getPLAN_LASTDATE() + "(" + p.getPlannerList().get(index).getPLAN_DAYS() + "일)" );
-
+					select_title.setText(" 여행지: " + "dasdasd"+ "  |  날짜: "
+							+ p.getPlannerList().get(index).getPLAN_DATE() + "~"
+							+ p.getPlannerList().get(index).getPLAN_LASTDATE() + "("
+							+ p.getPlannerList().get(index).getPLAN_DAYS() + "일)");
+					System.out.println(p.getTravelVo().getTOWN());
 					textAreas = new JTextArea[p.getPlannerList().get(index).getPLAN_DAYS()];
 					scrollPane = new JScrollPane[p.getPlannerList().get(index).getPLAN_DAYS()];
 					for (int k = 0; k < p.getPlannerList().get(index).getPLAN_DAYS(); k++) {
 						textAreas[k] = new JTextArea();
-						textAreas[k].append("Day" + (k + 1) + "\n");
+						textAreas[k].append("Day " + (k + 1) + "\n");
 
 						scrollPane[k] = new JScrollPane(textAreas[k], ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 								ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -448,7 +464,9 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// 선택한 일정에 제목, 날짜 정보제공
 		jp_select_title = new JPanel();
-		select_title = new JLabel(" 여행지: " + p.getPlannerList().get(0).getTL_NUM() + "  |  날짜: "  + p.getPlannerList().get(0).getPLAN_DATE() + "~" + p.getPlannerList().get(0).getPLAN_LASTDATE() + "(" + p.getPlannerList().get(0).getPLAN_DAYS() + "일)" );
+		select_title = new JLabel(" 여행지: " + main.p.getTravelVo().getTOWN() + "  |  날짜: "
+				+ p.getPlannerList().get(0).getPLAN_DATE() + "~" + p.getPlannerList().get(0).getPLAN_LASTDATE() + "("
+				+ p.getPlannerList().get(0).getPLAN_DAYS() + "일)");
 		select_title.setFont(new Font("Aharoni", Font.BOLD, 18));
 		select_title.setPreferredSize(new Dimension(800, 30));
 		select_title.setForeground(Color.WHITE);
@@ -544,7 +562,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "삭제가 취소되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
 			}
 			main.cardLayout.show(main.cardJPanel, "planner_Select");
-		} 
+		}
 	}
 
 	public Planner_Select() {

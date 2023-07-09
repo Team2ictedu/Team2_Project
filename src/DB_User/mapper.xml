@@ -102,12 +102,14 @@
 	<!-- 플래너 조회 -->
 	<select id="plannerList" resultType="DB_Planner.Planner_VO">
 		SELECT p.PLAN_NUM, p.PLAN_TITLE, TO_CHAR(p.PLAN_DATE, 'YYYY-MM-DD') AS PLAN_DATE,
-		p.PLAN_DAYS, p.M_ID, p.TL_NUM, TO_CHAR(p.PLAN_DATE + p.PLAN_DAYS, 'YYYY-MM-DD') AS PLAN_LASTDATE
+		p.PLAN_DAYS, p.M_ID, p.TL_NUM, TO_CHAR(p.PLAN_DATE + p.PLAN_DAYS - 1, 'YYYY-MM-DD') AS PLAN_LASTDATE
 		FROM PLANNER p JOIN MEMBER m ON p.M_ID = m.M_ID WHERE m.M_ID = #{M_ID}
 	</select>
 
-
-
+	<!-- 플래너 지역정보 -->
+	<select id="location" resultType="DB_Travel_Location.Travel_Location_VO">
+		SELECT * FROM TRAVEL_LOCATION WHERE TL_NUM=#{TL_NUM}
+	</select>
 </mapper>
 
 
