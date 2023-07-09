@@ -238,7 +238,7 @@ public class Main extends JFrame implements Runnable {
 						break;
 					case 101:
 						Main2();
-						cardLayout.show(cardJPanel, "planner_Select");
+						cardLayout.show(cardJPanel, "planner_InsertSpot");
 						planner_Create.jtf_name.setText("");
 						planner_Create.jtf_date.setText("");
 						planner_Create.jtf_days.setText("");
