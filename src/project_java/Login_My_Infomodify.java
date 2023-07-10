@@ -293,7 +293,6 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		main.Main2();
 		JButton obj = (JButton) e.getSource();
 		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
 			main.cardLayout.show(main.cardJPanel, "planner_Create");
@@ -325,16 +324,15 @@ public class Login_My_Infomodify extends JPanel implements ActionListener {
 				tf_phone.requestFocus();
 			} else {
 				try {
-					Protocol p = new Protocol();
 					UserVO vo = new UserVO();
 					vo.setM_EMAIL(tf_email.getText());
 					vo.setM_NAME(tf_name.getText());
 					vo.setM_PHONE(tf_phone.getText());
-					vo.setM_ID(main.p.getVo().getM_ID());
-					vo.setM_PW(main.p.getVo().getM_PW());
-					p.setVo(vo);
-					p.setCmd(6);
-					main.out.writeObject(p);
+					vo.setM_ID(main.uservo.getM_ID());
+					vo.setM_PW(main.uservo.getM_PW());
+					main.p.setVo(vo);
+					main.p.setCmd(6);
+					main.out.writeObject(main.p);
 					main.out.flush();
 				} catch (Exception e1) {
 					System.out.println(e1);

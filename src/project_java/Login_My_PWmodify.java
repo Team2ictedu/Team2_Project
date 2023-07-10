@@ -302,7 +302,7 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 			if (pass.length() == 0) {
 				JOptionPane.showMessageDialog(null, "현재 비밀번호를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jpf_pw.requestFocus();
-			} else if (pass.equals(main.p.getVo().getM_PW())) {
+			} else if (pass.equals(main.uservo.getM_PW())) {
 				if (newPass1.length() == 0) {
 					JOptionPane.showMessageDialog(null, "새 비밀번호를 입력해주세요", "Confirm", JOptionPane.ERROR_MESSAGE);
 					jpf_newPw1.requestFocus();
@@ -315,14 +315,14 @@ public class Login_My_PWmodify extends JPanel implements ActionListener {
 						try {
 							Protocol p = new Protocol();
 							UserVO vo = new UserVO();
-							vo.setM_ID(main.p.getVo().getM_ID());
+							vo.setM_ID(main.uservo.getM_ID());
 							vo.setM_PW(newPass1);
 							p.setVo(vo);
 							p.setCmd(202);
 							main.out.writeObject(p);
 							main.out.flush();
 						} catch (Exception e2) {
-							System.out.println(e2);
+							e2.printStackTrace();
 						}
 					}
 			} else {

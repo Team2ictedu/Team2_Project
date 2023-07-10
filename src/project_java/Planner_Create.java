@@ -301,19 +301,18 @@ public class Planner_Create extends JPanel implements ActionListener {
 				jtf_days.requestFocus();
 			} else { // 성공시
 				try {
-					Protocol p1 = new Protocol();
+					Protocol p = new Protocol();
 					Planner_VO planVo = new Planner_VO();
 					planVo.setPLAN_TITLE(jtf_name.getText());
 					planVo.setPLAN_DATE(jtf_date.getText());
-					planVo.setM_ID(main.p.getVo().getM_ID());
+					planVo.setM_ID(main.uservo.getM_ID());
 					planVo.setTL_NUM("1"); // 임시로 한거임
-					p1.setPlanvo(planVo);
-					p1.setCmd(100);
-					main.out.writeObject(p1);
+					p.setPlanvo(planVo);
+					p.setCmd(100);
+					main.out.writeObject(p);
 					main.out.flush();
 				} catch (IOException e1) {
-					
-					//e1.printStackTrace();
+					System.out.println(e1);
 				}
 			}
 		} else if (obj == jb_back) {

@@ -330,11 +330,11 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// SNB
 		jp_SNB = new JPanel();
-		title_su = main.p.getPlannerList().size();
+		title_su = main.planList.size();
 		jb_title = new JButton[title_su];
 		jp.setBackground(Color.decode("#D4B8E8"));
 		for (int i = 0; i <= title_su - 1; i++) {
-			jb_title[i] = new JButton(main.p.getPlannerList().get(i).getPLAN_TITLE());
+			jb_title[i] = new JButton(main.planList.get(i).getPLAN_TITLE());
 			jp_SNB.add(jb_title[i]);
 			jb_title[i].setPreferredSize(new Dimension(200, 50));
 			jp.add(jp_SNB, BorderLayout.WEST);
@@ -375,7 +375,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 					jb_title[index].setBackground(Color.decode("#B19CCB"));
 					select_title
-							.setText(" 여행지: " + "dasdasd" + "  |  날짜: " + p.getPlannerList().get(index).getPLAN_DATE()
+							.setText(" 여행지: " + main.location_VO.getCITY() + " " + main.location_VO.getTOWN() + "  |  날짜: " + p.getPlannerList().get(index).getPLAN_DATE()
 									+ "~" + p.getPlannerList().get(index).getPLAN_LASTDATE() + "("
 									+ p.getPlannerList().get(index).getPLAN_DAYS() + "일)");
 					textAreas = new JTextArea[p.getPlannerList().get(index).getPLAN_DAYS()];
@@ -434,7 +434,7 @@ public class Planner_Select extends JPanel implements ActionListener {
 
 		// 선택한 일정에 제목, 날짜 정보제공
 		jp_select_title = new JPanel();
-		select_title = new JLabel(" 여행지: " + "  |  날짜: " + p.getPlannerList().get(0).getPLAN_DATE() + "~"
+		select_title = new JLabel(" 여행지: " +  main.location_VO.getCITY() + " " + main.location_VO.getTOWN() + "  |  날짜: " + p.getPlannerList().get(0).getPLAN_DATE() + "~"
 				+ p.getPlannerList().get(0).getPLAN_LASTDATE() + "(" + p.getPlannerList().get(0).getPLAN_DAYS() + "일)");
 		select_title.setFont(new Font("Aharoni", Font.BOLD, 18));
 		select_title.setPreferredSize(new Dimension(800, 30));

@@ -63,6 +63,7 @@ public class CP_Client extends Thread {
 					case 4: // 유저 로그인
 						p.setVo(UserDAO.getLogin(vo));
 						p.setPlannerList(Planner_DAO.getPlannerList(vo.getM_ID()));
+						p.setLocation_VO(Travel_Location_DAO.getLocation(p.getPlannerList().get(0).getTL_NUM()));
 						p.setCmd(5);
 						out.writeObject(p);
 						out.flush();
@@ -82,7 +83,6 @@ public class CP_Client extends Thread {
 						UserDAO.getUserLastLogin(vo.getM_ID());
 						break;
 					case 22:
-						System.out.println(p.getLocation_VO().getTL_NUM());
 						p.setLocation_VO(Travel_Location_DAO.getLocation(p.getLocation_VO().getTL_NUM()));
 						p.setCmd(23);
 						out.writeObject(p);
@@ -243,14 +243,12 @@ public class CP_Client extends Thread {
 						break;
 					case 100 : // 새일정만들기
 						Planner_DAO.getInsert(planvo);
-						p.setVo(UserDAO.getUser(planvo.getM_ID()));
 						p.setCmd(101);
 						out.writeObject(p);
 						out.flush();
 						break;
 					case 202: // 비밀번호 변경
 						UserDAO.getPWUpdate(vo);
-						p.setVo(UserDAO.getLogin(vo));
 						p.setCmd(203);
 						out.writeObject(p);
 						out.flush();

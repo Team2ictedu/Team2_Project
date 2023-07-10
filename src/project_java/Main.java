@@ -41,8 +41,11 @@ public class Main extends JFrame implements Runnable {
 	public ObjectOutputStream out;
 	ObjectInputStream in;
 	Protocol p;
+	UserVO uservo;
 	Planner_VO planvo;
+	List<Planner_VO> planList;
 	Planner_Select selectvo;
+	Travel_Location_VO location_VO;
 
 	public Main() {
 		super("PERSONAL PLANNER");
@@ -76,7 +79,7 @@ public class Main extends JFrame implements Runnable {
 		connected();
 	}
 
-	public void Main2() {
+	public void Main2(Protocol p) {
 		login_My_Infomodify = new Login_My_Infomodify(this);
 		login_My_PWmodify = new Login_My_PWmodify(this);
 		login_Withdrawal = new Login_Withdrawal(this);
@@ -114,7 +117,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel.add("admin_places", adminMain.adminPlaces);
 		cardJPanel.add("admin_users", adminMain.adminUsers);
 		cardJPanel.add("admin_reviews", adminMain.adminReview);
-
+		this.p = p;
 	}
 
 	public static void main(String[] args) {
@@ -169,7 +172,7 @@ public class Main extends JFrame implements Runnable {
 						} else {
 							if (p.getVo().getM_CLASS().equals("0")) {
 								this.p.setVo(p.getVo());
-								Main2();
+								Main2(p);
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								System.out.println("Main run() received Protocol CMD : 72");
@@ -182,8 +185,11 @@ public class Main extends JFrame implements Runnable {
 								adminMain.adminReview.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								cardLayout.show(cardJPanel, "admin_greeting");
 							} else if (p.getVo().getM_CLASS().equals("1")) {
-								p.setPlannerList(p.getPlannerList());
-								Main2();
+								//p.setPlannerList(p.getPlannerList());
+								uservo = p.getVo();
+								planList = p.getPlannerList();
+								location_VO = p.getLocation_VO();
+								Main2(p);
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								cardLayout.show(cardJPanel, "planner_Select");
@@ -197,15 +203,13 @@ public class Main extends JFrame implements Runnable {
 						break;
 					case 7:
 						this.p.setVo(p.getVo());
-						Main2();
+						Main2(p);
 						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
 						break;
 					case 23:
-						planner_Select.p.setLocation_VO(p.getLocation_VO());
-						System.out.println(p.getLocation_VO().getCITY());
-						System.out.println(p.getLocation_VO().getTOWN());
+						location_VO = p.getLocation_VO();
 						break;
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;
@@ -243,20 +247,19 @@ public class Main extends JFrame implements Runnable {
 						}
 						break;
 					case 101:
-						Main2();
-						cardLayout.show(cardJPanel, "planner_Select");
+						cardLayout.show(cardJPanel, "planner_InsertSpot");
 						planner_Create.jtf_name.setText("");
 						planner_Create.jtf_date.setText("");
 						planner_Create.jtf_days.setText("");
 						break;
 					case 203:
-						Main2();
 						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
 						login_My_PWmodify.jpf_pw.setText("");
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
+						System.out.println(2);
 						break;
 
 					case 205: // 아이디 찾기

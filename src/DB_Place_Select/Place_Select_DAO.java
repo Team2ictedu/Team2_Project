@@ -15,5 +15,8 @@ public class Place_Select_DAO {
 		}
 		return ss;
 	}
-
+	public static Place_Select_VO getLocation(String PLAN_NUM) {
+		Place_Select_VO vo = getSession().selectOne("placeSelect", PLAN_NUM);
+		return vo;
+	}
 }
