@@ -30,8 +30,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 
 public class Login_Register extends JPanel implements ActionListener {
 

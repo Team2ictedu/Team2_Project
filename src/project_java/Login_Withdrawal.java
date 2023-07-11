@@ -26,8 +26,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 
 import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
@@ -234,20 +234,28 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 		} else if (obj == jbLogOut) { // 로그아웃
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == withdraw_bt) {
+			System.out.println(main.p.getVo().getM_PW());
 			String pass = new String(tf_pw.getText());
 			if (pass.equals(main.p.getVo().getM_PW())) {
 				if (tf_withdraw.getText() != null) {
-					try {
-						Protocol p = new Protocol();
-						UserVO vo = new UserVO();
-						vo.setM_ID(main.p.getVo().getM_ID());
-						vo.setDELETE_CON(tf_withdraw.getText());
-						p.setVo(vo);
-						p.setCmd(8);
-						main.out.writeObject(p);
-						main.out.flush();
-					} catch (Exception e2) {
-						System.out.println(e2);
+					int result = JOptionPane.showConfirmDialog(null, "정말로 회원탈퇴 하시겠습니까?", "Confirm",
+							JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						try {
+							Protocol p = new Protocol();
+							UserVO vo = new UserVO();
+							vo.setM_ID(main.p.getVo().getM_ID());
+							vo.setDELETE_CON(tf_withdraw.getText());
+							p.setVo(vo);
+							p.setCmd(8);
+							main.out.writeObject(p);
+							main.out.flush();
+							JOptionPane.showMessageDialog(null, "회원탈퇴가 완료되었습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+							main.cardLayout.show(main.cardJPanel, "login_Main");
+						} catch (Exception e2) {
+							System.out.println(e2);
+						}
+					} else {
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "탈퇴 사유를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
@@ -257,7 +265,6 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				tf_pw.requestFocus();
 			}
-			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == cancel_bt) {
 			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
 		}

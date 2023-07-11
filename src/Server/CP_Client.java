@@ -5,8 +5,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import UserDB.UserDAO;
-import UserDB.UserVO;
+import DB_Planner.Planner_DAO;
+import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_DAO;
+import DB_User.UserDAO;
+import DB_User.UserVO;
 import project_admin.AdminPlaceVO;
 import project_admin.AdminPlacesDAO;
 import project_admin.AdminReviewVO;
@@ -21,7 +24,6 @@ public class CP_Client extends Thread {
 	ObjectOutputStream out;
 	String username;
 	String ip;
-
 	public CP_Client(Socket s, DB_Server server) {
 		this.s = s;
 		this.server = server;
@@ -33,7 +35,6 @@ public class CP_Client extends Thread {
 		}
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	public void run() {
 		while (true) {
@@ -42,6 +43,7 @@ public class CP_Client extends Thread {
 				if (obj != null) {
 					Protocol p = (Protocol) obj;
 					UserVO vo = p.getVo();
+					Planner_VO planvo = p.getPlanvo();// 새일정 만들기 VO
 					switch (p.getCmd()) {
 					case 0:
 						out.writeObject(p);
@@ -61,14 +63,23 @@ public class CP_Client extends Thread {
 						}
 						break;
 					case 4: // 유저 로그인
-						p.setVo(UserDAO.getUser(vo));
+						System.out.println("before cmd4");
+						UserVO vo4 = UserDAO.getLogin(vo);
+						System.out.println("before cmd5");
+						p.setVo(vo4);
+						p.setPlannerList(Planner_DAO.getPlannerList(vo.getM_ID()));
+						if (vo4.getM_CLASS().equals("1")) {
+							
+							p.setLocation_VO(Travel_Location_DAO.getLocation(p.getPlannerList().get(0).getTL_NUM()));
+						}
 						p.setCmd(5);
 						out.writeObject(p);
 						out.flush();
 						break;
 					case 6: // 유저 정보변경
 						UserDAO.getUserUpdate(vo);
-						p.setVo(UserDAO.getUser(vo));
+						p.setVo(UserDAO.getLogin(vo));
+						p.setPlannerList(Planner_DAO.getPlannerList(vo.getM_ID()));
 						p.setCmd(7);
 						out.writeObject(p);
 						out.flush();
@@ -78,6 +89,12 @@ public class CP_Client extends Thread {
 						break;
 					case 9: // 마지막 로그인
 						UserDAO.getUserLastLogin(vo.getM_ID());
+						break;
+					case 22:
+						p.setLocation_VO(Travel_Location_DAO.getLocation(p.getLocation_VO().getTL_NUM()));
+						p.setCmd(23);
+						out.writeObject(p);
+						out.flush();
 						break;
 
 					case 51: // AdminPlaces SELECT * FROM place_all
@@ -414,15 +431,41 @@ public class CP_Client extends Thread {
 					
 						break;
 					
-				
-
+					case 100 : // 새일정만들기
+						Planner_DAO.getInsert(planvo);
+						p.setCmd(101);
+						out.writeObject(p);
+						out.flush();
+						break;
 					case 202: // 비밀번호 변경
 						UserDAO.getPWUpdate(vo);
-						p.setVo(UserDAO.getUser(vo));
 						p.setCmd(203);
 						out.writeObject(p);
 						out.flush();
 						break;
+					case 204: // 아이디 찾기
+						p.setVo(UserDAO.getidChk(vo));
+						p.setCmd(205);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 402: // 비밀번호 찾기
+						System.out.println(4);
+						p.setVo(UserDAO.getPwFind(vo));
+						p.setCmd(403);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 404: // 비밀번호 재설정
+						System.out.println(5);
+						UserDAO.getPWChange(vo);
+						p.setCmd(405);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					
 						
 						
 					case 700: //후기 불러오기
@@ -466,6 +509,7 @@ public class CP_Client extends Thread {
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 

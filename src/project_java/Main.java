@@ -12,8 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_VO;
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 import project_admin.AdminMain;
 import project_admin.AdminPlaceVO;
 import project_admin.AdminReviewVO;
@@ -35,11 +37,17 @@ public class Main extends JFrame implements Runnable {
 	Planner_InsertSpot planner_InsertSpot;
 	Planner_Select planner_Select;
 	AdminMain adminMain;
+	PwChange_login pw_ck;
 	Socket s;
 	public ObjectOutputStream out;
-	
 	ObjectInputStream in;
 	Protocol p;
+	UserVO uservo;
+	Planner_VO planvo;
+	List<Planner_VO> planList;
+	Planner_Select selectvo;
+	Travel_Location_VO location_VO;
+
 	public List<AdminPlaceVO> list52;
 	
 	public Main() {
@@ -47,6 +55,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel = new JPanel();
 		cardLayout = new CardLayout();
 		cardJPanel.setLayout(cardLayout);
+
 		// 로그인 후
 		// 객체 선언
 		// 로그인 전
@@ -61,7 +70,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel.add("id_Search", id_Search);
 		cardJPanel.add("pw_Search", pw_Search);
 		// cardJPanel.add("pwChange_login", pwChange_login);
-
+		getRootPane().setDefaultButton(login_Main.log_bt);
 		add(cardJPanel);
 
 		cardLayout.show(cardJPanel, "login_Main");
@@ -71,10 +80,9 @@ public class Main extends JFrame implements Runnable {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		connected();
-		getRootPane().setDefaultButton(login_Main.log_bt);
 	}
 
-	public void Main2() {
+	public void Main2(Protocol p) {
 		login_My_Infomodify = new Login_My_Infomodify(this);
 		login_My_PWmodify = new Login_My_PWmodify(this);
 		login_Withdrawal = new Login_Withdrawal(this);
@@ -112,7 +120,7 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel.add("admin_places", adminMain.adminPlaces);
 		cardJPanel.add("admin_users", adminMain.adminUsers);
 		cardJPanel.add("admin_reviews", adminMain.adminReview);
-
+		this.p = p;
 	}
 
 	public static void main(String[] args) {
@@ -136,6 +144,7 @@ public class Main extends JFrame implements Runnable {
 	public void run() {
 		esc: while (true) {
 			try {
+
 				Object obj = in.readObject();
 				if (obj != null) {
 					p = (Protocol) obj;
@@ -166,19 +175,25 @@ public class Main extends JFrame implements Runnable {
 							JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 						} else {
 							if (p.getVo().getM_CLASS().equals("0")) {
-								Main2();
+								this.p.setVo(p.getVo());
+								Main2(p);
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								System.out.println("Main run() received Protocol CMD : 72");
-								System.out.println("Main CMD:72 = LogIn as Admin"+ p.getVo().getM_NAME());
+								System.out.println("Main CMD:72 = LogIn as Admin" + p.getVo().getM_NAME());
 								adminMain.adminHome.adminLabel.setText(p.getVo().getM_NAME() + "");
-								adminMain.adminHome.welcomeLabel.setText(String.format("어서오세요, %s님!      %s", p.getVo().getM_NAME(), adminMain.adminHome.todayDate));
+								adminMain.adminHome.welcomeLabel.setText(String.format("어서오세요, %s님!      %s",
+										p.getVo().getM_NAME(), adminMain.adminHome.todayDate));
 								adminMain.adminUsers.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								adminMain.adminPlaces.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								adminMain.adminReview.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								cardLayout.show(cardJPanel, "admin_greeting");
 							} else if (p.getVo().getM_CLASS().equals("1")) {
-								Main2();
+								//p.setPlannerList(p.getPlannerList());
+								uservo = p.getVo();
+								planList = p.getPlannerList();
+								location_VO = p.getLocation_VO();
+								Main2(p);
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								cardLayout.show(cardJPanel, "planner_Select");
@@ -191,9 +206,14 @@ public class Main extends JFrame implements Runnable {
 						}
 						break;
 					case 7:
-						Main2();
-						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm", JOptionPane.INFORMATION_MESSAGE);
+						this.p.setVo(p.getVo());
+						Main2(p);
+						JOptionPane.showMessageDialog(null, "회원정보 수정이 완료되었습니다.", "Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
+						break;
+					case 23:
+						location_VO = p.getLocation_VO();
 						break;
 						
 						
@@ -240,7 +260,7 @@ public class Main extends JFrame implements Runnable {
 							}
 							
 							
-							adminMain.adminUsers.model.addRow(new String[] {p821.getM_id(),p821.getM_pw(), p821.getM_name(), 
+							adminMain.adminUsers.model.addRow(new String[] {p821.getM_id(),pwd, p821.getM_name(), 
 									p821.getM_birth(), p821.getM_email(),p821.getM_phone(), "수정" , "삭제"});
 							}
 						break;
@@ -307,7 +327,7 @@ public class Main extends JFrame implements Runnable {
 						out.flush();
 						break;
 					case 203:
-						Main2();
+						Main2(p);
 						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");

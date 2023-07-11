@@ -26,8 +26,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import dontUse.UserDAO;
-import dontUse.UserVO;
+import DB_User.UserVO;
+import Server.Protocol;
 
 public class Pw_Search extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
@@ -41,8 +41,7 @@ public class Pw_Search extends JPanel implements ActionListener {
 	JTextField idCg_jtf, name_jtf, em_jtf;
 	JButton logMv_bt, join_bt, idFin_bt, pwCk_bt;
 	Main main;
-	UserVO vo;
-	
+
 	public Pw_Search(Main main) {
 		this.main = main;
 //		FONT
@@ -276,16 +275,19 @@ public class Pw_Search extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				em_jtf.requestFocus();
 			} else {
-				this.vo = UserDAO.getInstance().getPwFind(idCg_jtf.getText(), name_jtf.getText(), em_jtf.getText());
-				if (idCg_jtf.getText().equals(vo.getM_ID()) && name_jtf.getText().equals(vo.getM_NAME()) && em_jtf.getText().equals(vo.getM_EMAIL())) {
-					idCg_jtf.setText("");
-					name_jtf.setText("");
-					em_jtf.setText("");
-					// 비밀번호 변경창 뜨기
-					PwChange_login pw_ck = new PwChange_login(Pw_Search.this);
-					pw_ck.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				try {
+					Protocol p = new Protocol();
+					UserVO vo = new UserVO();
+					vo.setM_ID(idCg_jtf.getText().trim());
+					vo.setM_NAME(name_jtf.getText().trim());
+					vo.setM_EMAIL(em_jtf.getText().trim());
+					p.setVo(vo);
+					p.setCmd(402);
+					main.out.writeObject(p);
+					main.out.flush();
+					System.out.println(1);
+				} catch (Exception e2) {
+					System.out.println(e2);
 				}
 			}
 		}
@@ -295,21 +297,4 @@ public class Pw_Search extends JPanel implements ActionListener {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void main(String[] args) {
-		try {
-			// Select the Look and Feel
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					new Pw_Search();
-				}
-			});
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 }

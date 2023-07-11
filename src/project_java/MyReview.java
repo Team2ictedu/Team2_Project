@@ -15,14 +15,14 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,12 +35,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import Server.Protocol;
-import UserDB.UserVO;
-import project_admin.AdminReviewVO;
-import project_admin.ButtonColumn;
-import project_server.ProjectProtocol;
 
 public class MyReview extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
@@ -65,13 +59,7 @@ public class MyReview extends JPanel implements ActionListener {
 	JCheckBox box;
 	DefaultTableModel dtm;
 	Main main;
-	UserVO myReviewVo;
-	String myID ;
 
-	public DefaultTableModel model = new DefaultTableModel();
-	/* jpEastFootTable */ JTable placeTable = new JTable(model);
-	
-	
 	public MyReview(Main main) {
 
 		this.main = main;
@@ -86,6 +74,7 @@ public class MyReview extends JPanel implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		// 콤보박스 메서드
 		DefaultTableCellRenderer dcr = new DefaultTableCellRenderer() {
 			public Component getTableCellRendererComponent // 셀렌더러
@@ -256,7 +245,7 @@ public class MyReview extends JPanel implements ActionListener {
 				re1_bt = new JButton("전체 후기");
 				re2_bt = new JButton("내 후기");
 				re3_bt = new JButton("작성");
-				re4_bt = new JButton("나의 후기 불러오기");
+				re4_bt = new JButton("삭제");
 				combo_jp = new JPanel();
 				combo_jp.setOpaque(false);
 
@@ -331,61 +320,13 @@ public class MyReview extends JPanel implements ActionListener {
 				// viewlb_jp.setBorder(new EmptyBorder(0, 500, 0, 0));
 				// 크기조정
 				// review_jsp.setPreferredSize(new Dimension(600,100));
-				dtm = new DefaultTableModel();
-
-				dtm.addColumn("관광지 이름");
-				dtm.addColumn("후기 내용");
-				dtm.addColumn("수정");
-				dtm.addColumn("삭제");
-				
-				placeTable = new JTable(dtm);
-				placeTable.setShowGrid(false);
-				placeTable.setShowHorizontalLines(false);
-				placeTable.setShowVerticalLines(false);
-				placeTable.setRowMargin(1);
-				placeTable.setIntercellSpacing(new Dimension(0, 0));
-				placeTable.setFillsViewportHeight(true);
-				
+				dtm = new DefaultTableModel(datas, colNames);
 				table = new JTable(dtm);
-				Action delete = new AbstractAction() {
-					public void actionPerformed(ActionEvent e) {
-						// 유저 삭제하기
-						JTable table = (JTable)e.getSource();
-				        int modelRow = Integer.valueOf( e.getActionCommand() );
-				        System.out.println("MyReview selected row is :"+modelRow);
-				        AdminReviewVO vo = new AdminReviewVO();
-				        System.out.println("my id is " + myID);
-				        vo.setM_id(myID);
-				        vo.setPr_con(dtm.getValueAt(modelRow, 1).toString());
-				        System.out.println(vo.getM_id());
-				        System.out.println(vo.getPr_con());
-						try {
-							ProjectProtocol p = new ProjectProtocol();
-							p.setCmd(702); 
-							p.setReviewvo(vo);
-							main.out.writeObject(p);
-							main.out.flush();
-						} catch (Exception e2) {
-							e2.printStackTrace();
-						}
-
-					}
-
-				};
-				Action edit = new AbstractAction() {
-					public void actionPerformed(ActionEvent e) {
-
-					}
-
-				};
-				ButtonColumn buttonColumn1 = new ButtonColumn(placeTable, edit, 2);
-				ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 3);
-				placeTable.getColumnModel().getColumn(1).setPreferredWidth(300);
-				
-				
+				table.getColumn("Check").setCellRenderer(dcr);
 				box = new JCheckBox();
 				box.setHorizontalAlignment(JLabel.CENTER);
-				review_jsp = new JScrollPane(placeTable);
+				table.getColumn("Check").setCellEditor(new DefaultCellEditor(box));
+				review_jsp = new JScrollPane(table);
 				review_jsp.setPreferredSize(new Dimension(500, 220));
 				// add2_jp.setLayout(new BoxLayout(add2_jp, BoxLayout.Y_AXIS));
 				view_jp.add(review_jsp, BorderLayout.CENTER);
@@ -469,24 +410,18 @@ public class MyReview extends JPanel implements ActionListener {
 				review_jtf.requestFocus();
 			}
 		} else if (obj == re4_bt) {
-			// 후기 불러오기
-			JOptionPane.showConfirmDialog(null, "후기를 불러오지 못했습니다", "error",
-						JOptionPane.PLAIN_MESSAGE);
-			Protocol p = new Protocol();
-			myReviewVo = main.p.getVo();
-			UserVO vo = myReviewVo;
-			if(myID == null) {
-				myID = vo.getM_ID();	
+			// 삭제하는 버튼 기능
+			boolean isSelected = box.isSelected();
+			if (isSelected == true) {
+				int result = JOptionPane.showConfirmDialog(null, "작성한 후기를 삭제하시겠습니까?", "Confirm",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.", "Confirm", JOptionPane.PLAIN_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "삭제할 후기를 선택해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 			}
-			
-			try {
-				p.setVo(vo);
-				p.setCmd(700);
-				main.out.writeObject(p);
-				main.out.flush();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+
 		}
 
 		search1.setSelectedIndex(0);

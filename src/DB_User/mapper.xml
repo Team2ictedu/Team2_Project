@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+	<!-- 정보 -->
+	<select id="userInfo" parameterType="String"
+		resultType="DB_User.UserVO">
+		SELECT M_ID, M_PW, M_NAME, TO_CHAR(M_BIRTH, 'YYYY-MM-DD')
+		AS M_BIRTH,
+		M_EMAIL, M_PHONE, M_TERMS, M_CLASS, M_LASTLOGIN,
+		DELETE_CON,
+		DELETE_TIME
+		FROM MEMBER
+		WHERE M_ID = #{M_ID}
+	</select>
+
+	<!-- 로그인 -->
+	<select id="userLogin" parameterType="DB_User.UserVO" resultType="DB_User.UserVO">
+		SELECT *
+		FROM MEMBER
+		WHERE M_ID = #{M_ID} AND M_PW = #{M_PW}
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="userIns" parameterType="DB_User.UserVO">
+		insert into MEMBER(M_ID,
+		M_PW, M_EMAIL, M_NAME, M_BIRTH, M_PHONE, M_TERMS,
+		M_CLASS)
+		values(#{M_ID},#{M_PW},#{M_EMAIL},#{M_NAME},#{M_BIRTH},#{M_PHONE},#{M_TERMS},#{M_CLASS})
+	</insert>
+
+	<!-- 회원가입 - 아이디중복체크 -->
+	<select id="Chk" parameterType="String"
+		resultType="DB_User.UserVO">
+		select M_ID from member where M_ID= #{M_ID}
+	</select>
+
+	<!-- 로그인 전 - 아이디 찾기 -->
+	<select id="idChk" parameterType="DB_User.UserVO"
+		resultType="DB_User.UserVO">
+		select M_ID from member where M_NAME= #{M_NAME} AND M_EMAIL
+		= #{M_EMAIL}
+	</select>
+
+	<!-- 로그인 전 - 비밀번호 찾기(유효성검사) -->
+	<select id="pwfind1" parameterType="DB_User.UserVO"
+		resultType="DB_User.UserVO">
+		select * from member where M_ID= #{M_ID} AND M_EMAIL
+		=#{M_EMAIL} AND M_NAME = #{M_NAME}
+	</select>
+
+	<!-- 로그인 전 - 비밀번호 찾기(비밀번호 재설정) -->
+	<update id="pwChg" parameterType="DB_User.UserVO">
+		update member set
+		M_PW= #{M_PW}
+		where
+		M_ID=#{M_ID}
+	</update>
+
+	<!-- 로그인 후 - 비밀번호 재설정 -->
+	<update id="pwUpdate" parameterType="DB_User.UserVO">
+		update member set
+		M_PW=#{M_PW} where M_ID=#{M_ID}
+	</update>
+
+	<!-- 로그인 후 - 유저정보 변경 -->
+	<update id="userUpdate" parameterType="DB_User.UserVO">
+		update member set
+		M_NAME=#{M_NAME}, M_EMAIL=#{M_EMAIL}, M_PHONE=#{M_PHONE} where
+		M_ID=#{M_ID}
+	</update>
+
+	<!-- 로그인 후 - 회원탈퇴 -->
+	<update id="userDelete" parameterType="DB_User.UserVO">
+		update member set
+		M_CLASS=4, DELETE_CON=#{DELETE_CON}, DELETE_TIME=sysdate where
+		M_ID=#{M_ID}
+	</update>
+
+	<!-- 최근접속 -->
+	<update id="userLastLogin" parameterType="DB_User.UserVO">
+		update member set
+		M_LASTLOGIN = sysdate where
+		M_ID=#{M_ID}
+	</update>
+
+<!-- 	 새일정만들기 -->
+	<insert id="createplan" parameterType="DB_Planner.Planner_VO">
+		insert into
+		PLANNER(PLAN_NUM, PLAN_TITLE, PLAN_DATE, PLAN_DAYS, M_ID, TL_NUM)
+		values(PLAN_NUM_SEQ.NEXTVAL,
+		#{PLAN_TITLE},#{PLAN_DATE},#{PLAN_DAYS},#{M_ID},#{TL_NUM})
+	</insert> 
+
+	<!-- 플래너 조회 -->
+	<select id="plannerList" parameterType="String" resultType="DB_Planner.Planner_VO">
+		SELECT p.PLAN_NUM,
+		p.PLAN_TITLE, TO_CHAR(p.PLAN_DATE, 'YYYY-MM-DD') AS PLAN_DATE,
+		p.PLAN_DAYS, p.M_ID, p.TL_NUM, TO_CHAR(p.PLAN_DATE + p.PLAN_DAYS,
+		'YYYY-MM-DD') AS PLAN_LASTDATE
+		FROM PLANNER p JOIN MEMBER m ON p.M_ID =
+		m.M_ID WHERE m.M_ID = #{M_ID}
+	</select>
+	
+	<!-- 플래너 지역정보 -->
+	<select id="location" parameterType="String"
+		resultType="DB_Travel_Location.Travel_Location_VO">
+		SELECT * FROM TRAVEL_LOCATION where TL_NUM = #{TL_NUM}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+

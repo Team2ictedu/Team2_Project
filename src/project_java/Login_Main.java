@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import DB_User.UserVO;
 import Server.Protocol;
-import UserDB.UserVO;
 
 public class Login_Main extends JPanel implements ActionListener {
 	Main main;
@@ -247,9 +247,9 @@ public class Login_Main extends JPanel implements ActionListener {
 		join_bt.addActionListener(this);
 		idFin_bt.addActionListener(this);
 		pwFin_bt.addActionListener(this);
-	
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// DB에 있는 정보 나중에는 등급 0은 관리자, 1은 유저, 4는 탈퇴유저 구분할것
@@ -266,12 +266,17 @@ public class Login_Main extends JPanel implements ActionListener {
 				UserVO vo = new UserVO();
 				try {
 					Protocol p = new Protocol();
-					vo.setM_ID(jtf_id.getText().trim());
-					vo.setM_PW(inpw);
-					p.setVo(vo);
+					UserVO vo99 = new UserVO(); 
+					vo99.setM_ID(jtf_id.getText().trim());
+					vo99.setM_PW(inpw);
+					System.out.println(vo99.getM_ID());
+					System.out.println(vo99.getM_PW());
+					p.setVo(vo99);
 					p.setCmd(4);
-					main.out.writeObject(p);
-					main.out.flush();
+					this.main.out.writeObject(p);
+					this.main.out.flush();;
+//					main.out.writeObject(p);
+//					main.out.flush();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

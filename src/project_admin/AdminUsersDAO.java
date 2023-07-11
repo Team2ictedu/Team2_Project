@@ -72,7 +72,7 @@ public class AdminUsersDAO {
 	
 	public static boolean getIdChk(String m_Id) {
 		boolean result = false;
-		AdminUserVO vo = getSession().selectOne("idChk", m_Id);
+		AdminUserVO vo = getSession().selectOne("idCheck", m_Id);
 		if(vo == null) {
 			result = true;
 		}
@@ -81,7 +81,7 @@ public class AdminUsersDAO {
 	
 	
 	public static int getInsert(AdminUserVO vo) {
-        int result = getSession().insert("userIns", vo);
+        int result = getSession().insert("userInsert", vo);
         ss.commit();
         return result;
     }
