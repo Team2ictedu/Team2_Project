@@ -17,22 +17,33 @@ public class Planner_DAO {
 		}
 		return ss;
 	}
+	
 	// 새 일정 만들기
-	public static int getInsert(Planner_VO vo) {
-		try {
-			int result = getSession().insert("createplan", vo);
-			ss.commit();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return 0;
+	public static String getInsert(Planner_VO vo) {
+	        int result = getSession().insert("createplan", vo);
+	        ss.commit();
+	        // 추가된 부분: 생성된 PLAN_NUM 값을 반환
+	        return vo.getPLAN_NUM();
 	}
 	
-	// 플래너 조회
+	// 사용자 모든 플래너 조회
 	public static List<Planner_VO> getPlannerList(String M_ID){
 		List<Planner_VO> list = null;
 		list = getSession().selectList("plannerList", M_ID);
 		return list;
+	}
+	
+	// 플래너 한개 정보조회
+	public static Planner_VO getPlanner(String PLAN_NUM) {
+		Planner_VO vo2 = getSession().selectOne("planner", PLAN_NUM);
+		return vo2;
+	}
+	
+	// 플래너 삭제
+	public static int getDeletePlanner(String PLAN_NUM) {
+		int result = getSession().delete("deletePlanner", PLAN_NUM);
+		ss.commit();
+		return result;
 	}
 	
 }

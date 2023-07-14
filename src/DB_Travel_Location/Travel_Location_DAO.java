@@ -1,5 +1,7 @@
 package DB_Travel_Location;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
@@ -16,9 +18,23 @@ public class Travel_Location_DAO {
 		return ss;
 	}
 	
+	// 
 	public static Travel_Location_VO getLocation(String TL_NUM) {
 		Travel_Location_VO vo2 = getSession().selectOne("location", TL_NUM);
 		return vo2;
 	}
-
+	
+	// 시티에 관한 town 리스트 조회
+	public static List<Travel_Location_VO> getTownList(String City) {
+		List<Travel_Location_VO> list = null;
+		list = getSession().selectList("townList", City);
+		return list;
+	}
+	
+	// 시티 and 타운인 여행위치번호 조회
+	public static Travel_Location_VO getTLNumber(Travel_Location_VO vo) {
+		Travel_Location_VO vo3 = getSession().selectOne("TLNum", vo);
+		System.out.println("DAO" + vo3.getTL_NUM());
+		return vo3;
+	}
 }

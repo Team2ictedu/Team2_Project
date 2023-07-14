@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -12,12 +14,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import DB_Place_All.Place_All_VO;
+import DB_Place_Select.Place_Select_VO;
 import DB_Planner.Planner_VO;
 import DB_Travel_Location.Travel_Location_VO;
 import DB_User.UserVO;
+import Server.ClientDAO;
 import Server.Protocol;
 import project_admin.AdminMain;
 import project_admin.AdminPlaceVO;
+import project_admin.AdminReviewVO;
 import project_server.ProjectProtocol;
 
 public class Main extends JFrame implements Runnable {
@@ -43,9 +49,18 @@ public class Main extends JFrame implements Runnable {
 	Protocol p;
 	UserVO uservo;
 	Planner_VO planvo;
+	Planner_VO planvo2;
 	List<Planner_VO> planList;
 	Planner_Select selectvo;
 	Travel_Location_VO location_VO;
+	Travel_Location_VO location_VO2;
+	List<Place_Select_VO> placeSelectList;
+	Place_All_VO placeAllVo;
+	List<Travel_Location_VO> travelLocationList;
+	List<Travel_Location_VO> travelLocationList2;
+	String TLNum;
+
+	public List<AdminPlaceVO> list52;
 
 	public Main() {
 		super("PERSONAL PLANNER");
@@ -94,7 +109,6 @@ public class Main extends JFrame implements Runnable {
 		planner_Select = new Planner_Select(this);
 
 		// 관리자 객체 선언
-		adminMain = new AdminMain(this);
 
 		// 카드 패널 추가
 
@@ -113,6 +127,11 @@ public class Main extends JFrame implements Runnable {
 		cardJPanel.add("planner_Select", planner_Select);
 
 		// 관리자
+		this.p = p;
+	}
+
+	public void Main3(Protocol p) {
+		adminMain = new AdminMain(this);
 		cardJPanel.add("admin_greeting", adminMain.adminHome);
 		cardJPanel.add("admin_places", adminMain.adminPlaces);
 		cardJPanel.add("admin_users", adminMain.adminUsers);
@@ -127,6 +146,11 @@ public class Main extends JFrame implements Runnable {
 
 				@Override
 				public void run() {
+					LocalDate dateObj = LocalDate.now();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					String date = dateObj.format(formatter);
+					System.out.println("Today is " + date + ", \nDAO.clientOpenInstance(today) result is "
+							+ ClientDAO.clientOpenInstance(date));
 					new Main();
 				}
 			});
@@ -141,6 +165,7 @@ public class Main extends JFrame implements Runnable {
 	public void run() {
 		esc: while (true) {
 			try {
+
 				Object obj = in.readObject();
 				if (obj != null) {
 					p = (Protocol) obj;
@@ -172,7 +197,7 @@ public class Main extends JFrame implements Runnable {
 						} else {
 							if (p.getVo().getM_CLASS().equals("0")) {
 								this.p.setVo(p.getVo());
-								Main2(p);
+								Main3(p);
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(관리자)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
 								System.out.println("Main run() received Protocol CMD : 72");
@@ -185,10 +210,12 @@ public class Main extends JFrame implements Runnable {
 								adminMain.adminReview.adminLabel.setText(adminMain.adminHome.adminLabel.getText());
 								cardLayout.show(cardJPanel, "admin_greeting");
 							} else if (p.getVo().getM_CLASS().equals("1")) {
-								//p.setPlannerList(p.getPlannerList());
+								// p.setPlannerList(p.getPlannerList());
 								uservo = p.getVo();
 								planList = p.getPlannerList();
 								location_VO = p.getLocation_VO();
+								placeAllVo = p.getPlaceAllVO();
+								planvo2 = p.getPlanvo();
 								Main2(p);
 								JOptionPane.showMessageDialog(null, "로그인 되었습니다.(유저)", "Confirm",
 										JOptionPane.INFORMATION_MESSAGE);
@@ -210,6 +237,33 @@ public class Main extends JFrame implements Runnable {
 						break;
 					case 23:
 						location_VO = p.getLocation_VO();
+						break;
+					case 27:
+						placeSelectList = p.getPlaceSelectList();
+						break;
+					case 30:
+						placeAllVo = p.getPlaceAllVO();
+						break;
+					case 36:
+						travelLocationList2 = p.getTravelLocationList();
+						planner_Create.search2.removeAllItems();
+						planner_Create.search2.addItem("Town");
+						for (Travel_Location_VO vo36 : travelLocationList2) {
+							planner_Create.search2.addItem(vo36.getTOWN());
+							System.out.println(vo36.getTOWN());
+						}
+						break;
+//					case 38:
+//						location_VO2 = p.getLocation_VO();
+//						System.out.println(p.getLocation_VO().getTL_NUM());
+//						planner_Create.planVo.setTL_NUM(p.getLocation_VO().getTL_NUM());
+//						break;
+					case 41:
+						uservo = p.getVo();
+						planvo2 = p.getPlanvo();
+						planList = p.getPlannerList();
+						Main2(p);
+						cardLayout.show(cardJPanel, "planner_Select");
 						break;
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;
@@ -233,8 +287,9 @@ public class Main extends JFrame implements Runnable {
 						ProjectProtocol p74 = (ProjectProtocol) obj;
 						adminMain.adminUsers.model.setRowCount(0);
 						project_admin.AdminUserVO vo74 = p74.getUservo();
-						adminMain.adminUsers.model.addRow(new String[] { vo74.getM_id(), vo74.getM_pw(),
-								vo74.getM_name(), vo74.getM_birth(), vo74.getM_email(), "수정", "삭제" });
+						adminMain.adminUsers.model
+								.addRow(new String[] { vo74.getM_id(), vo74.getM_pw(), vo74.getM_name(),
+										vo74.getM_birth(), vo74.getM_email(), vo74.getM_phone(), "수정", "삭제" });
 
 						break;
 					case 82: // (SELECT * FROM MEMBER)
@@ -242,63 +297,116 @@ public class Main extends JFrame implements Runnable {
 						List<project_admin.AdminUserVO> list82 = p82.getUserList();
 						adminMain.adminUsers.model.setRowCount(0);
 						for (project_admin.AdminUserVO p821 : list82) {
-							adminMain.adminUsers.model.addRow(new String[] { p821.getM_id(), p821.getM_pw(),
-									p821.getM_name(), p821.getM_birth(), p821.getM_email(), "수정", "삭제" });
+							String pwd = p821.getM_pw();
+							StringBuilder pwd2 = new StringBuilder(pwd);
+							if (pwd != null) {
+								if (pwd.length() > 2) {
+									for (int i = 1; i < pwd.length() - 1; i++) {
+										pwd2.setCharAt(i, '*');
+									}
+									pwd = pwd2.toString();
+								}
+							}
+
+							adminMain.adminUsers.model.addRow(new String[] { p821.getM_id(), pwd, p821.getM_name(),
+									p821.getM_birth(), p821.getM_email(), p821.getM_phone(), "수정", "삭제" });
 						}
 						break;
+					case 85: // print all places
+						ProjectProtocol p85 = (ProjectProtocol) p;
+						p85.setCmd(51);
+						out.writeObject(p85);
+						out.flush();
+						break;
+
+					case 86: // error
+						JOptionPane.showMessageDialog(null, "잘못된 입력값입니다.", "데이터 값 에러", JOptionPane.ERROR_MESSAGE);
+						break;
+					case 866: // error: can't change id
+						JOptionPane.showMessageDialog(null, "아이디는 바꿀 수 없습니다.", "데이터 값 에러", JOptionPane.ERROR_MESSAGE);
+						ProjectProtocol p866 = (ProjectProtocol) p;
+						p866.setCmd(81);
+						out.writeObject(p866);
+						out.flush();
+						break;
+					case 867: // error :can't change price to string
+						JOptionPane.showMessageDialog(null, "가격은 숫자만 입력 가능합니다.", "데이터 값 에러", JOptionPane.ERROR_MESSAGE);
+						ProjectProtocol p867 = (ProjectProtocol) p;
+						p867.setCmd(51);
+						out.writeObject(p867);
+						out.flush();
+						break;
+
+					case 88:
+						ProjectProtocol p88 = (ProjectProtocol) p;
+						p88.setCmd(81);
+						out.writeObject(p88);
+						out.flush();
+						break;
+					case 92: // add rows to adminreview model
+						ProjectProtocol p92 = (ProjectProtocol) p;
+						System.out.println("printing ReviewList");
+						List<AdminReviewVO> list92 = p92.getReviewList();
+						adminMain.adminReview.model.setRowCount(0);
+						if (list92 == null) {
+							JOptionPane.showMessageDialog(null, "등록된 리뷰가 없습니다.", "데이터 값 에러", JOptionPane.ERROR_MESSAGE);
+						} else {
+							for (project_admin.AdminReviewVO p921 : list92) {
+								adminMain.adminReview.model.addRow(
+										new String[] { p921.getM_id(), p921.getPa_name(), p921.getPr_con(), "삭제" });
+							}
+						}
+						break;
+//					case 93: // add rows without refreshing adrminreview
+//						ProjectProtocol p93 = (ProjectProtocol) p;
+//						System.out.println("printing ReviewList");
+//						List<AdminReviewVO> list93 = p93.getReviewList();
+//						for (project_admin.AdminReviewVO p921 : list93) {
+//							adminMain.adminReview.model.addRow(new String[] {p921.getM_id(),p921.getPa_name(), p921.getPr_con() 
+//									, "삭제"});
+//							}
+//						break;
+//					case 94 :
+//						adminMain.adminReview.model.setRowCount(0);
+//						break;
+					case 95:
+						ProjectProtocol p95 = (ProjectProtocol) p;
+						p95.setCmd(91);
+						out.writeObject(p95);
+						out.flush();
+						break;
+
 					case 101:
+						uservo = p.getVo();
+						planvo2 = p.getPlanvo();
+						Main2(p);
 						cardLayout.show(cardJPanel, "planner_InsertSpot");
 						planner_Create.jtf_name.setText("");
 						planner_Create.jtf_date.setText("");
 						planner_Create.jtf_days.setText("");
+						planner_Create.search1.setSelectedIndex(0);
+						planner_Create.search2.setSelectedIndex(0);
 						break;
+
 					case 203:
+						Main2(p);
 						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
 						cardLayout.show(cardJPanel, "planner_Select");
 						login_My_PWmodify.jpf_pw.setText("");
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
-						System.out.println(2);
 						break;
-
-					case 205: // 아이디 찾기
-						if (p.getVo() == null) {
-							JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
-						} else {
-							int result = JOptionPane.showConfirmDialog(null, id_Search.jtf_name.getText() + "님의 아이디는 "
-									+ p.getVo().getM_ID() + "입니다.\n비밀번호도 찾으시겠습니까?", "Confirm",
-									JOptionPane.YES_NO_OPTION);
-							if (result == JOptionPane.YES_OPTION) {
-								cardLayout.show(cardJPanel, "pw_Search");
-							} else {
-								cardLayout.show(cardJPanel, "login_Main");
-								id_Search.jtf_name.setText("");
-								id_Search.jtf_em.setText("");
-							}
+					case 701:
+						ProjectProtocol p701 = (ProjectProtocol) p;
+						List<AdminReviewVO> list701 = p701.getReviewList();
+						myReview.dtm.setRowCount(0);
+						for (AdminReviewVO k : list701) {
+							myReview.dtm.addRow(new String[] { k.getPa_name(), k.getPr_con(), "수정", "삭제" });
 						}
 						break;
-					case 403:
-						if (p.getVo() == null) {
-							JOptionPane.showMessageDialog(null, "일치한 정보가 존재하지 않습니다.", " Confirm",
-									JOptionPane.ERROR_MESSAGE);
-						} else {
-							pw_ck = new PwChange_login(pw_Search);
-							pw_ck.setVisible(true);
-							pw_ck.vo.setM_ID(p.getVo().getM_ID());
-							pw_Search.idCg_jtf.setText("");
-							pw_Search.name_jtf.setText("");
-							pw_Search.em_jtf.setText("");
-						}
-						break;
-					case 405:
-						JOptionPane.showMessageDialog(null, "비밀번호 설정이 완료되었습니다.", "Confirm",
-								JOptionPane.INFORMATION_MESSAGE);
-						pw_ck = new PwChange_login(pw_Search);
-						pw_ck.setVisible(false);
-						pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
-						pw_ck.pwck1_jtf.setText("");
-						pw_ck.pwck2_jtf.setText("");
+					case 1000:
+						JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 						break;
 					}
 				}
@@ -315,7 +423,7 @@ public class Main extends JFrame implements Runnable {
 	// 접속
 	public void connected() {
 		try {
-			s = new Socket("192.168.0.44", 7780);
+			s = new Socket("124.63.62.27", 7780);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 			new Thread(this).start();

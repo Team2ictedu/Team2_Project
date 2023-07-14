@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -31,7 +32,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import DB_Place_All.Place_All_VO;
 import DB_Planner.Planner_VO;
+import DB_Travel_Location.Travel_Location_DAO;
+import DB_Travel_Location.Travel_Location_VO;
+import DB_User.UserVO;
 import Server.Protocol;
 
 public class Planner_Create extends JPanel implements ActionListener {
@@ -42,14 +47,18 @@ public class Planner_Create extends JPanel implements ActionListener {
 	JLabel jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel_new;
 	JTextField jtf_name, jtf_date, jtf_days;
 	JButton jb_create, jb_back, jb_calc;
-	String[] city = { "City" }; // 시
-	JComboBox<String> jcom = new JComboBox<>(city);
-	String[] town = { "Town" }; // 동읍리
-	JComboBox<String> jcom2 = new JComboBox<>(town);
+	JComboBox<String> search1, search2;
+	String[] ser1 = { "City", "제주시", "서귀포시" }; // 시
+	ArrayList<String> TravelList;
 	JPanel jp_main, jp_checkbox;
 	String a;
+	Planner_InsertSpot planner_InsertSpot;
+	Planner_VO planVo = new Planner_VO();
+	String town, city;
+	UserVO uservo;
 	public Planner_Create(Main main) {
 		this.main = main;
+//		uservo = main.uservo;
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -198,8 +207,14 @@ public class Planner_Create extends JPanel implements ActionListener {
 			jb_create.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jb_back.setFont(new Font("Jalnan", Font.PLAIN, 12));
 			jp_checkbox = new JPanel();
-			jp_checkbox.add(jcom);
-			jp_checkbox.add(jcom2);
+			TravelList = new ArrayList<String>();
+			TravelList.add("Town");
+			search1 = new JComboBox<>(ser1);
+			search2 = new JComboBox<>(TravelList.toArray(new String[0]));
+			search1.setSelectedIndex(0);
+			search2.setSelectedIndex(0);
+			jp_checkbox.add(search1);
+			jp_checkbox.add(search2);
 			jp_main.setBackground(Color.WHITE);
 			jp_main.setLayout(new GridLayout(0, 1));
 			jp_checkbox.setLayout(new GridLayout(0, 2));
@@ -263,6 +278,8 @@ public class Planner_Create extends JPanel implements ActionListener {
 			add(jp, BorderLayout.CENTER);
 			setBackground(Color.decode("#D4B8E8"));
 		}
+		search1.setSelectedIndex(0);
+		search2.setSelectedIndex(0);
 		jb1.addActionListener(this);
 		jb2.addActionListener(this);
 		jb3.addActionListener(this);
@@ -272,67 +289,114 @@ public class Planner_Create extends JPanel implements ActionListener {
 		jbLogOut.addActionListener(this);
 		jb_create.addActionListener(this);
 		jb_back.addActionListener(this);
-
+		search1.addActionListener(this);
+		search2.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton obj = (JButton) e.getSource();
-		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
-			main.cardLayout.show(main.cardJPanel, "planner_Create");
-		} else if (obj == jb2) { // 내일정 조회
-			main.cardLayout.show(main.cardJPanel, "planner_Select");
-		} else if (obj == jb3) { // 여행 후기
-			main.cardLayout.show(main.cardJPanel, "allReview");
-		} else if (obj == jb4) { // 마이페이지
-			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if (obj == jbMyInfo) { // 내정보
-			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if (obj == jbLogOut) { // 로그아웃
-			main.cardLayout.show(main.cardJPanel, "login_Main");
-		} else if (obj == jb_create) {
-			if (jtf_name.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
-				jtf_name.requestFocus(); // 커서위치 조절
-			} else if (jtf_date.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "시작날짜를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
-			} else if (jtf_days.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
-				jtf_days.requestFocus();
-			} else { // 성공시
-				try {
-					Protocol p = new Protocol();
-					Planner_VO planVo = new Planner_VO();
-					planVo.setPLAN_TITLE(jtf_name.getText());
-					planVo.setPLAN_DATE(jtf_date.getText());
-					planVo.setM_ID(main.uservo.getM_ID());
-					planVo.setTL_NUM("1"); // 임시로 한거임
-					p.setPlanvo(planVo);
-					p.setCmd(100);
-					main.out.writeObject(p);
-					main.out.flush();
-				} catch (IOException e1) {
-					System.out.println(e1);
+		Object obj = e.getSource();
+		if (obj instanceof JButton) {
+			if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+				main.cardLayout.show(main.cardJPanel, "planner_Create");
+			} else if (obj == jb2) { // 내일정 조회
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			} else if (obj == jb3) { // 여행 후기
+				main.cardLayout.show(main.cardJPanel, "allReview");
+			} else if (obj == jb4) { // 마이페이지
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if (obj == jbMyInfo) { // 내정보
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if (obj == jbLogOut) { // 로그아웃
+				main.cardLayout.show(main.cardJPanel, "login_Main");
+			} else if (obj == jb_create) {
+				if (jtf_name.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "제목을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+					jtf_name.requestFocus(); // 커서위치 조절
+				} else if (jtf_date.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "시작날짜를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				} else if (jtf_days.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "여행기간을 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
+					jtf_days.requestFocus();
+				} else if (search1.getSelectedIndex() == 0 || search2.getSelectedIndex() == 0) {
+					JOptionPane.showMessageDialog(null, "지역을 선택하세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+				} else { // 성공시
+					String daysText = jtf_days.getText();
+					try {
+						int days = Integer.parseInt(daysText);
+						if (!(days > 0 && days < 8)) {
+							JOptionPane.showMessageDialog(null, "여행기간은 1~7일 입력 가능합니다.", "Confirm",
+									JOptionPane.ERROR_MESSAGE);
+							jtf_days.setText("");
+							jtf_days.requestFocus();
+						} else {
+							try {
+								city = search1.getSelectedItem().toString();
+					            town = search2.getSelectedItem().toString();
+					            Travel_Location_VO vo3 = new Travel_Location_VO();
+					            vo3.setCITY(city);
+					            vo3.setTOWN(town);
+					            System.out.println(0);
+					            planVo.setTL_NUM(Travel_Location_DAO.getTLNumber(vo3).getTL_NUM());
+							} catch (Exception e2) {
+								// TODO: handle exception
+							}
+							
+							try {
+								Protocol p = new Protocol();
+								planVo.setPLAN_TITLE(jtf_name.getText());
+								planVo.setPLAN_DATE(jtf_date.getText());
+								planVo.setM_ID(main.uservo.getM_ID());
+								planVo.setPLAN_DAYS(days);
+								p.setPlanvo(planVo);
+								p.setCmd(100);
+								main.out.writeObject(p);
+								main.out.flush();
+							} catch (IOException e1) {
+								System.out.println(e1);
+							}
+						}
+					} catch (NumberFormatException e3) {
+						JOptionPane.showMessageDialog(null, "숫자를 입력해야 합니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						jtf_days.setText("");
+						jtf_days.requestFocus();
+					}
 				}
-			}
-		} else if (obj == jb_back) {
-			// 취소할때 문자에 길이가 있으면 페이지 이동할건지 여부 확인
-			if (jtf_name.getText().length() > 0 || jtf_date.getText().length() > 0 || jtf_days.getText().length() > 0) {
-				int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm",
-						JOptionPane.YES_NO_OPTION);
-				// 예 클릭시, 내용 초기화하고 이동시켜주고 아니오 클릭시, 이동취소
-				if (result == JOptionPane.YES_OPTION) {
-					jtf_name.setText("");
-					jtf_date.setText("");
-					jtf_days.setText("");
+			} else if (obj == jb_back) {
+				// 취소할때 문자에 길이가 있으면 페이지 이동할건지 여부 확인
+				if (jtf_name.getText().length() > 0 || jtf_date.getText().length() > 0
+						|| jtf_days.getText().length() > 0) {
+					int result = JOptionPane.showConfirmDialog(null, "작성한 내용을 취소하고 이동하시겠습니까?", "Confirm",
+							JOptionPane.YES_NO_OPTION);
+					// 예 클릭시, 내용 초기화하고 이동시켜주고 아니오 클릭시, 이동취소
+					if (result == JOptionPane.YES_OPTION) {
+						jtf_name.setText("");
+						jtf_date.setText("");
+						jtf_days.setText("");
+						main.cardLayout.show(main.cardJPanel, "planner_Select");
+						search1.setSelectedIndex(0);
+						search2.setSelectedIndex(0);
+					}
+				} else { // 취소할때 문자길이가 없으면 바로 이동
 					main.cardLayout.show(main.cardJPanel, "planner_Select");
 				}
-			} else { // 취소할때 문자길이가 없으면 바로 이동
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			} else if (obj == jb_calc) {
+				Calendarmain calendarmain = new Calendarmain(Planner_Create.this);
+				calendarmain.setVisible(true);
 			}
-		} else if(obj==jb_calc) {
-			Calendarmain calendarmain = new Calendarmain(Planner_Create.this);
-			calendarmain.setVisible(true);
+		} else if (obj instanceof JComboBox) {
+		    if (obj == search1) {
+		        try {
+		            city = search1.getSelectedItem().toString();
+		            Protocol p = new Protocol();
+		            p.setMsg(city);
+		            p.setCmd(35);
+		            main.out.writeObject(p);
+		            main.out.flush();
+		        } catch (Exception e2) {
+		            System.out.println(e2);
+		        }
+		    } 
 		}
 	}
 

@@ -12,8 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -24,11 +27,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
-import project_server.ProjectProtocol;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 
 
@@ -48,7 +54,7 @@ public class AdminHome extends JPanel{
 	public String todayDate = dtf.format(now);
 	public String adminName;
 	public String welcome = String.format("어서오세요, %s님!      %s", adminName, todayDate);
-	
+	DefaultCategoryDataset dataset;
 	
 	
 	public AdminHome(AdminMain main) {
@@ -231,7 +237,17 @@ public class AdminHome extends JPanel{
 		jpEastHeadNorth.add(welcomeLabel);
 		
 		//jpEastHeadMain.add(North + South)
-		jpEastHeadSouth.add(jsp);
+		createDataset();  
+	    // Create chart  
+	    JFreeChart chart = ChartFactory.createLineChart(  
+	        "퍼스널 플래서 트래픽",
+	        "날짜", 
+	        "일일 방문자 수", 
+	        dataset, PlotOrientation.VERTICAL, true, true, true
+	        );  
+	    
+	    ChartPanel panel = new ChartPanel(chart);
+		jpEastHeadSouth.add(panel);
 		jpEastHeadMain.add(jpEastHeadNorth);
 		jpEastHeadMain.add(jpEastHeadSouth);
 		
@@ -300,5 +316,18 @@ public class AdminHome extends JPanel{
 
 			
 	}
+	  public void createDataset() {  
+		  
+		    String series1 = "퍼스널플래너 방문자";  
+		    
+		    List<AdminConnectionVO> list = AdminConnectionDAO.getList();
+		    
+		    dataset = new DefaultCategoryDataset();  
+		    for (AdminConnectionVO k : list) {
+				dataset.addValue(Integer.parseInt(k.getP_connection()),series1, k.getP_date().substring(5,11));
+			}
+		    
+		  
+		  }  
 	
 }

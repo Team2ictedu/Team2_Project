@@ -83,7 +83,6 @@ public class Calendarmain extends JFrame implements ActionListener {
     }
 
     private void start() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         buttonAfter.addActionListener(this);
         buttonBefore.addActionListener(this);
     }

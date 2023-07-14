@@ -59,11 +59,46 @@ public class AdminPlacesDAO {
 		return list;
 	}
 	
+	public static String getPlaceNum(AdminPlaceVO vo) {
+		String str = "";
+		str = getSession().selectOne("placeNum", vo);
+		return str;
+	}
+	
+	public static String getPlaceNum2(String str) {
+		String str1 = "";
+		str1 = getSession().selectOne("getPlacesNum", str);
+		return str1;
+	}
+	
+	
+	public static String getPlaceName(String str) {
+		String str1 = getSession().selectOne("getPlaceName" , str);
+		return str1;
+	}
+	
 	public static int getDelete(AdminPlaceVO vo) {
-		int result = getSession().delete("placeDel", vo);
+		int result = getSession().delete("placeDelVo", vo);
 		ss.commit();
 		return result;
 	}
+	public static int getDeleteStr(String vo) {
+		int result = getSession().delete("placeDelNum", vo);
+		ss.commit();
+		return result;
+	}
+	
+	public static int getInsert(AdminPlaceVO vo) {
+		int result = getSession().insert("placeInsert", vo);
+		ss.commit();
+		return result;
+	}
+	public static int getUpdate(AdminPlaceVO vo) {
+		int result = getSession().update("placeUpdate", vo);
+		ss.commit();
+		return result;
+	}
+	
 	
 	
 	

@@ -1,5 +1,7 @@
 package DB_Place_All;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import DB_User.DBService;
@@ -15,5 +17,36 @@ public class Place_All_DAO {
 		}
 		return ss;
 	}
+	// 리뷰 전체 보기
+		public static List<Place_All_VO> getAllRev() {
+			List<Place_All_VO> list = null;
+			list = getSession().selectList("allReview");
+			return list;
+		}
+		
+		// 콤보 박스에 db값 넣기
+		public static List<Place_All_VO> getCity() {
+			List<Place_All_VO> list = null;
+			list = getSession().selectList("combo1");
+			return list;
+		}
+		
+		// 관광지 이름조회
+		public static List<Place_All_VO> getplName() {
+			List<Place_All_VO> list = null;
+			list = getSession().selectList("plname");
+			return list;
+		}
 
+		public static Place_All_VO getPlaceAll(String PA_NUM) {
+			Place_All_VO vo3 = getSession().selectOne("placeFind", PA_NUM);
+			return vo3;
+		}
+		
+		// 관광지 검색
+		public static List<Place_All_VO> getPlaceFind(String msg) {
+			List<Place_All_VO> list = null;
+			list = getSession().selectList("placeFindList", msg);
+			return list;
+		}
 }

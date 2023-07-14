@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -66,7 +67,7 @@ public class AdminPlaces extends JPanel {
 		this.main = main;
 
 		// buttoncolumn action
-		Action delete = new AbstractAction() {
+		Action delete = new AbstractAction() {   //delete 기능
 			
 			public void actionPerformed(ActionEvent e) {
 				JTable table = (JTable)e.getSource();
@@ -87,7 +88,6 @@ public class AdminPlaces extends JPanel {
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
-		        
 			}
 
 		};
@@ -95,6 +95,33 @@ public class AdminPlaces extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				JTable table = (JTable)e.getSource();
+		        int modelRow = Integer.valueOf( e.getActionCommand() );
+		        System.out.println("AdminPlaces selected model row is :"+modelRow);
+//		        AdminUserVO vo = new AdminUserVO();
+		        //
+		        
+		        AdminPlaceVO vo2 = main.main.list52.get(modelRow);
+		        
+		        //테이블의 있는 값 vo에 넣기
+		        AdminPlaceVO vo = new AdminPlaceVO();
+		        vo.setPa_name(table.getValueAt(modelRow, 0).toString());
+		        vo.setPa_location(table.getValueAt(modelRow, 1).toString());
+		        vo.setPa_con(table.getValueAt(modelRow, 2).toString());
+		        vo.setPa_price(table.getValueAt(modelRow, 3).toString());
+		        System.out.println(vo2.getPa_num());
+				try {
+					ProjectProtocol p = new ProjectProtocol();
+					p.setCmd(90);
+					p.setPlacevo(vo);
+					p.setMsg(vo2.getPa_num());
+					main.main.out.writeObject(p);
+					main.main.out.flush();
+					System.out.println("sending protocol : edit button");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+					System.out.println("error sending protocol : edit button");
+				}
 			}
 
 		};
@@ -299,9 +326,9 @@ public class AdminPlaces extends JPanel {
 		placeTable.setRowMargin(0);
 		placeTable.setIntercellSpacing(new Dimension(0, 0));
 		placeTable.setFillsViewportHeight(true);
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-		placeTable.setRowSorter(sorter);
-
+//		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+//		placeTable.setRowSorter(sorter);
+//		
 		ButtonColumn buttonColumn2 = new ButtonColumn(placeTable, delete, 5);
 		ButtonColumn buttonColumn = new ButtonColumn(placeTable, edit, 4);
 
@@ -329,12 +356,21 @@ public class AdminPlaces extends JPanel {
 		jPop.setLayout(new GridLayout(0,2));
 		
 		pf = new PopupFactory();
-		pf = pf.getSharedInstance();
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() / 2));
 		int y = (int) ((dimension.getHeight() / 2));
 
-		po = pf.getPopup(jpWest, jPop, x-100, y-100);
+		
+		jPop.add(popPlaceNameLabel);
+		jPop.add(popPlaceName);
+		jPop.add(popPlaceLocationLabel);
+		jPop.add(popPlaceLocation);
+		jPop.add(popPlaceConLabel);
+		jPop.add(popPlaceCon);
+		jPop.add(popPlacePriceLabel);
+		jPop.add(popPlacePrice);
+		jPop.add(popAddBtn);
+		jPop.add(popCancelBtn);
 		
 		
 		addPlaceBtn.addActionListener(new ActionListener() {
@@ -342,34 +378,59 @@ public class AdminPlaces extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String d = e.getActionCommand();
-				jPop.add(popPlaceNameLabel);
-				jPop.add(popPlaceName);
-				jPop.add(popPlaceLocationLabel);
-				jPop.add(popPlaceLocation);
-				jPop.add(popPlaceConLabel);
-				jPop.add(popPlaceCon);
-				jPop.add(popPlacePriceLabel);
-				jPop.add(popPlacePrice);
-				JLabel test1 = new JLabel("test1");
-				JTextField test2 = new JTextField(20);
-				test2.setEditable(true);
-				jPop.add(popAddBtn);
-				jPop.add(popCancelBtn);
-
-				
-				
+				if (po==null) {
+					po = pf.getPopup(jpWest, jPop, x-100, y-100);
+				}
 				po.show();
 			}
 		});
+		
 		popCancelBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				popPlaceName.setText("");
+				popPlaceLocation.setText("");
+				popPlacePrice.setText("");
+				popPlaceCon.setText("");
 				po.hide();
-				po = pf.getPopup(jpEast, jPop, x-100, y-100);
+				po = pf.getPopup(jpWest, jPop, x-100, y-100);
 			}
 		});
 
+		popAddBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String name = popPlaceName.getText();
+				String location  = popPlaceLocation.getText();
+				String con = popPlaceCon.getText();
+				String price = popPlacePrice.getText() ; 
+				
+				if(name.equals("") && location.equals("") && con.equals("") && price.equals("")) {
+					JOptionPane.showMessageDialog(null, "정보를 입력하세요.", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+				} else  {
+					ProjectProtocol p = new ProjectProtocol();
+					AdminPlaceVO vo = new AdminPlaceVO();
+					vo.setPa_name(name);
+					vo.setPa_location(location);
+					vo.setPa_con(con);
+					vo.setPa_price(price);
+					p.setPlacevo(vo);
+					p.setCmd(84);
+					try {
+						main.main.out.writeObject(p);
+						main.main.out.flush();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+				
+				
+			}
+		});
 		// jpEastFootMain.add()
 		jpEastFootMain.setPreferredSize(new Dimension(700, 500));
 		jpEastFootMain.add(jpEastFootCenter);
@@ -443,9 +504,7 @@ public class AdminPlaces extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (int i = 0; i <= model.getRowCount() + 1; i++) {
-					model.removeRow(0);
-				}
+				model.setRowCount(0);
 
 			}
 		});
@@ -460,11 +519,6 @@ public class AdminPlaces extends JPanel {
 
 	}
 
-	public void deleteTable() {
-		for (int i = 0; i <= model.getRowCount() + 1; i++) {
-			model.removeRow(0);
-		}
-	}
 }
 
 /*

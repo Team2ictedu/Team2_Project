@@ -50,6 +50,7 @@ import DB_Planner.Planner_DAO;
 import DB_Planner.Planner_VO;
 import DB_Travel_Location.Travel_Location_DAO;
 import DB_Travel_Location.Travel_Location_VO;
+import DB_User.UserDAO;
 import DB_User.UserVO;
 import Server.Protocol;
 import project_admin.ButtonColumn;
@@ -59,8 +60,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 
-public class Planner_InsertSpot extends JPanel implements ActionListener {
-	Main main;
+public class Planner_Edit extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
@@ -77,11 +77,15 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 	/* jpEastFootTable */ JTable placeTable2 = new JTable(model2);
 	Place_All_VO vo2;
 	String day = "1";
+	String planNum;
+	Planner_Select planner_Select;
+	Planner_VO planVo;
+	UserVO userVo;
 
-	public Planner_InsertSpot(Main main) {
-		this.main = main;
-		UserVO userVo = main.uservo;
-		Planner_VO planner_VO = main.planvo2;
+	public Planner_Edit(Planner_Select planner_Select) {
+		this.planner_Select = planner_Select;
+		planVo = Planner_DAO.getPlanner(planner_Select.planNum);
+		userVo = UserDAO.getUser(planVo.getM_ID());
 //		FONT
 //		Font font = Font.loadFont("src/homework/fonts/Jalnan.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -115,7 +119,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 			jb4 = new JButton("마이페이지");
 			jb4.setPreferredSize(new Dimension(120, 30));
 //		jb4.setPreferredSize(new Dimension(80, 40));
-			jbName = new JButton(main.p.getVo().getM_NAME() + "님");
+			jbName = new JButton(userVo.getM_NAME() + "님");
 			jbMyInfo = new JButton("내 정보");
 			jbLogOut = new JButton("로그아웃");
 		}
@@ -181,9 +185,9 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 
 		// planner 작업
 		jp_SNB = new JPanel();
-		JButton[] jb_day = new JButton[main.planvo2.getPLAN_DAYS()];
+		JButton[] jb_day = new JButton[planVo.getPLAN_DAYS()];
 		jp.setBackground(Color.decode("#D4B8E8"));
-		for (int i = 0; i < main.planvo2.getPLAN_DAYS(); i++) {
+		for (int i = 0; i < planVo.getPLAN_DAYS(); i++) {
 			jb_day[i] = new JButton("Day " + (i + 1));
 			jp_SNB.add(jb_day[i]);
 			jb_day[i].setPreferredSize(new Dimension(150, 50));
@@ -215,34 +219,13 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 					jb_day[index].setBackground(Color.decode("#B19CCB"));
 					day = Integer.toString(index + 1);
 
-					List<Place_Select_VO> list = Place_Select_DAO.getUserSelectPlace(main.planvo2.getPLAN_NUM());
+					List<Place_Select_VO> list = Place_Select_DAO.getUserSelectPlace(planVo.getPLAN_NUM());
 					for (Place_Select_VO vo : list) {
 						if (vo.getPS_DAY().equals(day)) {
 							vo2 = Place_All_DAO.getPlaceAll(vo.getPA_NUM());
 							model2.addRow(new String[] { vo2.getPA_NAME(), vo2.getPA_LOCATION(), vo2.getPA_CON(),
-									vo2.getPA_PRICE(), vo.getPS_CON(), vo.getPS_TIME(), vo.getPS_NUM() });
+									vo2.getPA_PRICE(), vo.getPS_TIME(), vo.getPS_CON(), vo.getPS_NUM() });
 						}
-					}int cnt = 0;
-					for (int i = 0; i < placeTable2.getRowCount(); i++) {
-						if ((String) (placeTable2.getValueAt(i, 4)) == null) {
-							cnt++;
-						}
-					}
-					if (cnt == 0) {
-						for (int i = 0; i < placeTable2.getRowCount(); i++) {
-							Place_Select_VO vo = new Place_Select_VO();
-							vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
-							if (placeTable2.getValueAt(i, 5) == null) {
-								vo.setPS_CON("");
-							} else {
-								vo.setPS_CON((String) (placeTable2.getValueAt(i, 5)));
-							}
-							vo.setPS_NUM((String) (placeTable2.getValueAt(i, 6)));
-							Place_Select_DAO.getUserConTime(vo);
-						}
-						main.cardLayout.show(main.cardJPanel, "planner_Select");
-					} else {
-						JOptionPane.showMessageDialog(null, "시간은 필수 입력사항입니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
 					}
 					// title
 				}
@@ -264,7 +247,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		jp_plan_left.setBorder(new LineBorder(Color.decode("#E6E6E6")));
 
 		// 제목 부분
-		title = new JLabel("제목: " + main.planvo2.getPLAN_TITLE());
+		title = new JLabel("제목: " + planVo.getPLAN_TITLE());
 		title.setForeground(Color.WHITE);
 		title.setFont(new Font("Aharoni", Font.BOLD, 18));
 		title.setPreferredSize(new Dimension(10, 30));
@@ -309,7 +292,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		jp_plan_right = new JPanel();
 		jp_plan_right.setBorder(new LineBorder(Color.decode("#E6E6E6")));
 		jp_plan_right.setBackground(Color.decode("#B19CCB"));
-		Travel_Location_VO vo = Travel_Location_DAO.getLocation(main.planvo2.getTL_NUM());
+		Travel_Location_VO vo = Travel_Location_DAO.getLocation(planVo.getTL_NUM());
 		// 제목 부분
 		city = new JLabel("여행지: 제주 " + vo.getCITY() + " " + vo.getTOWN());
 		city.setFont(new Font("Aharoni", Font.BOLD, 18));
@@ -447,17 +430,17 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton obj = (JButton) e.getSource();
 		if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
-			main.cardLayout.show(main.cardJPanel, "planner_Create");
+			planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "planner_Create");
 		} else if (obj == jb2) { // 내일정 조회
-			main.cardLayout.show(main.cardJPanel, "planner_Select");
+			planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "planner_Select");
 		} else if (obj == jb3) { // 여행 후기
-			main.cardLayout.show(main.cardJPanel, "allReview");
+			planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "allReview");
 		} else if (obj == jb4) { // 마이페이지
-			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "login_My_Infomodify");
 		} else if (obj == jbMyInfo) { // 내정보
-			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "login_My_Infomodify");
 		} else if (obj == jbLogOut) { // 로그아웃
-			main.cardLayout.show(main.cardJPanel, "login_Main");
+			planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "login_Main");
 		} else if (obj == jb_select) {
 			if (jtf_select.getText().length() == 0) {
 				JOptionPane.showMessageDialog(null, "검색어를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
@@ -489,8 +472,9 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 				Place_Select_VO vo = new Place_Select_VO();
 				vo.setPA_NUM(num);
 				vo.setPS_DAY(day);
-				vo.setPLAN_NUM(main.planvo2.getPLAN_NUM());
-				Place_Select_DAO.getUserAddPlcae(vo);
+				vo.setPS_EDIT("1");
+				vo.setPLAN_NUM(planVo.getPLAN_NUM());
+				Place_Select_DAO.getUserAddPlcae2(vo);
 			}
 		} else if (obj == jb_delete_spot) {
 			if (placeTable2.getSelectedRow() == -1) {
@@ -500,42 +484,48 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 				int column = 6;
 				String num = (String) placeTable2.getValueAt(row, column);
 				Place_Select_DAO.getUserDeletePlace(num);
-				// 위와 동일
 			}
+			// 위와 동일
 		} else if (obj == bt_Complete) {
 			int cnt = 0;
+			int cnt2 = 0;
 			for (int i = 0; i < placeTable2.getRowCount(); i++) {
-				if ((String) (placeTable2.getValueAt(i, 4)) == null) {
+				if (placeTable2.getValueAt(i, 4) == null) {
 					cnt++;
 				}
 			}
 			if (cnt == 0) {
 				for (int i = 0; i < placeTable2.getRowCount(); i++) {
 					Place_Select_VO vo = new Place_Select_VO();
-					vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
 					if (placeTable2.getValueAt(i, 5) == null) {
 						vo.setPS_CON("");
 					} else {
 						vo.setPS_CON((String) (placeTable2.getValueAt(i, 5)));
 					}
+					vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
 					vo.setPS_NUM((String) (placeTable2.getValueAt(i, 6)));
 					Place_Select_DAO.getUserConTime(vo);
 				}
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
+				Place_Select_DAO.getUserEditComplete(planVo.getPLAN_NUM());
+				planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "planner_Select");
 			} else {
 				JOptionPane.showMessageDialog(null, "시간은 필수 입력사항입니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+				cnt = 0;
 			}
 		} else if (obj == bt_Cancel) {
-			int result = JOptionPane.showConfirmDialog(null, "플래너 작성을 취소하시겠습니까?\n현재까지 작업한 모든 내용이 삭제됩니다.", "Confirm",
+			int result = JOptionPane.showConfirmDialog(null, "플래너 작성을 취소하시겠습니까? \n수정된 내용만 취소됩니다.", "Confirm",
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
-				Planner_DAO.getDeletePlanner(main.planvo2.getPLAN_NUM());
-				main.cardLayout.show(main.cardJPanel, "planner_Select");
+				Place_Select_VO vo = new Place_Select_VO();
+				vo.setPS_EDIT("1");
+				vo.setPLAN_NUM(planVo.getPLAN_NUM());
+				Place_Select_DAO.getUserEditCancle(vo);
+				planner_Select.main.cardLayout.show(planner_Select.main.cardJPanel, "planner_Select");
 			}
 		}
 	}
 
-	public Planner_InsertSpot() {
+	public Planner_Edit() {
 	}
 
 	public static void main(String[] args) {
@@ -553,7 +543,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 //	                    app.setSize(800, 600);
 //	                    app.setLocationRelativeTo(null);
 //	                    app.setVisible(true);
-					new Planner_InsertSpot();
+					new Planner_Edit();
 				}
 			});
 

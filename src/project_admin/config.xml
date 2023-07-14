@@ -15,6 +15,6 @@
 		</environment>
 	</environments>
 	<mappers>
-		<mapper resource="project_admin/mapper.xml" />
+		<mapper resource="DB_User/mapper.xml" />
 	</mappers>
 </configuration>

@@ -266,12 +266,18 @@ public class Login_Main extends JPanel implements ActionListener {
 				UserVO vo = new UserVO();
 				try {
 					Protocol p = new Protocol();
-					vo.setM_ID(jtf_id.getText().trim());
-					vo.setM_PW(inpw);
-					p.setVo(vo);
+					UserVO vo99 = new UserVO(); 
+					vo99.setM_ID(jtf_id.getText().trim());
+					vo99.setM_PW(inpw);
+					System.out.println(vo99.getM_ID());
+					System.out.println(vo99.getM_PW());
+					p.setVo(vo99);
 					p.setCmd(4);
-					main.out.writeObject(p);
-					main.out.flush();
+					this.main.out.writeObject(p);
+					this.main.out.flush();;
+					System.out.println(1111111);
+//					main.out.writeObject(p);
+//					main.out.flush();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

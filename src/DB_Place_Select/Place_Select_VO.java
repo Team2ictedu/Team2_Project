@@ -1,7 +1,25 @@
 package DB_Place_Select;
 
-public class Place_Select_VO {
-	private String PS_DAY, PS_TIME, PS_CON, PLAN_NUM, PA_NUM;
+import java.io.Serializable;
+
+public class Place_Select_VO implements Serializable{
+	private String PS_NUM, PS_DAY, PS_TIME, PS_CON, PS_EDIT, PLAN_NUM, PA_NUM;
+
+	public String getPS_EDIT() {
+		return PS_EDIT;
+	}
+
+	public void setPS_EDIT(String pS_EDIT) {
+		PS_EDIT = pS_EDIT;
+	}
+
+	public String getPS_NUM() {
+		return PS_NUM;
+	}
+
+	public void setPS_NUM(String pS_NUM) {
+		PS_NUM = pS_NUM;
+	}
 
 	public String getPS_DAY() {
 		return PS_DAY;

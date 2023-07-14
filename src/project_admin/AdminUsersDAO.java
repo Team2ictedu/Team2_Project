@@ -52,6 +52,17 @@ public class AdminUsersDAO {
 		return list;
 	}
 	
+	public static List<AdminUserVO> getOneBirth(String m_Email) {
+		List<AdminUserVO> list =null;
+		list = getSession().selectList("memberBirth", m_Email);
+		return list;
+	}
+	public static List<AdminUserVO> getOnePhone(String m_Email) {
+		List<AdminUserVO> list =null;
+		list = getSession().selectList("memberPhone", m_Email);
+		return list;
+	}
+	
 	public static int getDelete(AdminUserVO vo) {
 		int result = getSession().delete("memberDel", vo);
 		ss.commit();
@@ -61,7 +72,7 @@ public class AdminUsersDAO {
 	
 	public static boolean getIdChk(String m_Id) {
 		boolean result = false;
-		AdminUserVO vo = getSession().selectOne("idChk", m_Id);
+		AdminUserVO vo = getSession().selectOne("idCheck", m_Id);
 		if(vo == null) {
 			result = true;
 		}
@@ -70,11 +81,26 @@ public class AdminUsersDAO {
 	
 	
 	public static int getInsert(AdminUserVO vo) {
-        int result = getSession().insert("userIns", vo);
+        int result = getSession().insert("userInsert", vo);
         ss.commit();
         return result;
     }
 	
+	public static int getUpdate(AdminUserVO vo) {
+		int result = getSession().update("memberUpdate", vo);
+		ss.commit();
+		return result;
+	}
+	
+	public static String getUserClass(AdminUserVO vo ) {
+		String str = getSession().selectOne("memberclass" , vo);
+		return str;
+	}
+	
+	public static String getUserPass(AdminUserVO vo) {
+		String str = getSession().selectOne("memberpassword", vo);
+		return str;
+	}
 }
 
 

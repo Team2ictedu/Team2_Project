@@ -93,10 +93,15 @@
 
 	<!-- 새일정만들기 -->
 	<insert id="createplan" parameterType="DB_Planner.Planner_VO">
-		insert into
-		PLANNER(PLAN_NUM, PLAN_TITLE, PLAN_DATE, PLAN_DAYS, M_ID, TL_NUM)
-		values(PLAN_NUM_SEQ.NEXTVAL,
-		#{PLAN_TITLE},#{PLAN_DATE},#{PLAN_DAYS},#{M_ID},#{TL_NUM})
+		<selectKey keyProperty="PLAN_NUM" resultType="String"
+			order="AFTER">
+			SELECT PLAN_NUM_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+		insert into PLANNER (PLAN_NUM, PLAN_TITLE, PLAN_DATE, PLAN_DAYS, M_ID,
+		TL_NUM)
+		values (PLAN_NUM_SEQ.NEXTVAL, #{PLAN_TITLE}, #{PLAN_DATE},
+		#{PLAN_DAYS},
+		#{M_ID}, #{TL_NUM})
 	</insert>
 
 	<!-- 플래너 조회 -->
@@ -106,9 +111,9 @@
 		p.PLAN_DAYS, p.M_ID, p.TL_NUM, TO_CHAR(p.PLAN_DATE + p.PLAN_DAYS,
 		'YYYY-MM-DD') AS PLAN_LASTDATE
 		FROM PLANNER p JOIN MEMBER m ON p.M_ID =
-		m.M_ID WHERE m.M_ID = #{M_ID}
+		m.M_ID WHERE m.M_ID = #{M_ID} ORDER BY p.PLAN_NUM ASC
 	</select>
-	
+
 	<!-- 플래너 지역정보 -->
 	<select id="location"
 		resultType="DB_Travel_Location.Travel_Location_VO">
@@ -116,17 +121,248 @@
 	</select>
 
 	<!-- 사용자 플래너 선택한 관광지 -->
-	<select id="location"
-		resultType="DB_Travel_Location.Travel_Location_VO">
-		SELECT * FROM TRAVEL_LOCATION where TL_NUM = #{TL_NUM}
+	<select id="placeSelect"
+		resultType="DB_Place_Select.Place_Select_VO">
+		SELECT PS.*
+		FROM PLACE_SELECT PS
+		JOIN PLANNER P ON
+		PS.PLAN_NUM = P.PLAN_NUM
+		WHERE P.PLAN_NUM = #{PLAN_NUM}
 	</select>
 
+	<!-- 선택한 관광지에 관광지 번호 -->
+	<select id="placeFind" resultType="DB_Place_All.Place_All_VO">
+		SELECT * FROM PLACE_ALL WHERE
+		PA_NUM = #{PA_NUM}
+	</select>
+
+	<select id="planner" resultType="DB_Planner.Planner_VO">
+		SELECT * FROM PLANNER WHERE
+		PLAN_NUM = #{PLAN_NUM}
+	</select>
+
+	<!-- City에 맞는 Town 추출 -->
+	<select id="townList"
+		resultType="DB_Travel_Location.Travel_Location_VO">
+		SELECT TOWN FROM TRAVEL_LOCATION WHERE CITY = #{CITY}
+	</select>
+	
+	<!-- Town에 맞는 여행위치번호 조회 -->
+	<select id="TLNum"
+		resultType="DB_Travel_Location.Travel_Location_VO">
+		SELECT * FROM TRAVEL_LOCATION WHERE TOWN = #{TOWN} and CITY = #{CITY}
+	</select>
+	
+	<!-- 플래너 삭제 -->
+	<delete id="deletePlanner" parameterType="String">
+		DELETE FROM PLANNER WHERE PLAN_NUM = #{PLAN_NUM}
+	</delete>
+	
+	<!-- 검색한 관광지 정보 조회 -->
+	<select id="placeFindList"
+		resultType="DB_Place_All.Place_All_VO">
+		select * from PLACE_ALL WHERE PA_LOCATION LIKE #{PA_LOCATION} ORDER BY PA_NAME ASC
+	</select>
+	
+	<!-- 플래너 생성후 유저가 선택한 관광지 추가 -->
+	<insert id="userAddPlace" parameterType="DB_Place_Select.Place_Select_VO">
+		INSERT INTO PLACE_SELECT(PS_NUM, PS_DAY, PA_NUM, PLAN_NUM) VALUES(PS_NUM_SEQ.NEXTVAL, #{PS_DAY},#{PA_NUM},#{PLAN_NUM})
+	</insert>
+	
+	<!-- 플래너 메모, 시간 수정 시 -->
+	<update id="userConTime" parameterType="DB_Place_Select.Place_Select_VO">
+		UPDATE PLACE_SELECT SET
+		PS_CON = #{PS_CON}, PS_TIME = #{PS_TIME} WHERE
+		PS_NUM = #{PS_NUM}
+	</update>
+	
+	<!-- 플래너 수정중 유저가 선택한 관광지 추가 -->
+	<insert id="userAddPlace2" parameterType="DB_Place_Select.Place_Select_VO">
+		INSERT INTO PLACE_SELECT(PS_NUM, PS_DAY, PA_NUM, PLAN_NUM, PS_EDIT) VALUES(PS_NUM_SEQ.NEXTVAL, #{PS_DAY},#{PA_NUM},#{PLAN_NUM},#{PS_EDIT})
+	</insert>
+	
+	<!-- 플래너 수정중 유저가 취소시 -->
+	<delete id="userEditCancle" parameterType="String">
+		DELETE FROM PLACE_SELECT WHERE PLAN_NUM = #{PLAN_NUM} AND PS_EDIT = #{PS_EDIT}
+	</delete>
+
+	<!-- 플래너 수정완료시 PS_EDIT == 0 -->
+	<update id="userEditComplete" parameterType="DB_Place_Select.Place_Select_VO">
+		UPDATE PLACE_SELECT SET
+		PS_EDIT = 0 WHERE
+		PLAN_NUM = #{PLAN_NUM} AND PS_EDIT = 1
+	</update>
+	
+	<!-- 유저가 선택한 관광지 제거 -->
+	<delete id="userDeletePlace" parameterType="String">
+		DELETE FROM PLACE_SELECT WHERE PS_NUM = #{PS_NUM}
+	</delete>
+	
+	<!-- 선택한 관광지 조회 -->
+	<select id="userSelectPlace" resultType="DB_Place_Select.Place_Select_VO">
+		SELECT * FROM PLACE_SELECT WHERE PLAN_NUM = #{PLAN_NUM} ORDER BY PS_TIME ASC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 수환 -->
+	<select id="dateHas" parameterType="String" resultType="String" >
+    select p_date from p_connect where p_date = #{p_date}
+    </select>
+    
+	<!-- 수환 -->
+    <insert id="dateInsert" parameterType="String" >
+    insert into p_connect 
+    values (#{p_date}, 1)
+    </insert>
+
+	<!-- 수환 -->
+    <update id="dateIncrease">
+    UPDATE p_connect SET p_connection = p_connection + 1
+    WHERE p_date = #{p_date}
+    </update>
+    
+    	<insert id="userInsert" parameterType="project_admin.AdminUserVO">
+    insert into MEMBER
+    values(#{m_id},#{m_pw},#{m_name},#{m_birth},#{m_email},#{m_phone},#{m_terms},#{m_class},null,null,null)
+    </insert>
+
+	<select id="membersList" resultType="project_admin.AdminUserVO">
+	    select * from member order by m_id
+	</select> 
+
+	<delete id="memberDel" parameterType="project_admin.AdminUserVO">
+		delete from member where m_id = #{m_id}
+	</delete>
+	
+	<select id="memberId" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_id= #{m_id}
+	</select>
+	
+	<select id="memberName" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_name= #{m_name}
+	</select>
+	
+	<select id="memberEmail" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_email= #{m_email}
+	</select>
+	<select id="memberBirth" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_birth= #{m_birth}
+	</select>
+	<select id="memberPhone" parameterType="String" resultType="project_admin.AdminUserVO">
+		select * from member where m_phone= #{m_phone}
+	</select>
+	
+	<select id="idCheck" parameterType="String" resultType="project_admin.AdminUserVO">
+		select m_id from member where m_id= #{m_id}
+	</select>
+	
+	<update id="memberUpdate" parameterType="project_admin.AdminUserVO" >
+		update member
+		set m_pw = #{m_pw}, m_name = #{m_name}, m_birth = #{m_birth}, m_email = #{m_email}, m_phone = #{m_phone}
+		where m_id = #{m_id}
+	</update>
+	
+	
+	
+		
+	<select id="placesList" resultType="project_admin.AdminPlaceVO">
+	    select * from place_all order by pa_num
+	</select>
+	
+	<select id="placesListCon" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_con like #{pa_con}
+	</select>
+	
+	<select id="placesListPrice" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all  where pa_price like #{pa_price}
+	</select>
+	
+	<delete id="placeDelVo" parameterType="project_admin.AdminPlaceVO">
+		delete from place_all where pa_name = #{pa_name} and pa_location = #{pa_location} and pa_con = #{pa_con} 
+	</delete>
+	
+	<delete id="placeDelNum" parameterType="String">
+		delete from place_all where pa_num = #{pa_num} 
+	</delete>
+	
+	<select id="placesListName" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_name like #{pa_name}
+	</select>
+	
+	<select id="placesListLocation" parameterType="String" resultType="project_admin.AdminPlaceVO" >
+	    select * from place_all where pa_location like #{pa_location}
+	</select>
+	
+	<select id="placeNum" parameterType="project_admin.AdminPlaceVO" resultType="String" >
+		select pa_num from place_all where  pa_name = #{pa_name} and pa_location = #{pa_location} and pa_con = #{pa_con} 
+	</select>
+	
+	<insert id="placeInsert" parameterType="project_admin.AdminPlaceVO">
+		insert into place_all 
+		values (PA_NUM_SEQ.nextval, #{pa_name} , #{pa_location}, #{pa_con}, #{pa_price})
+	</insert>
+	
+	<update id="placeUpdate" parameterType="project_admin.AdminPlaceVO" >
+		update place_all
+		set pa_name = #{pa_name}, pa_location = #{pa_location}, pa_con = #{pa_con}, pa_price = #{pa_price}
+		where pa_num = #{pa_num}
+	</update>
+	
+	<select id="getPlaceName" parameterType="String" resultType="String" >
+		select pa_name from place_all where pa_num = #{pa_num}
+	</select>
+	
+	<select id="getPlacesNum" parameterType="String" resultType="String" >
+		select pa_num from place_all where pa_name = #{pa_name}
+	</select>
+
+
+
+	<delete id="reviewDelVo" parameterType="project_admin.AdminReviewVO">
+		delete from place_review where m_id = #{m_id} and pr_con = #{pr_con}
+	</delete>
+	
+	<delete id="reviewDelNum" parameterType="String">
+		delete from place_review where pa_num = #{pa_num} 
+	</delete>
+	
+	<select id="reviewList"  resultType="project_admin.AdminReviewVO" >
+		select * from place_review 
+	</select>
+	
+	<select id="reviewListId" parameterType="String" resultType="project_admin.AdminReviewVO" >
+	    select * from place_review where m_id = #{m_id}
+	</select>
+	
+	<select id="reviewListNum" parameterType="String" resultType="project_admin.AdminReviewVO" >
+	    select * from place_review where pa_num = #{pa_num}
+	</select>
+	
+	
+	<select id="connectionList" parameterType="String" resultType="project_admin.AdminConnectionVO">
+	SELECT * FROM (SELECT * FROM p_connect ORDER BY p_date DESC fetch first 8 rows only) ORDER BY p_date ASC
+	</select>
+	
+	<select id="memberclass" parameterType="project_admin.AdminUserVO" resultType="String">
+	select m_class from member where m_id = #{m_id}
+	</select>
+	
+	<select id="memberpassword" parameterType="project_admin.AdminUserVO" resultType="String">
+	select m_pw from member where m_id = #{m_id}
+	</select>
+    
+    
 </mapper>
-
-
-
-
-
-
-
-
