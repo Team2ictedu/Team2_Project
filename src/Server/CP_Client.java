@@ -7,6 +7,8 @@ import java.util.List;
 
 import DB_Place_All.Place_All_DAO;
 import DB_Place_All.Place_All_VO;
+import DB_Place_Review.Place_Review_DAO;
+import DB_Place_Review.Place_Review_VO;
 import DB_Place_Select.Place_Select_DAO;
 import DB_Place_Select.Place_Select_VO;
 import DB_Planner.Planner_DAO;
@@ -50,6 +52,7 @@ public class CP_Client extends Thread {
 					Protocol p = (Protocol) obj;
 					UserVO vo = p.getVo();
 					Planner_VO planvo = p.getPlanvo();// 새일정 만들기 VO
+					Place_Review_VO reviewvo = p.getReviewVo2();
 					switch (p.getCmd()) {
 					case 0:
 						out.writeObject(p);
@@ -77,14 +80,13 @@ public class CP_Client extends Thread {
 							out.flush();
 						} else if (vo4.getM_CLASS().equals("1")) {
 							p.setPlannerList(Planner_DAO.getPlannerList(vo4.getM_ID()));
-							p.setLocation_VO(Travel_Location_DAO.getLocation(p.getPlannerList().get(0).getTL_NUM()));
+							p.setLocation_VO(Travel_Location_DAO.getLocation2(p.getPlannerList().get(0).getTL_NUM()));
 							p.setPlanvo(Planner_DAO.getPlanner(p.getPlannerList().get(0).getPLAN_NUM()));
 							p.setPlaceAllVO(Place_All_DAO.getPlaceAll("1"));
 							p.setCmd(5);
 							out.writeObject(p);
 							out.flush();
-						}
-						else {
+						} else {
 							p.setCmd(5);
 							out.writeObject(p);
 							out.flush();
@@ -105,23 +107,8 @@ public class CP_Client extends Thread {
 						UserDAO.getUserLastLogin(vo.getM_ID());
 						break;
 					case 22:
-						p.setLocation_VO(Travel_Location_DAO.getLocation(p.getLocation_VO().getTL_NUM()));
+						p.setLocation_VO(Travel_Location_DAO.getLocation2(p.getLocation_VO().getTL_NUM()));
 						p.setCmd(23);
-						out.writeObject(p);
-						out.flush();
-						break;
-					case 26:
-						Place_Select_VO selectVo = p.getPlaceSelectVo();
-						p.setPlaceSelectList(Place_Select_DAO.getPlace_select(selectVo.getPA_NUM()));
-						p.setCmd(27);
-						out.writeObject(p);
-						out.flush();
-						break;
-					case 29:
-						Place_All_VO allVo = p.getPlaceAllVO();
-						p.setPlaceAllVO(Place_All_DAO.getPlaceAll(allVo.getPA_NUM()));
-						System.out.println(p.getPlaceAllVO().getPA_NAME());
-						p.setCmd(30);
 						out.writeObject(p);
 						out.flush();
 						break;
@@ -382,44 +369,44 @@ public class CP_Client extends Thread {
 						break;
 					case 89: // update user
 						ProjectProtocol p89 = (ProjectProtocol) p;
-                        project_admin.AdminUserVO vo89 = p89.getUservo();
-                        System.out.println("before String extraction");
-                        String cmd89class = AdminUsersDAO.getOneId(vo89.getM_id()).getM_class();
-                        String resultpwd = AdminUsersDAO.getOneId(vo89.getM_id()).getM_pw();
-                        System.out.println("to String extraction complete");
-                        System.out.println("class extracted is " + cmd89class);
-                        System.out.println("pwd extracted is "+ resultpwd);
-                        String censoredPwd = resultpwd;
-                        StringBuilder pwd2 = new StringBuilder(censoredPwd);
-                        if (censoredPwd != null) {
-                            if (censoredPwd.length() > 2) {
-                                for (int i = 1; i < resultpwd.length() - 1; i++) {
-                                    pwd2.setCharAt(i, '*');
-                                }
-                                censoredPwd = pwd2.toString();
-                            }
-                        }
-                        if(vo89.getM_pw().equals(censoredPwd)) {
-                            vo89.setM_pw(resultpwd);
-                            vo89.setM_class(cmd89class);
-                        } else {
-                            vo89.setM_class(cmd89class);
-                        }
-                        int result89 = AdminUsersDAO.getUpdate(vo89);
-                        System.out.println("updateDAO success");
+						project_admin.AdminUserVO vo89 = p89.getUservo();
+						System.out.println("before String extraction");
+						String cmd89class = AdminUsersDAO.getOneId(vo89.getM_id()).getM_class();
+						String resultpwd = AdminUsersDAO.getOneId(vo89.getM_id()).getM_pw();
+						System.out.println("to String extraction complete");
+						System.out.println("class extracted is " + cmd89class);
+						System.out.println("pwd extracted is " + resultpwd);
+						String censoredPwd = resultpwd;
+						StringBuilder pwd2 = new StringBuilder(censoredPwd);
+						if (censoredPwd != null) {
+							if (censoredPwd.length() > 2) {
+								for (int i = 1; i < resultpwd.length() - 1; i++) {
+									pwd2.setCharAt(i, '*');
+								}
+								censoredPwd = pwd2.toString();
+							}
+						}
+						if (vo89.getM_pw().equals(censoredPwd)) {
+							vo89.setM_pw(resultpwd);
+							vo89.setM_class(cmd89class);
+						} else {
+							vo89.setM_class(cmd89class);
+						}
+						int result89 = AdminUsersDAO.getUpdate(vo89);
+						System.out.println("updateDAO success");
 
-                        if (result89 > 0) {
-                            System.out.println("Update Succesful : CMD 89");
-                            p89.setCmd(88);
-                            out.writeObject(p89);
-                            out.flush();
-                        } else {
-                            System.out.println("update failed : cmd89");
-                            p89.setCmd(86);
-                            out.writeObject(p89);
-                            out.flush();
-                        }
-                        break;
+						if (result89 > 0) {
+							System.out.println("Update Succesful : CMD 89");
+							p89.setCmd(88);
+							out.writeObject(p89);
+							out.flush();
+						} else {
+							System.out.println("update failed : cmd89");
+							p89.setCmd(86);
+							out.writeObject(p89);
+							out.flush();
+						}
+						break;
 
 					case 90: // update place
 						ProjectProtocol p90 = (ProjectProtocol) p;
@@ -518,20 +505,10 @@ public class CP_Client extends Thread {
 						break;
 
 					case 100: // 새일정만들기
-						System.out.println(planvo.getM_ID());
-						System.out.println(planvo.getPLAN_DATE());
-						System.out.println(planvo.getPLAN_DAYS());
-						System.out.println(planvo.getPLAN_TITLE());
-						System.out.println(planvo.getTL_NUM());
-						System.out.println(1);
 						p.setVo(UserDAO.getUser(planvo.getM_ID()));
-						System.out.println(11);
 						p.setPlannerList(Planner_DAO.getPlannerList(planvo.getM_ID()));
-						System.out.println(1111);
 						String Plan_Num = Planner_DAO.getInsert(planvo);
-						System.out.println(11111);
 						p.setPlanvo(Planner_DAO.getPlanner(Plan_Num));
-						System.out.println(111111);
 						p.setCmd(101);
 						out.writeObject(p);
 						out.flush();
@@ -539,16 +516,42 @@ public class CP_Client extends Thread {
 
 					case 202: // 비밀번호 변경
 						UserDAO.getPWUpdate(vo);
+						p.setVo(UserDAO.getLogin(vo));
 						p.setCmd(203);
 						out.writeObject(p);
 						out.flush();
 						break;
+
 					case 204: // 아이디 찾기
 						p.setVo(UserDAO.getidChk(vo));
 						p.setCmd(205);
 						out.writeObject(p);
 						out.flush();
 						break;
+
+					case 208: // 콤보박스 (PLAN_TITLE)
+						p.setPlannerList(Planner_DAO.getPlantitleList(p.getName()));
+						p.setCmd(207);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 210: // 콤보박스 (PA_NAME)
+						p.setPlaceallList(Place_All_DAO.getPlacenameList(p.getName()));
+						p.setCmd(209);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 212: // 내후기 작성
+						int result212 = Place_Review_DAO.getReviewIns(reviewvo);
+						if (result212 > 0) {
+							p.setCmd(211);
+							out.writeObject(p);
+							out.flush();
+						}
+						break;
+
 					case 402: // 비밀번호 찾기
 						System.out.println(4);
 						p.setVo(UserDAO.getPwFind(vo));
@@ -563,6 +566,81 @@ public class CP_Client extends Thread {
 						p.setCmd(405);
 						out.writeObject(p);
 						out.flush();
+						break;
+
+					case 408: // 후기보기 팝업테이블
+						p.setPlaceAll(Place_All_DAO.getplName());
+						p.setPlaceRe(Place_Review_DAO.getReviewTb(p.getName()));
+						String msg;
+						p.setCmd(409);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 410: // 전체후기보기(전체콤보버튼)
+						System.out.println(3);
+						p.setPlaceAll(Place_All_DAO.getplName());
+						System.out.println(p.getPlaceAll().get(0).getPA_NAME());
+						p.setCmd(411);
+						out.writeObject(p);
+						out.flush();
+						System.out.println(4);
+						break;
+
+					case 412: // 시 테이블
+						System.out.println(p.getMsg() + "제주cp-1");
+						p.setPlaceAll(Place_All_DAO.getCitySer(p.getMsg()));
+						p.setCmd(413);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 420: // 제주시 콤보박스sorting
+						System.out.println("select1");
+						p.setLocationList(Travel_Location_DAO.getlocation(p.getTravelvo().getCITY()));
+						System.out.println(p.getLocationList().get(0).getTOWN());
+						p.setCmd(421);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 422: // 서귀포시 콤보박스sorting
+						System.out.println("select2");
+						p.setLocationList(Travel_Location_DAO.getlocation(p.getTravelvo().getCITY()));
+						System.out.println(p.getLocationList().get(0).getTOWN());
+						p.setCmd(423);
+						out.writeObject(p);
+						out.flush();
+						break;
+
+					case 424: // 마이리뷰 테이블
+						try {
+							p.setPlaceRe(Place_Review_DAO.getReview_plan(p.getName()));
+							p.setPlannerList(Planner_DAO.getTitle_plan(p.getName()));
+							p.setCmd(425);
+							out.writeObject(p);
+							out.flush();
+
+						} catch (Exception e) {
+							System.out.println(e);
+						}
+						break;
+
+					case 426: // 마이리뷰 삭제버튼
+						Place_Review_VO vo1 = p.getReviewVo2();
+						System.out.println(vo1.getPR_CON() + "삭제");
+						System.out.println(vo1.getPLAN_NUM());
+						System.out.println(vo1.getM_ID());
+						int result426 = Place_Review_DAO.getReview_del(vo1);
+
+						if (result426 > 0) {
+							p.setName(vo1.getM_ID());
+							p.setPlaceRe(Place_Review_DAO.getReview_plan(p.getName()));
+							p.setPlannerList(Planner_DAO.getTitle_plan(p.getName()));
+							p.setCmd(425);
+							out.writeObject(p);
+							out.flush();
+						}
 						break;
 
 					case 700: // 후기 불러오기
@@ -603,6 +681,57 @@ public class CP_Client extends Thread {
 						}
 						break;
 
+					case 2000:
+						p.setPlaceSelectList(Place_Select_DAO.getUserSelectPlace(p.getMsg()));
+						p.setCmd(2001);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 2002:
+						Place_Select_DAO.getUserAddPlcae(p.getPlaceSelectVo());
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 2003:
+						Place_Select_DAO.getUserDeletePlace(p.getMsg());
+						break;
+					case 2004:
+						p.setPlaceAllList(Place_All_DAO.getPlaceFind(p.getMsg()));
+						p.setCmd(2005);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 2006:
+						Place_Select_DAO.getUserConTime(p.getPlaceSelectVo());
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 2007:
+						Planner_DAO.getDeletePlanner(p.getMsg());
+						break;
+
+					// edit
+					case 2010:
+						Place_Select_DAO.getUserAddPlcae2(p.getPlaceSelectVo());
+						break;
+					case 2011:
+						p.setPlaceAllList(Place_All_DAO.getPlaceFind(p.getMsg()));
+						p.setCmd(2012);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 2013:
+						p.setPlaceSelectList(Place_Select_DAO.getUserSelectPlace(p.getMsg()));
+						p.setCmd(2014);
+						out.writeObject(p);
+						out.flush();
+						break;
+					case 2015:
+						Place_Select_DAO.getUserEditComplete(p.getMsg());
+						break;
+					case 2016:
+						Place_Select_DAO.getUserEditCancle(p.getPlaceSelectVo());
+						break;
 					}
 				}
 			} catch (Exception e) {

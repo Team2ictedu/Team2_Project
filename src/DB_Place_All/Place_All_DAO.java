@@ -24,29 +24,51 @@ public class Place_All_DAO {
 			return list;
 		}
 		
-		// 콤보 박스에 db값 넣기
+	// 콤보 박스에 db값 넣기
 		public static List<Place_All_VO> getCity() {
 			List<Place_All_VO> list = null;
 			list = getSession().selectList("combo1");
 			return list;
 		}
 		
-		// 관광지 이름조회
-		public static List<Place_All_VO> getplName() {
-			List<Place_All_VO> list = null;
-			list = getSession().selectList("plname");
-			return list;
+	// 관광지이름 조회 (콤보박스(PA_NAME))
+		public static List<Place_All_VO> getPlacenameList(String M_ID){
+			try {
+				List<Place_All_VO> list = null;
+				list = getSession().selectList("placename", M_ID);
+				return list;
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			return null;
 		}
 
 		public static Place_All_VO getPlaceAll(String PA_NUM) {
 			Place_All_VO vo3 = getSession().selectOne("placeFind", PA_NUM);
 			return vo3;
 		}
-		
-		// 관광지 검색
+	// 관광지 이름조회 (전체후기보기)
+		public static List<Place_All_VO> getplName() {
+			List<Place_All_VO> list = null;
+			list = getSession().selectList("plname");
+			return list;
+		}
+			
+	// 관광지 검색
 		public static List<Place_All_VO> getPlaceFind(String msg) {
 			List<Place_All_VO> list = null;
 			list = getSession().selectList("placeFindList", msg);
 			return list;
+		}
+	// 관광지 콤보박스
+		public static List<Place_All_VO> getCitySer(String city){
+			List<Place_All_VO> list = null;
+			list = getSession().selectList("citySer", city);
+			return list;
+		}
+					
+		public static Place_All_VO getPlaceInfo(String PA_NUM) {
+			Place_All_VO vo = getSession().selectOne("placeInfo", PA_NUM);
+			return vo;
 		}
 }

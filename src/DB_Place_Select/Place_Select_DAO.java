@@ -18,12 +18,20 @@ public class Place_Select_DAO {
 		return ss;
 	}
 
-	//
+	// 사용자 플래너 선택한 관광지
 	public static List<Place_Select_VO> getPlace_select(String PLAN_NUM) {
 		List<Place_Select_VO> list = null;
 		list = getSession().selectList("placeSelect", PLAN_NUM);
 		return list;
 	}
+	
+	// 플래너 개인별 관광지리스트
+	public static List<Place_Select_VO> getUserPlaceList(String PLAN_NUM) {
+		List<Place_Select_VO> list = null;
+		list = getSession().selectList("userPlaceList", PLAN_NUM);
+		return list;
+	}
+
 
 	// 유저가 모든관광지에서 선택관광지로 추가
 	public static int getUserAddPlcae(Place_Select_VO vo) {
@@ -45,7 +53,7 @@ public class Place_Select_DAO {
 		ss.commit();
 		return result;
 	}
-
+	
 	// 유저가 선택한 관광지 제거
 	public static int getUserDeletePlace(String PS_NUM) {
 		int result = getSession().delete("userDeletePlace", PS_NUM);

@@ -14,10 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import DB_Place_All.Place_All_DAO;
 import DB_Place_All.Place_All_VO;
+import DB_Place_Review.Place_Review_VO;
 import DB_Place_Select.Place_Select_VO;
 import DB_Planner.Planner_VO;
 import DB_Travel_Location.Travel_Location_VO;
+import DB_User.UserDAO;
 import DB_User.UserVO;
 import Server.ClientDAO;
 import Server.Protocol;
@@ -43,6 +46,7 @@ public class Main extends JFrame implements Runnable {
 	Planner_Select planner_Select;
 	AdminMain adminMain;
 	PwChange_login pw_ck;
+	AllRV_table all_rv;
 	Socket s;
 	public ObjectOutputStream out;
 	ObjectInputStream in;
@@ -50,12 +54,18 @@ public class Main extends JFrame implements Runnable {
 	UserVO uservo;
 	Planner_VO planvo;
 	Planner_VO planvo2;
-	List<Planner_VO> planList;
 	Planner_Select selectvo;
 	Travel_Location_VO location_VO;
 	Travel_Location_VO location_VO2;
-	List<Place_Select_VO> placeSelectList;
 	Place_All_VO placeAllVo;
+	List<Place_All_VO> list410;
+	List<Place_Review_VO> list424_1;
+	List<Planner_VO> list424_2;
+	Planner_VO p426;
+	Place_Review_VO p425;
+	List<Planner_VO> planList;
+	List<Place_All_VO> list211;
+	List<Place_Select_VO> placeSelectList;
 	List<Travel_Location_VO> travelLocationList;
 	List<Travel_Location_VO> travelLocationList2;
 	String TLNum;
@@ -267,7 +277,7 @@ public class Main extends JFrame implements Runnable {
 						break;
 					case 52:
 						ProjectProtocol p52 = (ProjectProtocol) obj;
-						List<AdminPlaceVO> list52 = p52.getPlaceList();
+						list52 = p52.getPlaceList();
 						adminMain.adminPlaces.model.setRowCount(0);
 						for (AdminPlaceVO p521 : list52) {
 							adminMain.adminPlaces.model.addRow(new String[] { p521.getPa_name(), p521.getPa_location(),
@@ -389,6 +399,7 @@ public class Main extends JFrame implements Runnable {
 						break;
 
 					case 203:
+						uservo = p.getVo();
 						Main2(p);
 						JOptionPane.showMessageDialog(null, "비밀번호 수정이 완료되었습니다.", "Confirm",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -397,6 +408,175 @@ public class Main extends JFrame implements Runnable {
 						login_My_PWmodify.jpf_newPw1.setText("");
 						login_My_PWmodify.jpf_newPw2.setText("");
 						break;
+					case 205: // 아이디 찾기
+						if (p.getVo() == null) {
+							JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						} else {
+							int result = JOptionPane.showConfirmDialog(null, id_Search.jtf_name.getText() + "님의 아이디는 "
+									+ p.getVo().getM_ID() + "입니다.\n비밀번호도 찾으시겠습니까?", "Confirm",
+									JOptionPane.YES_NO_OPTION);
+							if (result == JOptionPane.YES_OPTION) {
+								cardLayout.show(cardJPanel, "pw_Search");
+							} else {
+								cardLayout.show(cardJPanel, "login_Main");
+								id_Search.jtf_name.setText("");
+								id_Search.jtf_em.setText("");
+							}
+						}
+						break;
+					case 207: // 콤보박스 (PLAN_TITLE)
+						myReview.search2.removeAllItems();
+						myReview.search2.addItem("관광지선택");
+						planList = p.getPlannerList();
+						for (Planner_VO k : planList) {
+							if (k.getPLAN_TITLE() == null) {
+
+							} else {
+								String plantitle = k.getPLAN_TITLE();
+								myReview.search1.addItem(plantitle);
+							}
+						}
+						break;
+
+					case 209: // 콤보박스 (PLACE_NAME)
+						list211 = p.getPlaceallList();
+						for (Place_All_VO k : list211) {
+							String placename = k.getPA_NAME();
+							myReview.search2.addItem(placename);
+						}
+						break;
+
+					case 211: // 내후기 작성
+						JOptionPane.showMessageDialog(null, "후기 작성이 완료되었습니다.", "Confirm", JOptionPane.PLAIN_MESSAGE);
+						myReview.review_jtf.setText("");
+						break;
+
+					case 403:
+						if (p.getVo() == null) {
+							JOptionPane.showMessageDialog(null, "일치한 정보가 존재하지 않습니다.", " Confirm",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							pw_ck = new PwChange_login(pw_Search);
+							pw_ck.setVisible(true);
+							pw_ck.vo.setM_ID(p.getVo().getM_ID());
+							pw_Search.idCg_jtf.setText("");
+							pw_Search.name_jtf.setText("");
+							pw_Search.em_jtf.setText("");
+						}
+						break;
+					case 405:
+						JOptionPane.showMessageDialog(null, "비밀번호 설정이 완료되었습니다.", "Confirm",
+								JOptionPane.INFORMATION_MESSAGE);
+						pw_ck = new PwChange_login(pw_Search);
+						pw_ck.setVisible(false);
+						pw_Search.main.cardLayout.show(pw_Search.main.cardJPanel, "login_Main");
+						pw_ck.pwck1_jtf.setText("");
+						pw_ck.pwck2_jtf.setText("");
+						break;
+
+					case 409:
+						System.out.println("팝업 메인");
+						all_rv = new AllRV_table(allReview);
+						all_rv.setVisible(true);
+						List<Place_Review_VO> list409 = p.getPlaceRe();
+						all_rv.model.setRowCount(0);
+						System.out.println(p.getPlaceRe() + " 후기");
+						int noc = 1;
+						if (list409.size() == 0) {
+							JOptionPane.showMessageDialog(null, "후기가 등록되어있지 않습니다.", "Confirm",
+									JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							for (Place_All_VO p444 : list410) {
+								for (Place_Review_VO p409 : list409) {
+									if (p444.getPA_NUM().equals(p409.getPA_NUM())) {
+										System.out.println(p409.getPR_CON());
+										all_rv.lb.setText(p444.getPA_NAME() + " 의 후기");
+										all_rv.model.addRow(new Object[] { noc, p409.getPR_CON(), p409.getM_ID() });
+										noc++;
+									}
+								}
+							}
+						}
+						break;
+
+					case 411:
+						list410 = p.getPlaceAll();
+						allReview.model.setRowCount(0);
+						System.out.println(5);
+						for (Place_All_VO p410 : list410) {
+							System.out.println(p410.getPA_NAME());
+							allReview.model.addRow(new String[] { p410.getPA_NUM(), p410.getPA_NAME(), "보기" });
+						}
+						break;
+
+					case 413:
+						List<Place_All_VO> list413 = p.getPlaceAll();
+
+						allReview.model.setRowCount(0);
+						System.out.println(5);
+						for (Place_All_VO p413 : list413) {
+							System.out.println(p413.getPA_NAME());
+							allReview.model.addRow(new String[] { p413.getPA_NUM(), p413.getPA_NAME(), "보기" });
+						}
+
+						if (allReview.model.getRowCount() == 0) {
+							JOptionPane.showMessageDialog(null, "선택한 지역에 관광지가 없습니다.", "Confirm",
+									JOptionPane.ERROR_MESSAGE);
+							all_rv.setVisible(false);
+						}
+						break;
+
+					case 421:
+						System.out.println("selem");
+						allReview.search2.removeAllItems();
+						allReview.search2.addItem("::선택::");
+						allReview.search2.addItem("전체");
+						List<Travel_Location_VO> list415 = p.getLocationList();
+						for (Travel_Location_VO k : list415) {
+							String town415 = k.getTOWN();
+							allReview.search2.addItem(town415);
+						}
+						break;
+
+					case 423:
+						System.out.println("selem2");
+						allReview.search2.removeAllItems();
+						allReview.search2.addItem("::선택::");
+						allReview.search2.addItem("전체");
+						List<Travel_Location_VO> list417 = p.getLocationList();
+						for (Travel_Location_VO k : list417) {
+							String town415 = k.getTOWN();
+							allReview.search2.addItem(town415);
+						}
+						break;
+
+					case 425:
+						System.out.println("case425");
+						list424_1 = p.getPlaceRe();
+						list424_2 = p.getPlannerList();
+
+						myReview.dtm.setRowCount(0);
+						noc = 1;
+						for (Place_Review_VO p425 : list424_1) {
+							for (Planner_VO p426 : list424_2) {
+								if (p425.getPLAN_NUM().equals(p426.getPLAN_NUM())) {
+									System.out.println(p426.getPLAN_TITLE());
+								}
+
+							}
+						}
+						for (Place_Review_VO p425 : list424_1) {
+							for (Planner_VO p426 : list424_2) {
+								if (p425.getPLAN_NUM().equals(p426.getPLAN_NUM())) {
+									myReview.dtm.addRow(new Object[] { p425.getPLAN_NUM(), noc, p426.getPLAN_TITLE(),
+											Place_All_DAO.getPlaceInfo(p425.getPA_NUM()).getPA_NAME(), p425.getPR_CON(),
+											"삭제" });
+									noc++;
+								}
+							}
+						}
+						break;
+
 					case 701:
 						ProjectProtocol p701 = (ProjectProtocol) p;
 						List<AdminReviewVO> list701 = p701.getReviewList();
@@ -407,6 +587,74 @@ public class Main extends JFrame implements Runnable {
 						break;
 					case 1000:
 						JOptionPane.showMessageDialog(null, "일치한 정보가 없습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						break;
+					case 2001:
+						List<Place_Select_VO> list = p.getPlaceSelectList();
+						for (Place_Select_VO vo : list) {
+							if (vo.getPS_DAY().equals(planner_InsertSpot.day)) {
+								Place_All_VO vo2 = Place_All_DAO.getPlaceAll(vo.getPA_NUM());
+								if (vo2.getPA_PRICE().equals("")) {
+									vo2.setPA_PRICE("0원");
+								} else {
+									vo2.setPA_PRICE(vo2.getPA_PRICE() + "원");
+								}
+								planner_InsertSpot.model2
+										.addRow(new String[] { vo2.getPA_NAME(), vo2.getPA_LOCATION(), vo2.getPA_CON(),
+												vo2.getPA_PRICE(), vo.getPS_TIME(), vo.getPS_CON(), vo.getPS_NUM() });
+							}
+						}
+						break;
+					case 2005:
+						List<Place_All_VO> placeAllList = p.getPlaceAllList();
+						if (placeAllList.size() == 0) {
+							JOptionPane.showMessageDialog(null, "입력한 위치에 관광지 존재하지 않습니다.", "Confirm",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							planner_InsertSpot.model.setRowCount(0);
+							for (Place_All_VO vo : placeAllList) {
+								if (vo.getPA_PRICE().equals("")) {
+									vo.setPA_PRICE("0원");
+								} else {
+									vo.setPA_PRICE(vo.getPA_PRICE() + "원");
+								}
+								planner_InsertSpot.model.addRow(new String[] { vo.getPA_NAME(), vo.getPA_LOCATION(),
+										vo.getPA_CON(), vo.getPA_PRICE(), vo.getPA_NUM() });
+							}
+						}
+						break;
+					case 2012:
+						List<Place_All_VO> placeAllList2 = p.getPlaceAllList();
+						if (placeAllList2.size() == 0) {
+							JOptionPane.showMessageDialog(null, "입력한 위치에 관광지 존재하지 않습니다.", "Confirm",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							planner_Select.planner_Edit.model.setRowCount(0);
+							for (Place_All_VO vo : placeAllList2) {
+								if (vo.getPA_PRICE().equals("")) {
+									vo.setPA_PRICE("0원");
+								} else {
+									vo.setPA_PRICE(vo.getPA_PRICE() + "원");
+								}
+								planner_Select.planner_Edit.model.addRow(new String[] { vo.getPA_NAME(),
+										vo.getPA_LOCATION(), vo.getPA_CON(), vo.getPA_PRICE(), vo.getPA_NUM() });
+							}
+						}
+						break;
+					case 2014:
+						List<Place_Select_VO> list2014 = p.getPlaceSelectList();
+						for (Place_Select_VO vo : list2014) {
+							if (vo.getPS_DAY().equals(planner_Select.planner_Edit.day)) {
+								Place_All_VO vo2 = Place_All_DAO.getPlaceAll(vo.getPA_NUM());
+								if (vo2.getPA_PRICE().equals("")) {
+									vo2.setPA_PRICE("0원");
+								} else {
+									vo2.setPA_PRICE(vo2.getPA_PRICE() + "원");
+								}
+								planner_Select.planner_Edit.model2
+										.addRow(new String[] { vo2.getPA_NAME(), vo2.getPA_LOCATION(), vo2.getPA_CON(),
+												vo2.getPA_PRICE(), vo.getPS_TIME(), vo.getPS_CON(), vo.getPS_NUM() });
+							}
+						}
 						break;
 					}
 				}
@@ -423,7 +671,7 @@ public class Main extends JFrame implements Runnable {
 	// 접속
 	public void connected() {
 		try {
-			s = new Socket("124.63.62.27", 7780);
+			s = new Socket("192.168.0.44", 7780);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 			new Thread(this).start();

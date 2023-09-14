@@ -38,6 +38,25 @@ public class Planner_DAO {
 		Planner_VO vo2 = getSession().selectOne("planner", PLAN_NUM);
 		return vo2;
 	}
+
+	public static Planner_VO getPlanner2(String PLAN_NUM) {
+		Planner_VO vo2 = getSession().selectOne("planner2", PLAN_NUM);
+		return vo2;
+	}
+	
+	// 플래너 제목 조회
+	public static List<Planner_VO> getPlantitleList(String M_ID){
+		List<Planner_VO> list = null;
+		list = getSession().selectList("plantitle", M_ID);
+		return list;
+	}
+		
+	//id값으로 플래너번호, 플래너제목 찾기- 1
+	public static List<Planner_VO> getTitle_plan(String m_id){
+		List<Planner_VO> list = null;
+		list = getSession().selectList("title_plan", m_id);
+		return list;
+	}
 	
 	// 플래너 삭제
 	public static int getDeletePlanner(String PLAN_NUM) {

@@ -13,7 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -24,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -31,31 +36,76 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+import DB_Place_All.Place_All_VO;
+import DB_Travel_Location.Travel_Location_VO;
+import Server.Protocol;
+import project_admin.ButtonColumn;
+import project_server.ProjectProtocol;
+
 import java.awt.Component;
 import javax.swing.SwingConstants;
 
-public class AllReview extends JPanel implements ActionListener{
+public class AllReview extends JPanel implements ActionListener {
 	JPanel jp, jp_headerMain, jp_headerSub, jp_headerSubLeft, jp_headerSubRight, jp_buttons, jp_east, jp_west, jp_south,
 			jp_south2, jp_west2;
 	JButton jbName, jbMyInfo, jbLogOut, jb1, jb2, jb3, jb4;
 	Font customFont;
 	JLabel jLabel1;
 
-	JPanel review_bt_jp, left_review_jp, select_addr_jp, review2_jp, viewlb_jp, view_jp, jtf1_jp, jtf2_jp, center_add_jp, jp_center, center_jp;
+	JPanel review_bt_jp, left_review_jp, select_addr_jp, review2_jp, viewlb_jp, view_jp, jtf1_jp, jtf2_jp,
+			center_add_jp, jp_center, center_jp;
 	JLabel review_lb, look_lb;
-	JTextArea review_jta;
+	DefaultTableModel model;
+	JTable review_jtb;
 	JScrollPane review_jsp;
 	JButton left_allreview_bt, left_myreview_bt, search_bt;
-	JComboBox<String> search1, search2;
 
+	JComboBox<String> search1, search2;
 	String[] ser1 = { "::시/도::", "전체", "제주시", "서귀포시" };
-	String[] ser2 = { "::선택::", "전체", "~동", "~읍", "~면" };
+	ArrayList<String> TravelList;
+	String str_city, name_1;
 	Border newBorder;
 	Main main;
-	
+	Protocol p;
 	public AllReview(Main main) {
+		this.main = main;
 
-	this.main = main;
+		// buttoncolumn action
+		Action pop = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				JTable table = (JTable) e.getSource();
+				int modelRow = Integer.valueOf(e.getActionCommand());
+				name_1 = table.getValueAt(modelRow, 0).toString();
+				System.out.println(name_1);
+				try {
+					System.out.println("여기는 pop");
+					ProjectProtocol p = new ProjectProtocol();
+					Place_All_VO vo = new Place_All_VO();
+					p.setCmd(408);
+					//p.setRow(modelRow);
+					p.setName(name_1);
+					//p.setVo(vo);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		};
+		/*
+		 * Action serch = new AbstractAction() { public void actionPerformed(ActionEvent
+		 * e) { search1 = (JComboBox<String>) e.getSource(); Travel_Location_VO vo = new
+		 * Travel_Location_VO(); vo.setCITY((String)
+		 * main.allReview.search1.getSelectedItem());
+		 * System.out.println(vo.getCITY()+"1"); try { Protocol p = new Protocol();
+		 * p.setTravelvo(vo); System.out.println(vo.getCITY()+"2"); p.setCmd(414);
+		 * AllReview.this.main.out.writeObject(p); AllReview.this.main.out.flush(); }
+		 * catch (IOException e1) { e1.printStackTrace(); } } };
+		 */
+
 //	FONT
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
@@ -170,7 +220,7 @@ public class AllReview extends JPanel implements ActionListener{
 			left_review_jp.add(review_lb);
 			jp_west2.add(left_review_jp);
 			review_bt_jp = new JPanel();
-			review_bt_jp.setLayout(new GridLayout(0,1));
+			review_bt_jp.setLayout(new GridLayout(0, 1));
 			review_bt_jp.setBackground(Color.decode("#F7C0DC"));
 			review_bt_jp.add(left_allreview_bt);
 			review_bt_jp.add(new JLabel());
@@ -180,27 +230,40 @@ public class AllReview extends JPanel implements ActionListener{
 			// 센터 가운데 변수
 			look_lb = new JLabel("전체 후기 보기");
 			center_add_jp = new JPanel();
-			center_add_jp.setOpaque(false);	
-			
+			center_add_jp.setOpaque(false);
+
 			center_add_jp.add(look_lb);
 			jp_center.add(center_add_jp);
 
 			select_addr_jp = new JPanel();
 			select_addr_jp.setOpaque(false);
 
+// 콤보박스
+			TravelList = new ArrayList<String>();
+			TravelList.add("::선택::");
+			TravelList.add("전체");
 			search1 = new JComboBox<>(ser1);
-			search2 = new JComboBox<>(ser2);
+			search2 = new JComboBox<>(TravelList.toArray(new String[0]));
 			search_bt = new JButton("검색");
 			search1.setSelectedIndex(0);
 			search2.setSelectedIndex(0);
-		
-			review_jta = new JTextArea();
-			review_jsp = new JScrollPane(review_jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+
+//테이블을 담자
+			model = new DefaultTableModel();
+			model.addColumn("관광지 번호");
+			model.addColumn("관광지 이름");
+			model.addColumn("보기");
+
+			review_jtb = new JTable(model);
+			review_jsp = new JScrollPane(review_jtb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			review_jta.setLineWrap(true);
-			review_jta.setEditable(false);
 			review_jsp.setPreferredSize(new Dimension(0, 30));
-			
+
+			ButtonColumn buttonColumn = new ButtonColumn(review_jtb, pop, 2);
+			review_jtb.getColumn("관광지 번호").setWidth(0);
+			review_jtb.getColumn("관광지 번호").setMinWidth(0);
+			review_jtb.getColumn("관광지 번호").setMaxWidth(0);
+
 			// 센터에 붙이기
 			select_addr_jp.add(search1);
 			select_addr_jp.add(search2);
@@ -246,10 +309,13 @@ public class AllReview extends JPanel implements ActionListener{
 			jp_headerSub.add(jp_headerSubRight);
 			jp_headerMain.add(jp_headerSub);
 			jp_headerMain.add(jp_buttons);
-			
+
 			setLayout(new BorderLayout());
 			add(jp_headerMain, BorderLayout.NORTH);
 			add(jp, BorderLayout.CENTER);
+
+			search1.setSelectedIndex(0);
+			search2.setSelectedIndex(0);
 		}
 		left_allreview_bt.addActionListener(this);
 		left_myreview_bt.addActionListener(this);
@@ -260,37 +326,112 @@ public class AllReview extends JPanel implements ActionListener{
 		jb4.addActionListener(this);
 		jbMyInfo.addActionListener(this);
 		jbLogOut.addActionListener(this);
+		search1.addActionListener(this);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton obj = (JButton) e.getSource();
-		if(obj==jb1) { // 새일정 만들기 jb1~jb4는 SNB바
-			main.cardLayout.show(main.cardJPanel, "planner_Create");
-		} else if(obj==jb2) { // 내일정 조회
-			main.cardLayout.show(main.cardJPanel, "planner_Select");
-		} else if(obj==jb3) { // 여행 후기
-			main.cardLayout.show(main.cardJPanel, "allReview");
-		} else if(obj==jb4) { // 마이페이지
-			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if(obj==jbMyInfo) { // 내정보
-			main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
-		} else if(obj==jbLogOut) { // 로그아웃
-			main.cardLayout.show(main.cardJPanel, "login_Main");
-		} else if(obj==left_allreview_bt) { // 전체후기 보기
-			main.cardLayout.show(main.cardJPanel, "allReview");
-		} else if(obj==left_myreview_bt) {
-			main.cardLayout.show(main.cardJPanel, "myReview");
-		} else if(obj==search_bt) {
-			if(search1.getSelectedIndex() == 0 || search2.getSelectedIndex() == 0) {
-				JOptionPane.showMessageDialog(null, "지역을 선택하세요", "Confirm", JOptionPane.ERROR_MESSAGE);
-			} 
-			// 데이터베이스 추가하고 버튼 기능 추가하기
+		Object obj = e.getSource();
+		if (obj instanceof JButton) {
+			if (obj == jb1) { // 새일정 만들기 jb1~jb4는 SNB바
+				main.cardLayout.show(main.cardJPanel, "planner_Create");
+			} else if (obj == jb2) { // 내일정 조회
+				main.cardLayout.show(main.cardJPanel, "planner_Select");
+			} else if (obj == jb3) { // 여행 후기
+				main.cardLayout.show(main.cardJPanel, "allReview");
+			} else if (obj == jb4) { // 마이페이지
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if (obj == jbMyInfo) { // 내정보
+				main.cardLayout.show(main.cardJPanel, "login_My_Infomodify");
+			} else if (obj == jbLogOut) { // 로그아웃
+				main.cardLayout.show(main.cardJPanel, "login_Main");
+			} else if (obj == left_allreview_bt) { // 전체후기 보기
+				main.cardLayout.show(main.cardJPanel, "allReview");
+			} else if (obj == left_myreview_bt) {
+				main.cardLayout.show(main.cardJPanel, "myReview");
+			} else if (obj == search_bt) {
+				if (search1.getSelectedIndex() == 0 || search2.getSelectedIndex() == 0) {
+					JOptionPane.showMessageDialog(null, "지역을 선택하세요", "Confirm", JOptionPane.ERROR_MESSAGE);
+				} else if ((search1.getSelectedItem().toString()).equals("전체")
+						&& (search2.getSelectedItem().toString()).equals("전체")) {
+					try {
+						// 데이터베이스 전체테이블 보기 추가하기
+						Protocol p = new Protocol();
+						p.setCmd(410);
+						main.out.writeObject(p);
+						main.out.flush();
+						System.out.println(2);
+					} catch (Exception e2) {
+						System.out.println(e2);
+					}
+				} else if (!(search1.getSelectedItem().toString()).equals("전체")) {
+					String city =search1.getSelectedItem().toString();
+					String town =search2.getSelectedItem().toString();
+					if(town.toString().equals("전체")) {
+						town = "";
+					}
+					try {
+						System.out.println(town+"rs");
+						Protocol p = new Protocol();
+						String str = "%"+city+" "+town+"%";
+						p.setMsg(str);
+						System.out.println(str);
+						p.setCmd(412);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
+			}
+//콤보박스 이벤트
+		} else if (obj instanceof JComboBox) {  
+			if (obj == search1) {
+				if (search1.getSelectedItem().equals("제주시")) {
+					Travel_Location_VO vo = new Travel_Location_VO();
+					vo.setCITY((String) search1.getSelectedItem());
+					str_city = vo.getCITY();
+					try {
+						Protocol p = new Protocol();
+						p.setTravelvo(vo);
+						System.out.println(vo.getCITY() + "1" + ".");
+						p.setCmd(420);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				} else if (search1.getSelectedItem().equals("서귀포시")) {
+					Travel_Location_VO vo = new Travel_Location_VO();
+					vo.setCITY((String) search1.getSelectedItem());
+					try {
+						Protocol p = new Protocol();
+						p.setTravelvo(vo);
+						System.out.println(vo.getCITY() + "2" + ".");
+						p.setCmd(422);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				} else {
+					search2.removeAllItems();
+					search2.addItem("::선택::");
+					search2.addItem("전체");
+				}
+			}
 		} 
-		search1.setSelectedIndex(0);
-		search2.setSelectedIndex(0);
-		
 	}
+
+	/*
+	 * public void populateComboBox2(String selectedCity) { if (selectedCity != null
+	 * && !selectedCity.isEmpty()) { try { // 콤보박스2에 선택된 도시에 해당하는 동/읍/리(town) 데이터 추가
+	 * search2.addItem(""); // 빈 항목 추가
+	 * 
+	 * while (resultSet.next()) { String town = resultSet.getString("TOWN");
+	 * search2.addItem(town); } } catch (SQLException e) { e.printStackTrace(); } }
+	 * }
+	 */
 
 	public AllReview() {
 		// TODO Auto-generated constructor stub

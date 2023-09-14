@@ -17,9 +17,9 @@ public class Travel_Location_DAO {
 		}
 		return ss;
 	}
-	
+
 	// 
-	public static Travel_Location_VO getLocation(String TL_NUM) {
+	public static Travel_Location_VO getLocation2(String TL_NUM) {
 		Travel_Location_VO vo2 = getSession().selectOne("location", TL_NUM);
 		return vo2;
 	}
@@ -36,5 +36,13 @@ public class Travel_Location_DAO {
 		Travel_Location_VO vo3 = getSession().selectOne("TLNum", vo);
 		System.out.println("DAO" + vo3.getTL_NUM());
 		return vo3;
+	}
+	
+	// 선택된콤보박스 읍동 불러오기
+	public static List<Travel_Location_VO> getlocation(String city){
+		List<Travel_Location_VO> list = null;
+		list= getSession().selectList("cityName", city);
+			
+		return list;
 	}
 }

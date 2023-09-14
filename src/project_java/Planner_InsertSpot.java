@@ -77,6 +77,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 	/* jpEastFootTable */ JTable placeTable2 = new JTable(model2);
 	Place_All_VO vo2;
 	String day = "1";
+	int index2;
 
 	public Planner_InsertSpot(Main main) {
 		this.main = main;
@@ -204,47 +205,74 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					jtf_select.setText("");
-					model.setRowCount(0);
-					model2.setRowCount(0);
 					// 전체 버튼의 변경색
 					for (int j = 0; j < jb_day.length; j++) {
 						// 나머지 버튼의 배경색
-						jb_day[j].setBackground(Color.decode("#F083BA"));
-					}
-					// 선택한 버튼의 배경색
-					jb_day[index].setBackground(Color.decode("#B19CCB"));
-					day = Integer.toString(index + 1);
-
-					List<Place_Select_VO> list = Place_Select_DAO.getUserSelectPlace(main.planvo2.getPLAN_NUM());
-					for (Place_Select_VO vo : list) {
-						if (vo.getPS_DAY().equals(day)) {
-							vo2 = Place_All_DAO.getPlaceAll(vo.getPA_NUM());
-							model2.addRow(new String[] { vo2.getPA_NAME(), vo2.getPA_LOCATION(), vo2.getPA_CON(),
-									vo2.getPA_PRICE(), vo.getPS_CON(), vo.getPS_TIME(), vo.getPS_NUM() });
+						if (j != index) {
+							jb_day[j].setBackground(Color.decode("#F083BA"));
 						}
-					}int cnt = 0;
+					}
+					int cnt = 0;
+					int cnt2 = 0;
 					for (int i = 0; i < placeTable2.getRowCount(); i++) {
-						if ((String) (placeTable2.getValueAt(i, 4)) == null) {
+						if (placeTable2.getValueAt(i, 4) == null) {
 							cnt++;
 						}
 					}
+
 					if (cnt == 0) {
+						// 선택한 버튼의 배경색
+						jb_day[index].setBackground(Color.decode("#B19CCB"));
+						day = Integer.toString(index + 1);
+
 						for (int i = 0; i < placeTable2.getRowCount(); i++) {
-							Place_Select_VO vo = new Place_Select_VO();
-							vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
-							if (placeTable2.getValueAt(i, 5) == null) {
-								vo.setPS_CON("");
-							} else {
-								vo.setPS_CON((String) (placeTable2.getValueAt(i, 5)));
+							try {
+								Place_Select_VO vo = new Place_Select_VO();
+								vo.setPS_TIME((String) placeTable2.getValueAt(i, 4));
+								if (placeTable2.getValueAt(i, 5) == null) {
+									vo.setPS_CON("");
+								} else {
+									vo.setPS_CON((String) placeTable2.getValueAt(i, 5));
+								}
+								vo.setPS_NUM((String) placeTable2.getValueAt(i, 6));
+								Protocol p = new Protocol();
+								p.setPlaceSelectVo(vo);
+								p.setCmd(2006);
+								main.out.writeObject(p);
+								main.out.flush();
+								index2 = index;
+							} catch (Exception e2) {
+								System.out.println(e2);
 							}
-							vo.setPS_NUM((String) (placeTable2.getValueAt(i, 6)));
-							Place_Select_DAO.getUserConTime(vo);
 						}
-						main.cardLayout.show(main.cardJPanel, "planner_Select");
+						// Day에 맞는 자기가 선택한 관광지 조회
+						try {
+							model.setRowCount(0);
+							model2.setRowCount(0);
+							Protocol p = new Protocol();
+							p.setMsg(main.planvo2.getPLAN_NUM());
+							p.setCmd(2000);
+							main.out.writeObject(p);
+							main.out.flush();
+						} catch (Exception e2) {
+							// TODO: handle exception
+						}
 					} else {
 						JOptionPane.showMessageDialog(null, "시간은 필수 입력사항입니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
+						cnt = 0;
+						// 시간을 입력하지 않은 경우에도 jb_day[index]의 배경색을 변경
+						jb_day[index2].setBackground(Color.decode("#B19CCB"));
 					}
-					// title
+					// 모든 관광지 조회
+					try {
+						Protocol p = new Protocol();
+						p.setMsg("%%");
+						p.setCmd(2004);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
 				}
 			});
 		}
@@ -309,7 +337,7 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		jp_plan_right = new JPanel();
 		jp_plan_right.setBorder(new LineBorder(Color.decode("#E6E6E6")));
 		jp_plan_right.setBackground(Color.decode("#B19CCB"));
-		Travel_Location_VO vo = Travel_Location_DAO.getLocation(main.planvo2.getTL_NUM());
+		Travel_Location_VO vo = Travel_Location_DAO.getLocation2(main.planvo2.getTL_NUM());
 		// 제목 부분
 		city = new JLabel("여행지: 제주 " + vo.getCITY() + " " + vo.getTOWN());
 		city.setFont(new Font("Aharoni", Font.BOLD, 18));
@@ -364,6 +392,16 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 		jb_add_spot.setBorderPainted(false);
 		jb_add_spot.setPreferredSize(new Dimension(30, 45));
 
+		// 모든 관광지 조회
+		try {
+			Protocol p = new Protocol();
+			p.setMsg("%%");
+			p.setCmd(2004);
+			main.out.writeObject(p);
+			main.out.flush();
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}
 		// 검색부분 담는 구간
 		jp_select.setLayout(new BorderLayout());
 		jp_select.add(jp_sel, BorderLayout.NORTH);
@@ -463,20 +501,14 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "검색어를 입력해주세요.", "Confirm", JOptionPane.ERROR_MESSAGE);
 				jtf_select.requestFocus();
 			} else {
-				List<Place_All_VO> placeAllList = Place_All_DAO.getPlaceFind("%" + jtf_select.getText() + "%");
-				if (placeAllList.size() == 0) {
-					JOptionPane.showMessageDialog(null, "입력한 위치에 관광지 존재하지 않습니다.", "Confirm", JOptionPane.ERROR_MESSAGE);
-				} else {
-					model.setRowCount(0);
-					for (Place_All_VO vo : placeAllList) {
-						if (vo.getPA_PRICE().equals("")) {
-							vo.setPA_PRICE("0원");
-						} else {
-							vo.setPA_PRICE(vo.getPA_PRICE() + "원");
-						}
-						model.addRow(new String[] { vo.getPA_NAME(), vo.getPA_LOCATION(), vo.getPA_CON(),
-								vo.getPA_PRICE(), vo.getPA_NUM() });
-					}
+				try {
+					Protocol p = new Protocol();
+					p.setMsg("%" + jtf_select.getText() + "%");
+					p.setCmd(2004);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e2) {
+					// TODO: handle exception
 				}
 			}
 		} else if (obj == jb_add_spot) {
@@ -486,11 +518,33 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 				int row = placeTable.getSelectedRow();
 				int column = 4;
 				String num = (String) placeTable.getValueAt(row, column);
-				Place_Select_VO vo = new Place_Select_VO();
-				vo.setPA_NUM(num);
-				vo.setPS_DAY(day);
-				vo.setPLAN_NUM(main.planvo2.getPLAN_NUM());
-				Place_Select_DAO.getUserAddPlcae(vo);
+				// 선택한 관광지 추가
+				try {
+					Place_Select_VO vo = new Place_Select_VO();
+					Protocol p = new Protocol();
+					vo.setPA_NUM(num);
+					vo.setPS_DAY(day);
+					vo.setPLAN_NUM(main.planvo2.getPLAN_NUM());
+					p.setPlaceSelectVo(vo);
+					p.setCmd(2002);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				// 선택한 관광지 조회
+				try {
+					model2.setRowCount(0);
+					Protocol p = new Protocol();
+					p.setMsg(main.planvo2.getPLAN_NUM());
+					p.setCmd(2000);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
 			}
 		} else if (obj == jb_delete_spot) {
 			if (placeTable2.getSelectedRow() == -1) {
@@ -499,8 +553,48 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 				int row = placeTable2.getSelectedRow();
 				int column = 6;
 				String num = (String) placeTable2.getValueAt(row, column);
-				Place_Select_DAO.getUserDeletePlace(num);
-				// 위와 동일
+
+				// 선택한 관광지 제거
+				try {
+					Protocol p = new Protocol();
+					p.setMsg(num);
+					p.setCmd(2003);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				for (int i = 0; i < placeTable2.getRowCount(); i++) {
+					try {
+						Place_Select_VO vo = new Place_Select_VO();
+						vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
+						if (placeTable2.getValueAt(i, 5) == null) {
+							vo.setPS_CON("");
+						} else {
+							vo.setPS_CON((String) (placeTable2.getValueAt(i, 5)));
+						}
+						vo.setPS_NUM((String) (placeTable2.getValueAt(i, 6)));
+						Protocol p = new Protocol();
+						p.setPlaceSelectVo(vo);
+						p.setCmd(2006);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (Exception e2) {
+						System.out.println(e2);
+					}
+				}
+				// 선택한 관광지 조회
+				try {
+					model2.setRowCount(0);
+					Protocol p = new Protocol();
+					p.setMsg(main.planvo2.getPLAN_NUM());
+					p.setCmd(2000);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
 			}
 		} else if (obj == bt_Complete) {
 			int cnt = 0;
@@ -511,15 +605,36 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 			}
 			if (cnt == 0) {
 				for (int i = 0; i < placeTable2.getRowCount(); i++) {
-					Place_Select_VO vo = new Place_Select_VO();
-					vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
-					if (placeTable2.getValueAt(i, 5) == null) {
-						vo.setPS_CON("");
-					} else {
-						vo.setPS_CON((String) (placeTable2.getValueAt(i, 5)));
+					try {
+						Place_Select_VO vo = new Place_Select_VO();
+						vo.setPS_TIME((String) (placeTable2.getValueAt(i, 4)));
+						if (placeTable2.getValueAt(i, 5) == null) {
+							vo.setPS_CON("");
+						} else {
+							vo.setPS_CON((String) (placeTable2.getValueAt(i, 5)));
+						}
+						vo.setPS_NUM((String) (placeTable2.getValueAt(i, 6)));
+						Protocol p = new Protocol();
+						p.setPlaceSelectVo(vo);
+						p.setCmd(2006);
+						main.out.writeObject(p);
+						main.out.flush();
+					} catch (Exception e2) {
+						System.out.println(e2);
 					}
-					vo.setPS_NUM((String) (placeTable2.getValueAt(i, 6)));
-					Place_Select_DAO.getUserConTime(vo);
+				}
+				// 플래너 새로고침
+				try {
+					Protocol p = new Protocol();
+					System.out.println(main.uservo.getM_ID());
+					p.setMsg(main.uservo.getM_ID());
+					p.setCmd(40);
+					System.out.println(3);
+					main.out.writeObject(p);
+					main.out.flush();
+					System.out.println(4);
+				} catch (IOException e1) {
+					System.out.println(e1);
 				}
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			} else {
@@ -529,7 +644,30 @@ public class Planner_InsertSpot extends JPanel implements ActionListener {
 			int result = JOptionPane.showConfirmDialog(null, "플래너 작성을 취소하시겠습니까?\n현재까지 작업한 모든 내용이 삭제됩니다.", "Confirm",
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
-				Planner_DAO.getDeletePlanner(main.planvo2.getPLAN_NUM());
+				// 플래너 삭제
+				try {
+					Protocol p = new Protocol();
+					p.setMsg(main.planvo2.getPLAN_NUM());
+					p.setCmd(2007);
+					System.out.println(3);
+					main.out.writeObject(p);
+					main.out.flush();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				// 플래너 새로고침
+				try {
+					Protocol p = new Protocol();
+					p.setMsg(main.uservo.getM_ID());
+					p.setCmd(40);
+					System.out.println(3);
+					main.out.writeObject(p);
+					main.out.flush();
+					System.out.println(4);
+				} catch (IOException e1) {
+					System.out.println(e1);
+				}
 				main.cardLayout.show(main.cardJPanel, "planner_Select");
 			}
 		}

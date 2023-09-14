@@ -234,9 +234,9 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 		} else if (obj == jbLogOut) { // 로그아웃
 			main.cardLayout.show(main.cardJPanel, "login_Main");
 		} else if (obj == withdraw_bt) {
-			System.out.println(main.p.getVo().getM_PW());
+			System.out.println(main.uservo.getM_PW());
 			String pass = new String(tf_pw.getText());
-			if (pass.equals(main.p.getVo().getM_PW())) {
+			if (pass.equals(main.uservo.getM_PW())) {
 				if (tf_withdraw.getText() != null) {
 					int result = JOptionPane.showConfirmDialog(null, "정말로 회원탈퇴 하시겠습니까?", "Confirm",
 							JOptionPane.YES_NO_OPTION);
@@ -244,7 +244,7 @@ public class Login_Withdrawal extends JPanel implements ActionListener {
 						try {
 							Protocol p = new Protocol();
 							UserVO vo = new UserVO();
-							vo.setM_ID(main.p.getVo().getM_ID());
+							vo.setM_ID(main.uservo.getM_ID());
 							vo.setDELETE_CON(tf_withdraw.getText());
 							p.setVo(vo);
 							p.setCmd(8);

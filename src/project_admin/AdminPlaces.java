@@ -101,7 +101,7 @@ public class AdminPlaces extends JPanel {
 //		        AdminUserVO vo = new AdminUserVO();
 		        //
 		        
-		        AdminPlaceVO vo2 = main.main.list52.get(modelRow);
+		       AdminPlaceVO vo2 = main.main.list52.get(modelRow);
 		        
 		        //테이블의 있는 값 vo에 넣기
 		        AdminPlaceVO vo = new AdminPlaceVO();
